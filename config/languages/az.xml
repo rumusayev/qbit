@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="Azərbaycan">
+    <notfound>Page doesn't exist.</notfound>
+    <copyright>All rights reserved. </copyright>
+    <welcome>Welcome to the system</welcome>
+    <poweredby>Powered by</poweredby>
+    
+    <log_in>Log in</log_in>
+    <your_login>Your login</your_login>
+    <your_password>Your password</your_password>
+    <you_entered>Siz sistemə daxil olunduz</you_entered>		
+    <login>Login</login>
+    <logout>Çıxmaq</logout>
+    <password>Password</password>
+    <registration>Registration</registration>	
+    <login_success>Authentification was successfully! Redirecting...</login_success>
+    <login_error>Login or password incorrect! Please try again.</login_error>
+    <logout_success>Exiting from the system...</logout_success>
+    <logout_error>An error occured! Please try again.</logout_error>
+	
+<!-- Layouts -->
+    <layouts>Tərtibatlar</layouts>
+
+<!-- Pages -->
+    <pages>Səhifələr</pages>
+
+<!-- Contents -->
+    <contents>Contentlər</contents>
+	
+<!-- Blogs -->
+    <blogs>Bloglar</blogs>
+
+<!-- Galleries -->
+    <galleries>Qalereyalar</galleries>
+
+<!-- Catalogs -->
+    <catalogs>Kataloglar</catalogs>
+
+<!-- Designs -->
+    <designs>Dizayn</designs>
+
+    <!-- Forms -->
+    <forms>Formalar</forms>
+
+<!-- Profiles -->
+    <profiles>Profayllar</profiles>
+	
+<!-- Streaming -->
+    <streaming>Videolar</streaming>
+	
+</language>

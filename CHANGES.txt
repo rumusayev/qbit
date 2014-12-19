@@ -1,0 +1,6 @@
+v2.0->v3.0, 2014-02-07:
+{"file": "config/config.php", "field": "\"portal_langs" => \"ru,az,en\"", "status": "Deprecated"}
+{"file": "config/config.php", "field": "\"portal_default_lang" => \"en\"", "status": "Deprecated"}
+{"file": "config/config.php", "field": "\"image_preview_max_width" => 400", "status": "Name changed", "new_name": "image_thumb_max_width"}
+{"file": "config/config.php", "field": "\"image_preview_max_height" => 200", "status": "Name changed", "new_name": "image_thumb_max_height"}
+{"file": "config/config.php", "field": "\"image_preview_max_height" => 200", "status": "Name changed", "new_name": "image_thumb_max_height"}

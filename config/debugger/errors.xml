@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<errors>
+    <ER-00001>Wrong request assigned: [0].</ER-00001>
+    <ER-00002>Module name is empty.</ER-00002>
+    <ER-00003>Action name is empty.</ER-00003>
+    <ER-00004>Controller and module names are empty.</ER-00004>
+    <ER-00005>Model and module names are empty.</ER-00005>
+    <ER-00006>Method [0] is not supported.</ER-00006>
+    <ER-00007>Controller [0] is not found.</ER-00007>
+    <ER-00008>Model [0] is not found.</ER-00008>
+    <ER-00009>Action [0] in [1] is not found.</ER-00009>
+    <ER-00010>Not authorised to read the resource.</ER-00010>
+    <ER-00011>Not authorised to create the resource.</ER-00011>
+    <ER-00012>Not authorised to update the resource.</ER-00012>
+    <ER-00013>Not authorised to delete the resource.</ER-00013>
+    <ER-00014>Both controller and model are not found ([0]).</ER-00014>
+    <ER-00015>Class [0] doesn't exist in the file [1].</ER-00015>
+    <ER-00016>'body' should be specified in the global array $data before have returned inside the controller/model [0].</ER-00016>
+    <ER-00017>View and module names are empty.</ER-00017>
+    <ER-00018>View [0] is not found.</ER-00018>
+    <ER-00019>SQL connection error: [0].</ER-00019>
+    <ER-00020>An SQL error occured while processing: [0] ([1]).</ER-00020>
+    <ER-00021>No data found from [0].</ER-00021>
+    <ER-00022>Undefined Backstage variable: [0].</ER-00022>
+    <ER-00023>The parameter "[0]" should be specified as mandatory in the processing LQ ([1]).</ER-00023>
+    <ER-00024>Undefined URL variable: [0].</ER-00024>
+    <ER-00025>Data was not found by the given criterias: [0].</ER-00025>
+    <ER-00026>Design "[0]" was not found or is not specified.</ER-00026>
+</errors>

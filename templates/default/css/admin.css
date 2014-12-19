@@ -1,0 +1,99 @@
+#header {
+    background-color: #339bb9;
+    width: 100%;
+    height: 120px;
+}
+
+#logo {
+    width: 15%;
+}
+
+#admin_content {
+    min-height: 450px;
+}
+
+#footer {
+    background-color: #339bb9;
+    width: 100%;
+    height: 80px;
+    color: white;
+    margin-top: 80px;
+    float: left;
+}
+
+#footer a {
+    color: white;
+}
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    min-width: 0px;
+}
+
+.red {
+    color: red;
+}
+
+a.red:hover {
+    color: darkred;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* tab color */
+.nav-tabs>li>a {
+    background-color: #339bb9;
+    border-color: #fff;
+    color: #fff;
+}
+
+/* active tab color */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    color: #339bb9;
+    background-color: #e8e8e8;
+    border: 1px solid #339bb9;
+}
+
+/* hover tab color */
+.nav-tabs>li>a:hover {
+    border-color: #e8e8e8;
+    background-color: #0092ef;
+}
+
+/* tabs */
+.tab-content {
+    border: 1px solid #339bb9;
+    background-color: #339bb9;
+    padding: 8px;
+}
+
+.table-hover thead {
+    font-size: 11px;
+}
+
+.table-hover tbody {
+    font-size: 11px;
+}
+
+.modal-dialog {
+    width: 90%;
+}
+
+ul.list-group>ul {
+    padding-left: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.lqBlocks {
+    background-color: #fff;
+}
+
+.modal {
+    overflow: auto;
+}

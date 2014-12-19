@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="Русский">
+    <notfound>Страница не существует.</notfound>
+    <copyright>Все права защищены. </copyright>
+    <welcome>Добро пожаловать в систему</welcome>
+    <poweredby>Создано</poweredby>
+    
+    <log_in>Войти</log_in>
+    <your_login>Ваш логин</your_login>
+    <your_password>Ваш пароль</your_password>
+    <you_entered>Вы вошли в систему как</you_entered>
+    <login>Логин</login>
+    <logout>Выйти</logout>	
+    <password>Пароль</password>
+    <registration>Регистрация</registration>
+    <login_success>Вы успешно вошли в систему! Пересылка...</login_success>
+    <login_error>Логин и/или пароль неверные! Пожалуйста, повторите попытку.</login_error>
+    <logout_success>Выход из системы...</logout_success>
+    <logout_error>Произошла ошибка! Пожалуйста, повторите попытку.</logout_error>
+	
+<!-- Layouts -->
+    <layouts>Макеты</layouts>
+
+<!-- Pages -->
+    <pages>Страницы</pages>
+
+<!-- Contents -->
+    <contents>Контенты</contents>
+	
+<!-- Blogs -->
+    <blogs>Блоги</blogs>
+
+<!-- Galleries -->
+    <galleries>Галереи</galleries>
+
+<!-- Catalogs -->
+    <catalogs>Каталоги</catalogs>
+
+<!-- Designs -->
+    <designs>Дизайны</designs>
+
+<!-- Forms -->
+    <forms>Формы</forms>
+
+<!-- Profiles -->
+    <profiles>Профайлы</profiles>
+
+<!-- Streaming -->
+    <streaming>Видео</streaming>
+	
+</language>

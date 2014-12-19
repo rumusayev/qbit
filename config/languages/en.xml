@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="English">
+    <notfound>Page doesn't exist.</notfound>
+    <copyright>All rights reserved. </copyright>
+    <welcome>Welcome to the system</welcome>
+    <poweredby>Powered by</poweredby>
+    
+    <log_in>Log in</log_in>
+    <your_login>Your login</your_login>
+    <your_password>Your password</your_password>
+    <you_entered>You have entered the system as</you_entered>	
+    <login>Login</login>
+    <logout>Logout</logout>	
+    <password>Password</password>
+    <registration>Registration</registration>	
+    <login_success>Authentification was successfully! Redirecting...</login_success>
+    <login_error>Login or password incorrect! Please try again.</login_error>
+    <logout_success>Exiting from the system...</logout_success>
+    <logout_error>An error occured! Please try again.</logout_error>
+	
+<!-- Layouts -->
+    <layouts>Layouts</layouts>
+
+<!-- Pages -->
+    <pages>Pages</pages>
+
+<!-- Contents -->
+    <contents>Contents</contents>
+	
+<!-- Blogs -->
+    <blogs>Blogs</blogs>
+
+<!-- Galleries -->
+    <galleries>Galleries</galleries>
+
+<!-- Catalogs -->
+    <catalogs>Catalogs</catalogs>
+
+<!-- Designs -->
+    <designs>Designs</designs>
+
+<!-- Forms -->
+    <forms>Forms</forms>
+
+<!-- Profiles -->
+    <profiles>Profiles</profiles>
+
+<!-- Streaming -->
+    <streaming>Streaming</streaming>
+	
+</language>
