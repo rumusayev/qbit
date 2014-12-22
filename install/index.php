@@ -133,10 +133,10 @@ echo '<hr/>';
                                             $langFileParts = explode(".", $entry);
                                             if (count($langFileParts) > 1 && $langFileParts[1] == 'xml') {
                                                 $langData = simplexml_load_file($langsDir . $entry);
-
+												$entry_parts = explode(".", $entry);
                                                 echo '<div class="checkbox">
                                                     <label>
-                                                        <input class="portal_langs" type="checkbox" value="' . explode(".", $entry)[0] . '|' . $langData['name'] . '"
+                                                        <input class="portal_langs" type="checkbox" value="' . $entry_parts[0] . '|' . $langData['name'] . '"
                                                                name="portal_langs[]">
                                                         ' . $langData['name'] . '
                                                     </label>
@@ -162,11 +162,11 @@ echo '<hr/>';
                                             $langFileParts = explode(".", $entry);
                                             if (count($langFileParts) > 1 && $langFileParts[1] == 'xml') {
                                                 $langData = simplexml_load_file($langsDir . $entry);
-
+												$entry_parts = explode(".", $entry);
                                                 echo '<div class="radio">
                                                     <label>
                                                         <input class="portal_default_lang" type="radio" name="portal_default_lang"
-                                                               value="' . explode(".", $entry)[0] . '|' . $langData['name'] . '">
+                                                               value="' . $entry_parts[0] . '|' . $langData['name'] . '">
                                                         ' . $langData['name'] . '
                                                     </label>
                                                 </div>';

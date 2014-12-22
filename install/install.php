@@ -34,7 +34,8 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $emptyConfig = str_replace('"portal_email" => ""', '"portal_email" => "' . $_POST['portal_email'] . '"', $emptyConfig);
     $emptyConfig = str_replace('"portal_name" => ""', '"portal_name" => "' . $_POST['portal_name'] . '"', $emptyConfig);
     $emptyConfig = str_replace('"portal_url" => ""', '"portal_url" => "' . $_POST['portal_url'] . '"', $emptyConfig);
-    $emptyConfig = str_replace('"portal_default_lang" => ""', '"portal_default_lang" => "' . explode("|", $_POST['portal_default_lang'])[0] . '"', $emptyConfig);
+	$default_lang_parts = explode("|", $_POST['portal_default_lang']);
+    $emptyConfig = str_replace('"portal_default_lang" => ""', '"portal_default_lang" => "' . $default_lang_parts[0] . '"', $emptyConfig);
 
     if (!empty($_POST['portal_langs'])) {
         $langsShortArray = array();
@@ -45,7 +46,8 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
 
         $emptyConfig = str_replace('"portal_langs" => ""', '"portal_langs" => "' . implode(",", $langsShortArray) . '"', $emptyConfig);
     } else {
-        $emptyConfig = str_replace('"portal_langs" => ""', '"portal_langs" => "' . explode("|", $_POST['portal_default_lang'])[0] . '"', $emptyConfig);
+		$default_lang_parts = explode("|", $_POST['portal_default_lang']);
+        $emptyConfig = str_replace('"portal_langs" => ""', '"portal_langs" => "' . $default_lang_parts[0] . '"', $emptyConfig);
     }
 
     $fname = "../config/config.php";
