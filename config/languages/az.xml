@@ -1,51 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language name="Azərbaycan">
     <notfound>Page doesn't exist.</notfound>
-    <copyright>All rights reserved. </copyright>
+    <copyright>All rights reserved.</copyright>
     <welcome>Welcome to the system</welcome>
     <poweredby>Powered by</poweredby>
-    
+
     <log_in>Log in</log_in>
     <your_login>Your login</your_login>
     <your_password>Your password</your_password>
-    <you_entered>Siz sistemə daxil olunduz</you_entered>		
+    <you_entered>Siz sistemə daxil olunduz</you_entered>
     <login>Login</login>
     <logout>Çıxmaq</logout>
     <password>Password</password>
-    <registration>Registration</registration>	
+    <registration>Registration</registration>
     <login_success>Authentification was successfully! Redirecting...</login_success>
     <login_error>Login or password incorrect! Please try again.</login_error>
     <logout_success>Exiting from the system...</logout_success>
     <logout_error>An error occured! Please try again.</logout_error>
-	
-<!-- Layouts -->
+
+    <!-- Layouts -->
     <layouts>Tərtibatlar</layouts>
 
-<!-- Pages -->
+    <!-- Pages -->
     <pages>Səhifələr</pages>
 
-<!-- Contents -->
+    <!-- Contents -->
     <contents>Contentlər</contents>
-	
-<!-- Blogs -->
+
+    <!-- Blogs -->
     <blogs>Bloglar</blogs>
 
-<!-- Galleries -->
+    <!-- Galleries -->
     <galleries>Qalereyalar</galleries>
 
-<!-- Catalogs -->
+    <!-- Catalogs -->
     <catalogs>Kataloglar</catalogs>
 
-<!-- Designs -->
+    <!-- Designs -->
     <designs>Dizayn</designs>
 
     <!-- Forms -->
     <forms>Formalar</forms>
 
-<!-- Profiles -->
+    <!-- Profiles -->
     <profiles>Profayllar</profiles>
-	
-<!-- Streaming -->
+
+    <!-- Streaming -->
     <streaming>Videolar</streaming>
-	
+
+    <!-- Update qBit -->
+    <current_version>CARİ VERSİYA</current_version>
+    <check_server_for_upd>Yeni əlavələr serverdə axtarılır...</check_server_for_upd>
+    <new_update_v>Yeni əlavələr tapıldı: v</new_update_v>
+    <downloading_new_upd>Yeni əlavələr yüklənir...</downloading_new_upd>
+    <couldnt_save_upd_abort>Yeni əlavələr tapılmadı. Əməliyyat dayandırıldı.</couldnt_save_upd_abort>
+    <upd_downloaded_and_saved>Yeni əlavələr yükləndi və yadda saxlandı</upd_downloaded_and_saved>
+    <upd_already_downloaded>Yeni əlavələr artıq yükləndi</upd_already_downloaded>
+    <created_directory>Direktoriya yaradıldı</created_directory>
+    <executed>İCRA OLUNDU</executed>
+    <updated>YENİLƏNDİ</updated>
+    <install_now>Yenilə</install_now>
+    <no_upd_available>Yeni əlavələr yoxdur</no_upd_available>
+    <couldnt_find_latest_rel>Yeni relizlər tapılmadı</couldnt_find_latest_rel>
+    <updated_to_v>Yeniləndi. Yeni versiya v</updated_to_v>
+    <update_ready>Yeni əlavələr hazırdı</update_ready>
+    <installed>Yenilənib</installed>
+    <not_installed>Yenilənməyib</not_installed>
+    <upd_avail_with_lic>Bu yeniliklər yalnız lisenziya açarı ilə yüklənir</upd_avail_with_lic>
+    <check>Yoxla</check>
+    <lic_passes_checking>lisenziya açarı düzgündü. Yeniliklər yoxlanır.</lic_passes_checking>
+    <lic_error>Lisenziya açarı yalnışdır. Xəta baş verdiş</lic_error>
+    <lic_already_used>Lisenziya açarı artıq istifadə olunub.</lic_already_used>
+    <checking_lic_key>Lisenziya açarın yoxlanması. Xaiş edirik gözləyin...</checking_lic_key>
+    <not_this_file_lic>Lisenziya açarı başqa fayl üçün yaradılıb</not_this_file_lic>
+
 </language>

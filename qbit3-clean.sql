@@ -579,3 +579,69 @@ INSERT INTO `user_grants` VALUES ('53', '4', null, '368');
 INSERT INTO `user_grants` VALUES ('54', '4', null, '370');
 INSERT INTO `user_grants` VALUES ('55', '4', null, '369');
 INSERT INTO `user_grants` VALUES ('56', '4', null, '371');
+
+-- ----------------------------
+-- Table structure for qbit_versions
+-- ----------------------------
+DROP TABLE IF EXISTS `qbit_versions`;
+CREATE TABLE `qbit_versions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `version` varchar(255) DEFAULT NULL,
+  `type` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qbit_versions
+-- ----------------------------
+INSERT INTO `qbit_versions` VALUES ('1', '3.00', 'f');
+INSERT INTO `qbit_versions` VALUES ('2', '3.01', 'f');
+
+-- ----------------------------
+-- Table structure for update_files
+-- ----------------------------
+DROP TABLE IF EXISTS `update_files`;
+CREATE TABLE `update_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of update_files
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for update_license_checks
+-- ----------------------------
+DROP TABLE IF EXISTS `update_license_checks`;
+CREATE TABLE `update_license_checks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `license_key` varchar(255) DEFAULT NULL,
+  `check_datetime` datetime DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of update_license_checks
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for update_licenses
+-- ----------------------------
+DROP TABLE IF EXISTS `update_licenses`;
+CREATE TABLE `update_licenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `license_key` varchar(255) DEFAULT NULL,
+  `activation_datetime` datetime DEFAULT NULL,
+  `deactivation_datetime` datetime DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
+  `file_id` int(11) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of update_licenses
+-- ----------------------------

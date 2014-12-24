@@ -1,51 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language name="English">
     <notfound>Page doesn't exist.</notfound>
-    <copyright>All rights reserved. </copyright>
+    <copyright>All rights reserved.</copyright>
     <welcome>Welcome to the system</welcome>
     <poweredby>Powered by</poweredby>
-    
+
     <log_in>Log in</log_in>
     <your_login>Your login</your_login>
     <your_password>Your password</your_password>
-    <you_entered>You have entered the system as</you_entered>	
+    <you_entered>You have entered the system as</you_entered>
     <login>Login</login>
-    <logout>Logout</logout>	
+    <logout>Logout</logout>
     <password>Password</password>
-    <registration>Registration</registration>	
+    <registration>Registration</registration>
     <login_success>Authentification was successfully! Redirecting...</login_success>
     <login_error>Login or password incorrect! Please try again.</login_error>
     <logout_success>Exiting from the system...</logout_success>
     <logout_error>An error occured! Please try again.</logout_error>
-	
-<!-- Layouts -->
+
+    <!-- Layouts -->
     <layouts>Layouts</layouts>
 
-<!-- Pages -->
+    <!-- Pages -->
     <pages>Pages</pages>
 
-<!-- Contents -->
+    <!-- Contents -->
     <contents>Contents</contents>
-	
-<!-- Blogs -->
+
+    <!-- Blogs -->
     <blogs>Blogs</blogs>
 
-<!-- Galleries -->
+    <!-- Galleries -->
     <galleries>Galleries</galleries>
 
-<!-- Catalogs -->
+    <!-- Catalogs -->
     <catalogs>Catalogs</catalogs>
 
-<!-- Designs -->
+    <!-- Designs -->
     <designs>Designs</designs>
 
-<!-- Forms -->
+    <!-- Forms -->
     <forms>Forms</forms>
 
-<!-- Profiles -->
+    <!-- Profiles -->
     <profiles>Profiles</profiles>
 
-<!-- Streaming -->
+    <!-- Streaming -->
     <streaming>Streaming</streaming>
-	
+
+    <!-- Update qBit -->
+    <current_version>CURRENT VERSION</current_version>
+    <check_server_for_upd>Checking server for an updates...</check_server_for_upd>
+    <new_update_v>New Update Found: v</new_update_v>
+    <downloading_new_upd>Downloading New Updates...</downloading_new_upd>
+    <couldnt_save_upd_abort>Could not save new updates. Operation aborted.</couldnt_save_upd_abort>
+    <upd_downloaded_and_saved>Updates Downloaded And Saved</upd_downloaded_and_saved>
+    <upd_already_downloaded>Updates already downloaded.</upd_already_downloaded>
+    <created_directory>Created Directory</created_directory>
+    <executed>EXECUTED</executed>
+    <updated>UPDATED</updated>
+    <install_now>Install Now</install_now>
+    <no_upd_available>No update is available.</no_upd_available>
+    <couldnt_find_latest_rel>Could not find latest releases.</couldnt_find_latest_rel>
+    <updated_to_v>Updated to v</updated_to_v>
+    <update_ready>Update ready</update_ready>
+    <installed>Installed</installed>
+    <not_installed>Not installed</not_installed>
+    <upd_avail_with_lic>Update available only with License Key</upd_avail_with_lic>
+    <check>Check</check>
+    <lic_passes_checking>License key passed. Checking for updates.</lic_passes_checking>
+    <lic_error>License check ERROR</lic_error>
+    <lic_already_used>This License key already used.</lic_already_used>
+    <checking_lic_key>Checking of License key. Please wait...</checking_lic_key>
+    <not_this_file_lic>License key created not for this file</not_this_file_lic>
+
 </language>

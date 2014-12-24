@@ -1,51 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language name="Русский">
     <notfound>Страница не существует.</notfound>
-    <copyright>Все права защищены. </copyright>
+    <copyright>Все права защищены.</copyright>
     <welcome>Добро пожаловать в систему</welcome>
     <poweredby>Создано</poweredby>
-    
+
     <log_in>Войти</log_in>
     <your_login>Ваш логин</your_login>
     <your_password>Ваш пароль</your_password>
     <you_entered>Вы вошли в систему как</you_entered>
     <login>Логин</login>
-    <logout>Выйти</logout>	
+    <logout>Выйти</logout>
     <password>Пароль</password>
     <registration>Регистрация</registration>
     <login_success>Вы успешно вошли в систему! Пересылка...</login_success>
     <login_error>Логин и/или пароль неверные! Пожалуйста, повторите попытку.</login_error>
     <logout_success>Выход из системы...</logout_success>
     <logout_error>Произошла ошибка! Пожалуйста, повторите попытку.</logout_error>
-	
-<!-- Layouts -->
+
+    <!-- Layouts -->
     <layouts>Макеты</layouts>
 
-<!-- Pages -->
+    <!-- Pages -->
     <pages>Страницы</pages>
 
-<!-- Contents -->
+    <!-- Contents -->
     <contents>Контенты</contents>
-	
-<!-- Blogs -->
+
+    <!-- Blogs -->
     <blogs>Блоги</blogs>
 
-<!-- Galleries -->
+    <!-- Galleries -->
     <galleries>Галереи</galleries>
 
-<!-- Catalogs -->
+    <!-- Catalogs -->
     <catalogs>Каталоги</catalogs>
 
-<!-- Designs -->
+    <!-- Designs -->
     <designs>Дизайны</designs>
 
-<!-- Forms -->
+    <!-- Forms -->
     <forms>Формы</forms>
 
-<!-- Profiles -->
+    <!-- Profiles -->
     <profiles>Профайлы</profiles>
 
-<!-- Streaming -->
+    <!-- Streaming -->
     <streaming>Видео</streaming>
-	
+
+    <!-- Update qBit -->
+    <current_version>ВЕРСИЯ</current_version>
+    <check_server_for_upd>Проверка наличия обновлений на сервере...</check_server_for_upd>
+    <new_update_v>Найдено обновление: v</new_update_v>
+    <downloading_new_upd>Загрузка обновлений...</downloading_new_upd>
+    <couldnt_save_upd_abort>Невозможно сохранить обновления. Операция отменена.</couldnt_save_upd_abort>
+    <upd_downloaded_and_saved>Обновления загружены и сохранены</upd_downloaded_and_saved>
+    <upd_already_downloaded>Обновления уже загружены.</upd_already_downloaded>
+    <created_directory>Создание директории</created_directory>
+    <executed>ВЫПОЛНЕНО</executed>
+    <updated>ОБНОВЛЕНО</updated>
+    <install_now>Установить</install_now>
+    <no_upd_available>Доступных обновлений нет.</no_upd_available>
+    <couldnt_find_latest_rel>Не удалось найти последние релизы.</couldnt_find_latest_rel>
+    <updated_to_v>Обновлено до v</updated_to_v>
+    <update_ready>Обновления готовы</update_ready>
+    <installed>Установлено</installed>
+    <not_installed>Не установлено</not_installed>
+    <upd_avail_with_lic>Эти обновления доступны только с лицензионным ключём</upd_avail_with_lic>
+    <check>Проверить</check>
+    <lic_passes_checking>Лицензия успешно проверена. Установка обновлений.</lic_passes_checking>
+    <lic_error>ОШИБКА при проверке лицензии.</lic_error>
+    <lic_already_used>Этот Лицензионный ключ уже был использован.</lic_already_used>
+    <checking_lic_key>Проверка Лицензионного ключа. Пожалуйста подождите...</checking_lic_key>
+    <not_this_file_lic>Лицензионный ключ был создан не для этого файла</not_this_file_lic>
+
 </language>
