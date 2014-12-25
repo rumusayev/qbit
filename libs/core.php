@@ -312,7 +312,8 @@ class Core
 	
 	private function getCurrentLang()
 	{
-		if (isset($this->request->parameters['lang']))
+        $portal_langs = explode(',', Backstage::gi()->portal_langs);
+		if (isset($this->request->parameters['lang']) && in_array($this->request->parameters['lang'], $portal_langs))
 		{
 			setcookie("portal_current_lang", $this->request->parameters['lang'], time() + 864000, '/');
 			$current_lang = strtolower($this->request->parameters['lang']);
@@ -324,10 +325,11 @@ class Core
 				setcookie("portal_current_lang", Backstage::gi()->portal_default_lang, time() + 864000, '/');
 				$current_lang = Backstage::gi()->portal_default_lang;
 			}
-			else	
-				$current_lang = $_COOKIE['portal_current_lang'];
+			else {
+                $current_lang = $_COOKIE['portal_current_lang'];
+            }
 		}
-			
-		return $current_lang;
+
+        return $current_lang;
 	}
 }

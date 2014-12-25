@@ -20,7 +20,7 @@ class Controller
 	 * @description		Returns the resource
 	 */	
 	public function get()
-	{	
+	{
 		if (!isset($this->data['request']->data_type))
 			$this->data['request']->data_type = Backstage::gi()->default_data_type;
 		if (!isset($this->data['request']->resource_name))

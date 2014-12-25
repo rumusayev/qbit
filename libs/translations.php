@@ -14,7 +14,7 @@ class Translations
 	private $xml;
 
 	private function __construct() 
-	{	
+	{
 		$this->xml_file = Backstage::gi()->LANGS_DIR.Backstage::gi()->portal_current_lang.'.xml';
 		$this->xml = simplexml_load_file($this->xml_file);
 	}

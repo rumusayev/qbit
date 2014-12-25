@@ -594,7 +594,7 @@ CREATE TABLE `qbit_versions` (
   `version` varchar(255) DEFAULT NULL,
   `type` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of qbit_versions
