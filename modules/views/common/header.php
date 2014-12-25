@@ -13,11 +13,11 @@
 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-    <!-- Customizable CSS -->
-    <script src="<?php echo Backstage::gi()->TEMPLATE_URL; ?>js/main.js"></script>
-
     <!-- Template CSS -->
     <link rel="stylesheet" type="text/css" href="<?php echo Backstage::gi()->TEMPLATE_URL; ?>css/client.css"/>
+    <script>
+        var portal_url =  '<?php echo Backstage::gi()->portal_url; ?>';
+    </script>
 
 
 </head>
