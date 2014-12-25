@@ -115,12 +115,17 @@ class mCrud extends model
                 $conditions['limit'] = "{$from},{$limit}";
             }
 
+            if (strpos($conditions['fields'], 'parent_id') !== false ){
+                $conditions['fields'] .= ", (SELECT count(*) FROM ".$this->data['tables']." ch WHERE ch.parent_id=".$this->data['tables'].".id) as child_count";
+            }
+
             $this->data['rows'] = $this->dbmanager->tables($this->data['tables'])
                 ->fields($conditions['fields'])
                 ->where($conditions['where'])
                 ->order($conditions['order'])
                 ->limit($conditions['limit'])
                 ->select();
+
         }
 		
         foreach ($this->data['rows'] as $key => $row) 

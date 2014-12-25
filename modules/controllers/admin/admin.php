@@ -49,6 +49,7 @@ class cAdmin extends controller
                 'is_active', 'Active',
                 'is_main', 'Main',
 				'ordering', 'Order number')
+            ->disabledTableFields('child_count')
             ->mapParents('id','parent_id')
             ->setTranslations('page_title', 'page_content')
             ->setEditor('page_content')
@@ -173,6 +174,7 @@ class cAdmin extends controller
                 'is_visible', 'Visibility',
                 'is_searchable', 'Searchable',
                 'insert_date', 'Modify date')
+            ->disabledTableFields('child_count')
             ->setTranslations('catalog_title', 'catalog_content')
             ->setForm('form_id', 'catalogs')
             ->setUploader('catalogs')

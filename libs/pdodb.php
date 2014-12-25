@@ -209,7 +209,6 @@ class PDODB
 			}
 		}
 		$query = "UPDATE ".$table_name." SET ".join(",",$fields_arr)." WHERE ".$where;
-		
 		$this->parsed = $this->link->prepare($query);
 		
 		try

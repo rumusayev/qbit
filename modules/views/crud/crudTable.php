@@ -752,7 +752,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 				}
 				// Parent open cell
 			if (!empty($mapped_parents))
-				echo "<td><a href='#dummy' id='crud_parent_".$row->{key($mapped_parents)}."' onclick='".$name."_getChildren(\"".$row->{key($mapped_parents)}."\", this)'>+</a></td>";
+				echo "<td class='text-center'><a href='#dummy' id='crud_parent_".$row->{key($mapped_parents)}."' onclick='".$name."_getChildren(\"".$row->{key($mapped_parents)}."\", this)'>+ (COUNT:".$row->child_count.")</a></td>";
 			foreach ($fields as $field)
 			{
 					// Field cells
@@ -869,6 +869,9 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
           <?php
 				foreach ($fields as $field)
                 {
+                    if ( $field['name'] == 'child_count'){
+                        continue;
+                    }
                     $readonly = '';
                     $hidden = '';
                     $ckeditor = '';
