@@ -65,7 +65,10 @@ class Config
 			"process_keep_time" => 30,
                     
                         // Navigator parameters
-			"count_per_page" => 20                    
+			"count_per_page" => 20,
+
+            // QBIT Update
+            "update_server_address" => 'http://localhost/qbit/'
 		);
 	}
 }

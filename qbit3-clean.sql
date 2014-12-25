@@ -195,7 +195,7 @@ CREATE TABLE `grants` (
   `grant_type` varchar(100) NOT NULL COMMENT 'CRUD',
   `resource_type` varchar(100) NOT NULL DEFAULT 'modules',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of grants
@@ -256,6 +256,8 @@ INSERT INTO `grants` VALUES ('61', 'search', '0', 'GET', 'modules');
 INSERT INTO `grants` VALUES ('62', 'search', '0', 'PUT', 'modules');
 INSERT INTO `grants` VALUES ('63', 'search', '0', 'POST', 'modules');
 INSERT INTO `grants` VALUES ('64', 'search', '0', 'DELETE', 'modules');
+INSERT INTO `grants` VALUES ('65', 'updates', '0', 'GET', 'modules');
+INSERT INTO `grants` VALUES ('66', 'licenses', '0', 'GET', 'modules');
 
 -- ----------------------------
 -- Table structure for languages
@@ -383,7 +385,7 @@ CREATE TABLE `role_grants` (
   PRIMARY KEY (`id`),
   KEY `role_grant_fc1` (`role_id`),
   KEY `role_grant_fc2` (`grant_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role_grants
@@ -458,6 +460,9 @@ INSERT INTO `role_grants` VALUES ('100', '2', '63');
 INSERT INTO `role_grants` VALUES ('101', '2', '62');
 INSERT INTO `role_grants` VALUES ('102', '2', '61');
 INSERT INTO `role_grants` VALUES ('103', '1', '61');
+INSERT INTO `role_grants` VALUES ('104', '2', '65');
+INSERT INTO `role_grants` VALUES ('105', '2', '66');
+INSERT INTO `role_grants` VALUES ('106', '1', '66');
 
 -- ----------------------------
 -- Table structure for translations

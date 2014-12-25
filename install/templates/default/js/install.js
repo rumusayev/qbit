@@ -160,7 +160,7 @@ $(function () {
                         responseTxt = "<p class='text-info bg-info'>Status: " + data['status'] + "</p>"
                             + "<p class='bg-info'>Welcome</p>"
                             + "<p>Now you can enter your web-site <a href='" + $('#portal_url').val() + "'>" + $('#portal_url').val() + "</a></p>"
-                            + "<p>Admin panel of web-site <a href='" + $('#portal_url').val() + "admin/'>" + $('#portal_url').val() + "/admin</a></p>"
+                            + "<p>Admin panel of web-site <a href='" + $('#portal_url').val() + "admin/'>" + $('#portal_url').val() + "admin/</a></p>"
                             + "<p class='text-danger'><b>Please remove installation directory !!!</b></p>";
                         $('.statusRow').html(responseTxt);
                         $('.savingConfig').hide();
