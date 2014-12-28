@@ -286,6 +286,10 @@ class Crud
 	public function mapValues()
     {
         $arg_list = func_get_args();
+        if (is_array($arg_list[0]))
+        {
+            $arg_list = $arg_list[0];
+        }
         $mapped_values = array();
         $cnt = count($arg_list);
         for ($i=1; $i<$cnt-1; $i++) 

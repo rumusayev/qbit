@@ -138,6 +138,13 @@ class Loader
 			extract($data);	// array to variables
 		}			
 		ob_start();
+		
+		if(isset($data['show_messages']))
+		{
+			$messages_viewer_file = Backstage::gi()->VIEWS_DIR.'common/messages.php';
+			include($messages_viewer_file);	
+		}
+		
 		include($view_file);
 		return ob_get_clean();		
 	}	

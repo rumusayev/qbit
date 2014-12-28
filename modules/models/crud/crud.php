@@ -139,22 +139,7 @@ class mCrud extends model
 
         foreach ($this->data['rows'] as $row => $field) 
 		{
-            foreach ($field as $key => $value) 
-			{
-                foreach ($this->data['mapped_values'] as $nrow => $nfield) 
-				{
-                    if ($key == $nrow) 
-					{
-                        foreach ($nfield as $nkey => $nvalue) 
-						{
-                            if ($value == $nkey) 
-							{
-                                $this->data['rows'][$row]->{$key} = $nvalue;
-                            }
-                        }
-                    }
-                }
-            }
+
 			
 				// Get files
 			/* This functionality was transferred to crudTable because of performance issues

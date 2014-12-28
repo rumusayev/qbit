@@ -768,6 +768,10 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 	                        $function = create_function($functionp[0], $functionp[1]);
 	                        $value = $function($row->{$field['name']});
 						}
+						elseif (array_key_exists($field['name'], $mapped_values) && array_key_exists($row->{$field['name']}, $mapped_values[$field['name']])) 
+						{
+	                        $value = $mapped_values[$field['name']][$row->{$field['name']}];
+						}
 						else
 	                        $value = $row->{$field['name']};
 
