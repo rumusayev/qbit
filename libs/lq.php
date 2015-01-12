@@ -118,7 +118,6 @@ class LQ
 									$and_boolean = $and_boolean && '"'.$variable.'"'==$condition_match[3];
 								else
 									$and_boolean = $and_boolean && $variable==$condition_match[3];
-									
 							break;
 							case '>':
 								if (strstr($condition_match[3],'"'))
@@ -171,7 +170,7 @@ class LQ
 	 * @lq			A lq
 	 */
 	private function sortData($lq) 
-	{	
+	{
 		$sorted = array();
 		foreach ($lq as $key=>$lq_part) 
 		{

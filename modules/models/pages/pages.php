@@ -24,7 +24,7 @@ class mPages extends model
 		$group = '';
 		if (isset($this->data['request']->parameters['lq']['group']))
 			$group = $this->data['request']->parameters['lq']['group'];
-			
+
 		if (isset($this->data['request']->parameters['lq']['parent_id']))
 			$this->data['request']->parameters['parent_id'] = $this->data['request']->parameters['lq']['parent_id'];
 

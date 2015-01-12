@@ -79,7 +79,7 @@ class cPages extends controller
         $structure_rules_cnt = preg_match_all("/(\[\[([A-z0-9\-\_]+)\]\])/", $design->structure, $structure_rules, PREG_SET_ORDER);
         $fields = array('id', 'is_active', 'page_name', 'page_title');
         $this->data['sequence'] = '';
-		
+
         foreach ($this->data['items'] as $key => $menu_item)
         {
             $item = $design->structure;

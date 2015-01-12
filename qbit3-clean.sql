@@ -45,7 +45,6 @@ CREATE TABLE `catalogs` (
 DROP TABLE IF EXISTS `contents`;
 CREATE TABLE `contents` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `design_id` int(10) NOT NULL,
   `content_name` varchar(255) NOT NULL,
   `content` longtext NOT NULL,
   `is_visible` tinyint(1) NOT NULL DEFAULT '0',

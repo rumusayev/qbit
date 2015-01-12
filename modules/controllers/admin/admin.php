@@ -112,7 +112,7 @@ class cAdmin extends controller
 
         $crud_pages = new Crud("contents");
         $this->data['crud_contents'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'contents')
-            ->setFields('id', 'design_id', 'content_name', 'content', 'is_visible', 'is_searchable')
+            ->setFields('id', 'content_name', 'content', 'is_visible', 'is_searchable')
             ->setSearch('*')
             ->setIDs('id')
             ->validateUnique('content_name')
@@ -123,7 +123,7 @@ class cAdmin extends controller
                 'content', 'Content',
                 'is_searchable', 'Searchable',
                 'is_visible', 'Visibility')
-            ->mapFieldInputs('design_id', 'select:' . json_encode($designs_arr), 'is_visible', 'checkbox:1', 'is_searchable', 'checkbox:1')
+            ->mapFieldInputs('is_visible', 'checkbox:1', 'is_searchable', 'checkbox:1')
             ->setTranslations('content')
             ->setGrants('contents')			
             ->setEditor('content')
