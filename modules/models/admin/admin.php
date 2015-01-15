@@ -26,5 +26,4 @@ class mAdmin extends model
         return $this->data;
     }
 
-
 }

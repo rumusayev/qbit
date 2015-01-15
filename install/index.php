@@ -56,6 +56,12 @@ if (Backstage::gi()->portal_installed == 1) {
     header("Location: " . Backstage::gi()->portal_url);
 }
 
+$languagesInstall = array(
+   "az" => "Azərbaycan",
+   "en" => "English",
+   "ru" => "Русский",
+);
+
 require_once('templates/default/views/header.php');
 echo '<h1 class="text-center">Installation</h1>';
 echo '<hr/>';
@@ -126,25 +132,15 @@ echo '<hr/>';
                             <td class="active">Portal languages</td>
                             <td>
                                 <?php
-                                $langsDir = '../config/languages/';
-                                if ($handle = opendir($langsDir)) {
-                                    while (false !== ($entry = readdir($handle))) {
-                                        if ($entry != "." && $entry != "..") {
-                                            $langFileParts = explode(".", $entry);
-                                            if (count($langFileParts) > 1 && $langFileParts[1] == 'xml') {
-                                                $langData = simplexml_load_file($langsDir . $entry);
-												$entry_parts = explode(".", $entry);
-                                                echo '<div class="checkbox">
+
+                                foreach ($languagesInstall as $key=>$lang){
+                                    echo '<div class="checkbox">
                                                     <label>
-                                                        <input class="portal_langs" type="checkbox" value="' . $entry_parts[0] . '|' . $langData['name'] . '"
+                                                        <input class="portal_langs" type="checkbox" value="' . $key . '|' . $lang . '"
                                                                name="portal_langs[]">
-                                                        ' . $langData['name'] . '
+                                                        ' .$lang . '
                                                     </label>
                                                 </div>';
-                                            }
-                                        }
-                                    }
-                                    closedir($handle);
                                 }
                                 ?>
                             </td>
@@ -154,27 +150,14 @@ echo '<hr/>';
                             <td class="active">Portal default language</td>
                             <td>
                                 <?php
-                                $langsDir = '../config/languages/';
-                                if ($handle = opendir($langsDir)) {
-                                    while (false !== ($entry = readdir($handle))) {
-                                        if ($entry != "." && $entry != "..") {
-
-                                            $langFileParts = explode(".", $entry);
-                                            if (count($langFileParts) > 1 && $langFileParts[1] == 'xml') {
-                                                $langData = simplexml_load_file($langsDir . $entry);
-												$entry_parts = explode(".", $entry);
-                                                echo '<div class="radio">
+                                foreach ($languagesInstall as $key=>$lang){
+                                    echo '<div class="radio">
                                                     <label>
                                                         <input class="portal_default_lang" type="radio" name="portal_default_lang"
-                                                               value="' . $entry_parts[0] . '|' . $langData['name'] . '">
-                                                        ' . $langData['name'] . '
+                                                               value="' . $key . '|' . $lang . '">
+                                                        ' . $lang . '
                                                     </label>
                                                 </div>';
-                                            }
-
-                                        }
-                                    }
-                                    closedir($handle);
                                 }
                                 ?>
                             </td>

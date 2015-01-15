@@ -66,4 +66,26 @@ class mTranslations extends model
         return $this->data;
     }
 
+    public function getStaticTranslations()
+    {
+        $where = '';
+
+        $this->data['items'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix.'translations_words')
+            ->fields('*')
+            ->where($where)
+            ->select();
+
+        foreach ($this->data['items'] as $key=>$item)
+        {
+            $translations = Translations::gi()->getTranslations('translations_words', $item->id, Backstage::gi()->portal_current_lang);
+            if (!empty($translations))
+            {
+                foreach ($translations as $field => $translation)
+                    $this->data['items'][$key]->$field = $translation->translation;
+            }
+        }
+
+        return $this->data;
+    }
+
 }

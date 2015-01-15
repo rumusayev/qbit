@@ -316,5 +316,24 @@ class cAdmin extends controller
         return $this->data;		
     }
 
+    public function translations()
+    {
+        $crud_pages = new Crud("translations_words");
+        $this->data['crud_static_translations'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'translations_words')
+            ->setFields('id, w_key, w_value')
+            ->setSearch('*')
+            ->validateUnique('w_key')
+            ->setIDs('id')
+            //->restrict('add','edit','delete')
+            ->mapTitles(
+                'w_key', 'Key',
+                'w_value', 'Translation')
+            ->setTranslations('w_value')
+            ->execute();
+
+        $this->data['view_name'] = 'static_translations';
+        $this->data['body'] = Loader::gi()->getView($this->data);
+        return $this->data;
+    }
 
 }

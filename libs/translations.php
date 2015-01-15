@@ -10,13 +10,11 @@ class Translations
 {
 	
 	private static $instance = null;
-	private $xml_file;
-	private $xml;
+	private $words;
 
 	private function __construct() 
 	{
-		$this->xml_file = Backstage::gi()->LANGS_DIR.Backstage::gi()->portal_current_lang.'.xml';
-		$this->xml = simplexml_load_file($this->xml_file);
+
 	}
 	
 	/** SINGLETON PATTERN */
@@ -30,13 +28,37 @@ class Translations
 	}
 	
 	public function __set($key, $value) 
-	{	
-		$this->xml->$key = $value;	
+	{
+        $data['module_name'] = 'common';
+        $data['model_name'] = 'translations';
+        $data['action_name'] = 'getStaticTranslations';
+        $data['language'] =  Backstage::gi()->portal_current_lang;
+        $data = Loader::gi()->getModel($data);
+
+        $translations = new stdClass();
+        foreach ($data['items'] as $value){
+            $translations->{$value->w_key} = $value->w_value;
+        }
+        $this->words = $translations;
+
+		$this->words->$key = $value;
 	}
 	
 	public function __get($key) 
-	{	
-		if (isset($this->xml->$key)) { return (string)$this->xml->$key; }	
+	{
+        $data['module_name'] = 'common';
+        $data['model_name'] = 'translations';
+        $data['action_name'] = 'getStaticTranslations';
+        $data['language'] =  Backstage::gi()->portal_current_lang;
+        $data = Loader::gi()->getModel($data);
+
+        $translations = new stdClass();
+        foreach ($data['items'] as $value){
+            $translations->{$value->w_key} = $value->w_value;
+        }
+        $this->words = $translations;
+
+		if (isset($this->words->$key)) { return (string)$this->words->$key; }
 	}
         
 	public function getFields($table_name, $module_name = '')
@@ -48,24 +70,24 @@ class Translations
 		$data['translations_module_name'] = $module_name;
 		$data = Loader::gi()->getModel($data);
 		return $data['fields'];
-	}        
-        
-	public function getTranslations($table_name, $row_id, $language = '', $module_name = '')
-	{
-		$data['module_name'] = 'common';
-		$data['model_name'] = 'translations';
-		$data['action_name'] = 'getTranslations';
-		$data['translations_table_name'] = $table_name;
-		$data['translations_row_id'] = $row_id;
-		$data['translations_language'] = $language;
-		$data['translations_module_name'] = $module_name;
-		$data = Loader::gi()->getModel($data);
-		if (!isset($data['translations']))
-			return false;
-		return $data['translations'];
-	}     
-        
-	public function setTranslations($translations, $table_name, $row_id, $module_name = '')
+	}
+
+    public function getTranslations($table_name, $row_id, $language = '', $module_name = '')
+    {
+        $data['module_name'] = 'common';
+        $data['model_name'] = 'translations';
+        $data['action_name'] = 'getTranslations';
+        $data['translations_table_name'] = $table_name;
+        $data['translations_row_id'] = $row_id;
+        $data['translations_language'] = $language;
+        $data['translations_module_name'] = $module_name;
+        $data = Loader::gi()->getModel($data);
+        if (!isset($data['translations']))
+            return false;
+        return $data['translations'];
+    }
+
+    public function setTranslations($translations, $table_name, $row_id, $module_name = '')
 	{
 		$data['module_name'] = 'common';
 		$data['model_name'] = 'translations';

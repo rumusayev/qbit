@@ -140,7 +140,7 @@ class mCrud extends model
         foreach ($this->data['rows'] as $row => $field) 
 		{
 
-			
+
 				// Get files
 			/* This functionality was transferred to crudTable because of performance issues
 			*

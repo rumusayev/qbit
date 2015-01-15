@@ -94,12 +94,12 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
         foreach ($_POST['portal_langs'] as $langLong) {
 
             $langLong = explode('|', $langLong);
-            $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "languages` VALUES ('', '" . $langLong[0] . "', '" . $langLong[1] . "');";
+            $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "languages` VALUES (0, '" . $langLong[0] . "', '" . $langLong[1] . "');";
             $qr = $db->exec($sql);
         }
     } else {
         $langLong = explode('|', $_POST['portal_default_lang']);
-        $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "languages` VALUES ('', '" . $langLong[0] . "', '" . $langLong[1] . "');";
+        $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "languages` VALUES (0, '" . $langLong[0] . "', '" . $langLong[1] . "');";
         $qr = $db->exec($sql);
     }
 

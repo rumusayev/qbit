@@ -257,6 +257,15 @@ INSERT INTO `grants` VALUES ('63', 'search', '0', 'POST', 'modules');
 INSERT INTO `grants` VALUES ('64', 'search', '0', 'DELETE', 'modules');
 INSERT INTO `grants` VALUES ('65', 'updates', '0', 'GET', 'modules');
 INSERT INTO `grants` VALUES ('66', 'licenses', '0', 'GET', 'modules');
+INSERT INTO `grants` VALUES ('67', 'licenses', '0', 'POST', 'modules');
+INSERT INTO `grants` VALUES ('68', 'licenses', '0', 'PUT', 'modules');
+INSERT INTO `grants` VALUES ('69', 'licenses', '0', 'DELETE', 'modules');
+INSERT INTO `grants` VALUES ('70', 'updates', '0', 'POST', 'modules');
+INSERT INTO `grants` VALUES ('71', 'updates', '0', 'PUT', 'modules');
+INSERT INTO `grants` VALUES ('72', 'updates', '0', 'DELETE', 'modules');
+INSERT INTO `grants` VALUES ('73', 'materials', '0', 'PUT', 'modules');
+INSERT INTO `grants` VALUES ('74', 'materials', '0', 'DELETE', 'modules');
+INSERT INTO `grants` VALUES ('75', 'materials', '0', 'GET', 'modules');
 
 -- ----------------------------
 -- Table structure for languages
@@ -462,6 +471,9 @@ INSERT INTO `role_grants` VALUES ('103', '1', '61');
 INSERT INTO `role_grants` VALUES ('104', '2', '65');
 INSERT INTO `role_grants` VALUES ('105', '2', '66');
 INSERT INTO `role_grants` VALUES ('106', '1', '66');
+INSERT INTO `role_grants` VALUES ('107', '2', '73');
+INSERT INTO `role_grants` VALUES ('108', '2', '74');
+INSERT INTO `role_grants` VALUES ('109', '2', '75');
 
 -- ----------------------------
 -- Table structure for translations
@@ -507,6 +519,7 @@ INSERT INTO `translation_modules` VALUES ('14', 'forms', 'form_field_values', 'v
 INSERT INTO `translation_modules` VALUES ('15', 'catalog_images', 'catalog_images', 'catalog_image_title');
 INSERT INTO `translation_modules` VALUES ('17', 'materials', 'materials', 'material_title');
 INSERT INTO `translation_modules` VALUES ('18', 'forms', 'form_field_select_options', 'option_title');
+INSERT INTO `translation_modules` VALUES ('19', 'translations', 'translations_words', 'w_value');
 
 -- ----------------------------
 -- Table structure for users
@@ -649,3 +662,14 @@ CREATE TABLE `update_licenses` (
 -- ----------------------------
 -- Records of update_licenses
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for translations_words
+-- ----------------------------
+DROP TABLE IF EXISTS `translations_words`;
+CREATE TABLE `translations_words` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `w_key` varchar(255) DEFAULT NULL,
+  `w_value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf32;

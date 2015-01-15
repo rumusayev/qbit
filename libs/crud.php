@@ -390,22 +390,22 @@ class Crud
         $this->format_rules = $format_rules;
         return $this;
     }
-    
+
 	/**
 	 * Set translations for the specified fields
 	 *
 	 * @param string Field name
 	 * ...
 	 * @return object Self object
-	 */	
+	 */
     public function setTranslations()
     {
         $arg_list = func_get_args();
         foreach ($arg_list as $arg)
             $this->translations[] = $arg;
         return $this;
-    }  
-	
+    }
+
 	/**
 	 * Activate adding materials for the object
 	 *

@@ -267,7 +267,7 @@ class cCrud extends controller
 				unset($val[0]);
 				$values[$el_parts[0]]['translations'][$el_field] = $val;
 				$values[$el_parts[0]][$el_field] = '';
-			}			
+			}
 			elseif (array_key_exists($el_field, $mapped_passwords))	// Parsing passwords
 			{
 				if ($mapped_passwords[$el_field] === 'md5' && $val != '')

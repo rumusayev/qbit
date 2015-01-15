@@ -34,6 +34,7 @@
                 <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/forms/">Forms</a></li>
                 <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/users/">Users</a></li>
                 <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/grants/">Grants</a></li>
+                <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/translations/">Translations</a></li>
                 <li class="dropdown"><a href="#dummy">|</a></li>
                 <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>updates/form/">Update</a></li>
                 <li class="dropdown"><a href="#dummy" id="logout">Logout</a></li>
