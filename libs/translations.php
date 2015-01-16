@@ -35,10 +35,12 @@ class Translations
         $data['language'] =  Backstage::gi()->portal_current_lang;
         $data = Loader::gi()->getModel($data);
 
-        $translations = new stdClass();
+        $translations = array();
         foreach ($data['items'] as $value){
-            $translations->{$value->w_key} = $value->w_value;
+
+            $translations[$value->w_key] = $value->w_value;
         }
+        $translations = (object)$translations;
         $this->words = $translations;
 
 		$this->words->$key = $value;
@@ -52,10 +54,12 @@ class Translations
         $data['language'] =  Backstage::gi()->portal_current_lang;
         $data = Loader::gi()->getModel($data);
 
-        $translations = new stdClass();
+        $translations = array();
         foreach ($data['items'] as $value){
-            $translations->{$value->w_key} = $value->w_value;
+
+            $translations[$value->w_key] = $value->w_value;
         }
+        $translations = (object)$translations;
         $this->words = $translations;
 
 		if (isset($this->words->$key)) { return (string)$this->words->$key; }
