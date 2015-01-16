@@ -26,10 +26,10 @@ class Config
 	{
 		return array (
                         // DB parameters
-			"db_host" => "localhost",
-			"db_name" => "qbit3",
-			"db_user" => "root",
-			"db_pass" => "718293m",
+			"db_host" => "",
+			"db_name" => "",
+			"db_user" => "",
+			"db_pass" => "",
 			"db_table_prefix" => "",
 			
 			"db_adapter" => "PDODB",
@@ -37,13 +37,13 @@ class Config
 			"db_install_option" => "create,insert",				// recreate, create, alter, update, insert, delete
 			
                         // Portal parameters
-			"portal_email" => "admin@admin.az",
-			"portal_name" => "qbit",
-			"portal_url" => "http://localhost/qbit/",
-			"portal_langs" => "az,en,ru",
-			"portal_default_lang" => "ru",
+			"portal_email" => "",
+			"portal_name" => "",
+			"portal_url" => "",
+			"portal_langs" => "",
+			"portal_default_lang" => "",
 			"portal_time_correction" => 10,
-			"portal_installed" => 1,
+			"portal_installed" => 0,
 			
                         // Image parameters
 			"image_max_width" => 800,
