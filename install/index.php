@@ -164,6 +164,13 @@ echo '<hr/>';
                         </tr>
 
                         <tr>
+                            <td class="active">Add DEMO DATA</td>
+                            <td>
+                                <input class="add_demo_data" type="checkbox" value="1" name="add_demo_data">
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td colspan="2" class="text-center active">
                                 <button type="button" class="btn btn-default nextDBconfig">Next >></button>
                             </td>

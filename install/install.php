@@ -34,7 +34,7 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $emptyConfig = str_replace('"portal_email" => ""', '"portal_email" => "' . $_POST['portal_email'] . '"', $emptyConfig);
     $emptyConfig = str_replace('"portal_name" => ""', '"portal_name" => "' . $_POST['portal_name'] . '"', $emptyConfig);
     $emptyConfig = str_replace('"portal_url" => ""', '"portal_url" => "' . $_POST['portal_url'] . '"', $emptyConfig);
-	$default_lang_parts = explode("|", $_POST['portal_default_lang']);
+    $default_lang_parts = explode("|", $_POST['portal_default_lang']);
     $emptyConfig = str_replace('"portal_default_lang" => ""', '"portal_default_lang" => "' . $default_lang_parts[0] . '"', $emptyConfig);
 
     if (!empty($_POST['portal_langs'])) {
@@ -46,7 +46,7 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
 
         $emptyConfig = str_replace('"portal_langs" => ""', '"portal_langs" => "' . implode(",", $langsShortArray) . '"', $emptyConfig);
     } else {
-		$default_lang_parts = explode("|", $_POST['portal_default_lang']);
+        $default_lang_parts = explode("|", $_POST['portal_default_lang']);
         $emptyConfig = str_replace('"portal_langs" => ""', '"portal_langs" => "' . $default_lang_parts[0] . '"', $emptyConfig);
     }
 
@@ -105,6 +105,22 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
 
     $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "users` VALUES ('3', '" . $_POST['admin_login'] . "', '" . md5($_POST['admin_password']) . "', '', '', '', '" . $_POST['admin_email'] . "', '', '1');";
     $qr = $db->exec($sql);
+
+    //if (!empty($_POST['add_demo_data']) && $_POST['add_demo_data']==1) {
+
+    foreach ($_POST['portal_langs'] as $langLong) {
+        $langLong = explode('|', $langLong);
+        $static_translations = file_get_contents("translations/" . $langLong[0] . ".html");
+        $static_translations = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $static_translations);
+        $static_translations = str_replace("SELECT id FROM `", "SELECT id FROM `" . @$_POST['db_table_prefix'] . "", $static_translations);
+        $static_translations = str_replace("translations_words'", @$_POST['db_table_prefix'] . "translations_words'", $static_translations);
+        $qr = $db->exec($static_translations);
+
+    }
+
+    // Add DEMO DATA
+
+    //}
 
     $status = "Done";
 
