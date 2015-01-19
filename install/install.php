@@ -34,6 +34,7 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $emptyConfig = str_replace('"portal_email" => ""', '"portal_email" => "' . $_POST['portal_email'] . '"', $emptyConfig);
     $emptyConfig = str_replace('"portal_name" => ""', '"portal_name" => "' . $_POST['portal_name'] . '"', $emptyConfig);
     $emptyConfig = str_replace('"portal_url" => ""', '"portal_url" => "' . $_POST['portal_url'] . '"', $emptyConfig);
+    $emptyConfig = str_replace('"template_name" => ""', '"template_name" => "' . $_POST['template_name'] . '"', $emptyConfig);
     $default_lang_parts = explode("|", $_POST['portal_default_lang']);
     $emptyConfig = str_replace('"portal_default_lang" => ""', '"portal_default_lang" => "' . $default_lang_parts[0] . '"', $emptyConfig);
 
@@ -106,7 +107,33 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "users` VALUES ('3', '" . $_POST['admin_login'] . "', '" . md5($_POST['admin_password']) . "', '', '', '', '" . $_POST['admin_email'] . "', '', '1');";
     $qr = $db->exec($sql);
 
-    //if (!empty($_POST['add_demo_data']) && $_POST['add_demo_data']==1) {
+    // Add DEMO DATA
+    if (!empty($_POST['add_demo_data']) && $_POST['add_demo_data']==1) {
+        // Unzip materials
+        $zip = new ZipArchive;
+        $res = $zip->open('data/' . $_POST['template_name'] . '/materials/catalogs.zip');
+        if ($res === TRUE) {
+            $zip->extractTo('../materials/catalogs/');
+            $zip->close();
+        } else {
+
+        }
+
+        $dataStructure = file_get_contents("data/structure.html");
+        $dataStructure = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $dataStructure);
+        $db->exec($dataStructure);
+
+        foreach ($_POST['portal_langs'] as $langData) {
+            $langsDatas = explode('|', $langData);
+            $demoData = file_get_contents("data/" . $_POST['template_name'] . "/" . $langsDatas[0] . ".html");
+            $demoData = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $demoData);
+            $demoData = str_replace("SELECT id FROM `", "SELECT id FROM `" . @$_POST['db_table_prefix'] . "", $demoData);
+            $demoData = str_replace("translations_words'", @$_POST['db_table_prefix'] . "translations_words'", $demoData);
+            $db->exec($demoData);
+
+        }
+
+    }
 
     foreach ($_POST['portal_langs'] as $langLong) {
         $langLong = explode('|', $langLong);
@@ -118,9 +145,7 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
 
     }
 
-    // Add DEMO DATA
 
-    //}
 
     $status = "Done";
 

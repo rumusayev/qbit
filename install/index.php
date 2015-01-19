@@ -62,6 +62,8 @@ $languagesInstall = array(
    "ru" => "Русский",
 );
 
+$templatesInstall = array("default", "master");
+
 require_once('templates/default/views/header.php');
 echo '<h1 class="text-center">Installation</h1>';
 echo '<hr/>';
@@ -158,6 +160,25 @@ echo '<hr/>';
                                                         ' . $lang . '
                                                     </label>
                                                 </div>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="active">Template</td>
+                            <td>
+                                <?php
+                                foreach ($templatesInstall as $value){
+
+                                    $checked = $value=='default' ? 'checked="checked"' : '';
+
+                                    echo '<div class="radio">
+                                                <label>
+                                                    <input class="template_name" type="radio" value="' . $value . '" name="template_name" ' . $checked . '>
+                                                    ' . $value . '
+                                                    </label>
+                                            </div>';
                                 }
                                 ?>
                             </td>

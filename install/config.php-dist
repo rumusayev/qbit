@@ -52,7 +52,7 @@ class Config
 			"image_thumb_max_height" => 200,
                         
                         // Core parameters
-			"template_name" => "default",
+			"template_name" => "",
 			"default_module_name" => "pages",						// which module will be called by default when the portal is opened
 			"default_action_name" => "getPage",
 			"default_view_name" => "default",

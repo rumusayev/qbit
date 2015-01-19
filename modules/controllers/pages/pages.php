@@ -170,8 +170,8 @@ class cPages extends controller
 			$lq = Loader::gi()->getLQ($lq);
 			$items[$key] = $lq['query'];
         }
-		
-		$this->data['sequence'] = implode('&nbsp;&nbsp;|&nbsp;&nbsp;', $items);
+
+		$this->data['sequence'] = implode('', $items);
 
         $block = $design->block;
         foreach ($block_rules as $rule_key => $rule)

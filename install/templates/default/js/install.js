@@ -175,5 +175,22 @@ $(function () {
         }
     });
 
+    var templatesWithDemoData = ["master"];
+
+
+    if (!$.inArray($('.template_name').val(), templatesWithDemoData)){
+        $('.add_demo_data').attr("disabled", false);
+    } else {
+        $('.add_demo_data').attr("disabled", true).attr('checked', false);;
+    }
+
+    $('.template_name').change(function() {
+
+        if (!$.inArray($(this).val(), templatesWithDemoData)){
+            $('.add_demo_data').attr("disabled", false);
+        } else {
+            $('.add_demo_data').attr("disabled", true).attr('checked', false);;
+        }
+    });
 
 });
