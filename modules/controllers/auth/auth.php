@@ -14,6 +14,12 @@ class cAuth extends controller
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;
 	}
+	public function getPublic()
+	{
+        $this->data['view_name'] = 'publicloginform';
+        $this->data['body'] = Loader::gi()->getView($this->data);
+        return $this->data;
+	}
 	
 	private function generateCookie($login, $expiration) 
 	{
@@ -49,6 +55,18 @@ class cAuth extends controller
 		Backstage::gi()->user->password = '';
 		
 		header("Location: ".Backstage::gi()->portal_url.'admin', true, 301);
+		exit();
+        return $this->data;
+    }
+
+    public function publicLogout()
+    {
+		Backstage::gi()->user->id = 0;
+		Backstage::gi()->user->login = '';
+		Backstage::gi()->user->password = '';
+		unset($_COOKIE['AUTH']);
+    	setcookie('AUTH', null, -1, '/');
+		header("Location: ".Backstage::gi()->portal_url, true, 301);
 		exit();
         return $this->data;
     }

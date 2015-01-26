@@ -80,7 +80,7 @@ $(function()
 			</div>
 			<div class="form_hint"><span class="validation"></span></div>			
 	</div>
-	<center><button type="button" class="btn btn-primary" id="auth_submit">Girmək</button></center>
+	<center><button type="button" class="btn btn-primary" id="auth_submit">Daxil ol</button></center>
 </form>
 </div>
 </div>

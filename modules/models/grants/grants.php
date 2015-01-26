@@ -38,17 +38,21 @@ class mGrants extends model
 		$where = '';
 		if (isset($this->data['parent_id']))
 			$where = 'c.parent_id = '.$this->data['parent_id'];
+		if (!empty($this->data['resource_field_name']))
+			$resource_field_name = $this->data['resource_field_name'];
+		else
+			$resource_field_name = substr($this->data['resource_name'], 0, -1).'_name';
 		switch ($this->data['object_type'])
 		{
 			case 'user':
 			$this->data['resource_grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.$this->data['resource_name'].'` c left join `'.Backstage::gi()->db_table_prefix.'grants` a on a.resource_id = c.id and a.resource_type = "'.$this->data['resource_name'].'" left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.grant_id and user_id = '.$this->data['object_id'])
-				->fields('c.id resource_id, c.'.substr($this->data['resource_name'], 0, -1).'_name resource_name, a.id, a.grant_type, "'.$this->data['resource_name'].'" resource_type, case b.user_id when '.$this->data['object_id'].' then 1 else 0 end is_checked')
+				->fields('c.id resource_id, c.'.$resource_field_name.' resource_name, a.id, a.grant_type, "'.$this->data['resource_name'].'" resource_type, case b.user_id when '.$this->data['object_id'].' then 1 else 0 end is_checked')
 				->where($where)
 				->select();
 			break;
 			case 'role':
 			$this->data['resource_grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.$this->data['resource_name'].'` c left join `'.Backstage::gi()->db_table_prefix.'grants` a on a.resource_id = c.id and a.resource_type = "'.$this->data['resource_name'].'" left join '.Backstage::gi()->db_table_prefix.'role_grants b on a.id = b.grant_id and role_id = '.$this->data['object_id'])
-				->fields('c.id resource_id, c.'.substr($this->data['resource_name'], 0, -1).'_name resource_name, a.id, a.grant_type, "'.$this->data['resource_name'].'" resource_type, case b.role_id when '.$this->data['object_id'].' then 1 else 0 end is_checked')
+				->fields('c.id resource_id, c.'.$resource_field_name.' resource_name, a.id, a.grant_type, "'.$this->data['resource_name'].'" resource_type, case b.role_id when '.$this->data['object_id'].' then 1 else 0 end is_checked')
 				->where($where)
 				->select();
 			break;

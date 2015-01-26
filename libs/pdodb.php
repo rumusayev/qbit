@@ -192,20 +192,35 @@ class PDODB
 		} 
 		elseif (!$where || empty($where))
 			return false;
+                $types_arr = array('bigint','int','smallint','tinyint','float');
 
 		$sql = "SHOW COLUMNS FROM ".$table_name;
 		$result = $this->link->query($sql);
 		while ($row = $result->fetchObject())
 		{
 			$column_arr[] = $row->Field;
+			$column_arr[(String)$row->Field] = $row->Field;
+			$type_arr[(String)$row->Field] = $row->Type;			
 		}
 		foreach($data as $curr_field => $curr_value) 
 		{
 			if(in_array($curr_field, $column_arr) && $curr_field!='id') 
 			{
-				//$fields_arr[] = $curr_field."='".$curr_value."'";
-				$fields_arr[] = $curr_field."=?";
-				$params_arr[] = $curr_value;
+                                $brace_pos = strpos($type_arr[(String)$curr_field], '(');
+                                if (in_array($brace_pos?substr($type_arr[(String)$curr_field],0, $brace_pos):$type_arr[(String)$curr_field], $types_arr) && strstr($curr_value,'++'))
+                                {
+                                    $curr_value = str_replace('++','',$curr_value);
+                                    $fields_arr[] = $curr_field."=$curr_field + ?";
+                                }
+                                else
+                                    $fields_arr[] = $curr_field."=?";
+				
+				if (($type_arr[(String)$curr_field] === 'date' || $type_arr[(String)$curr_field] === 'datetime') && $curr_value == '')
+					$curr_value = "NULL";
+				elseif ((strpos($type_arr[(String)$curr_field],'int') || $type_arr[(String)$curr_field] === 'float') && $curr_value == '')
+					$curr_value = 0;				
+				$params_arr[] = $curr_value;	
+
 			}
 		}
 		$query = "UPDATE ".$table_name." SET ".join(",",$fields_arr)." WHERE ".$where;

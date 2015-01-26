@@ -44,21 +44,27 @@ class FilterChain
 			throw new QException(array('ER-00014', $controller_file));
 			
 		if (!Pretorian::gi()->check($this->data['request']->module_name, $this->data['request']->method))
-			switch($this->data['request']->method)  
 			{
-				case 'GET':  
-					throw new QException(array('ER-00010'));
-					break;  
-				case 'POST':  
-					throw new QException(array('ER-00011'));
-					break;  
-				case 'PUT':  
-					throw new QException(array('ER-00012'));
-					break;
-				case 'DELETE':  
-					throw new QException(array('ER-00013'));
-					break;  
+			Logger::getLogger('main')->warn('goto auth page from filterchain');
+			$this->data['request']->module_name = 'auth';
+			$this->data['request']->controller_name = 'auth';
+			$this->data['request']->action_name = 'get';
 			}
+			// switch($this->data['request']->method)  
+			// {
+			// 	case 'GET':  
+			// 		throw new QException(array('ER-00010'));
+			// 		break;  
+			// 	case 'POST':  
+			// 		throw new QException(array('ER-00011'));
+			// 		break;  
+			// 	case 'PUT':  
+			// 		throw new QException(array('ER-00012'));
+			// 		break;
+			// 	case 'DELETE':  
+			// 		throw new QException(array('ER-00013'));
+			// 		break;  
+			// }
 			
 		if(file_exists($controller_file))
 		{

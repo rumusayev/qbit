@@ -59,7 +59,7 @@ class cGrants extends controller
         return $this->data;
 	}
 	
-	private function getResourceGrantsList($resource_name, $object_type, $object_id, $parent_id = 0)
+	private function getResourceGrantsList($resource_name, $object_type, $object_id, $parent_id = 0, $resource_field_name = '')
 	{
 		$out = '';
 		$res_data['request'] = new stdClass();
@@ -71,6 +71,7 @@ class cGrants extends controller
 		$res_data['resource_name'] = $resource_name;
 		$res_data['object_type'] = $object_type;
 		$res_data['object_id'] = $object_id;
+		$res_data['resource_field_name'] = $resource_field_name;
 		$res_data = Loader::gi()->getModel($res_data);
 		
 		$this->data['resource_name'] = $resource_name;
@@ -92,7 +93,7 @@ class cGrants extends controller
 			$this->data['view_name'] = 'resourceItemGrants';
 			$out .= Loader::gi()->getView($this->data);
 			if ($parent_id !== null)
-				$out .= $this->getResourceGrantsList($resource_name, $object_type, $object_id, $key);
+				$out .= $this->getResourceGrantsList($resource_name, $object_type, $object_id, $key, $resource_field_name);
 		}
 		$this->data['body'] = $out;
 		$this->data['view_name'] = 'resourceGrants';

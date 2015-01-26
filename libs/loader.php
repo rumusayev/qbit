@@ -51,7 +51,7 @@ class Loader
 			throw new QException(array('ER-00007', $controller_file));
 
 		$controller_name = Backstage::gi()->controller_prefix.$data['request']->controller_name;
-		require_once($controller_file);
+		require_once($controller_file); //******************************************VQMOD HERE*************************************8
 		
 		if(!class_exists($controller_name))
 			throw new QException(array('ER-00015', $controller_name, $controller_file));		
@@ -94,7 +94,7 @@ class Loader
 			throw new QException(array('ER-00008', $model_file));
 
 		$model_name = Backstage::gi()->model_prefix.$data['request']->model_name;
-		require_once($model_file);
+		require_once($model_file); //*********************************************** VQMOD HERE ****************************************
 
 		if(!class_exists($model_name))
 			throw new QException(array('ER-00015', $model_name, $model_file));	
@@ -145,7 +145,7 @@ class Loader
 			include($messages_viewer_file);	
 		}
 		
-		include($view_file);
+		include($view_file); //*************************************************VQMOD HERE*****************************************8
 		return ob_get_clean();		
 	}	
 
@@ -264,21 +264,28 @@ class Loader
 			throw new QException(array('ER-00014', $controller_file));
 			
 		if (!Pretorian::gi()->check($data['request']->module_name, $data['request']->method))
-			switch($data['request']->method)  
 			{
-				case 'GET':  
-					throw new QException(array('ER-00010'));
-					break;  
-				case 'POST':  
-					throw new QException(array('ER-00011'));
-					break;  
-				case 'PUT':  
-					throw new QException(array('ER-00012'));
-					break;
-				case 'DELETE':  
-					throw new QException(array('ER-00013'));
-					break;  
+			$this->data['show_messages']='-';
+            $this->data['WARNING']=Translations::gi()->access_denied;
+			$data['request']->module_name = 'auth';
+			$data['request']->controller_name = 'auth';
+			$data['request']->action_name = 'getPublic';
 			}
+			// switch($data['request']->method)  
+			// {
+			// 	case 'GET':  
+			// 		throw new QException(array('ER-00010'));
+			// 		break;  
+			// 	case 'POST':  
+			// 		throw new QException(array('ER-00011'));
+			// 		break;  
+			// 	case 'PUT':  
+			// 		throw new QException(array('ER-00012'));
+			// 		break;
+			// 	case 'DELETE':  
+			// 		throw new QException(array('ER-00013'));
+			// 		break;  
+			// }
 			
 		if(file_exists($controller_file))
 			$data = Loader::gi()->getController($data);

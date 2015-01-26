@@ -38,6 +38,7 @@ class cPages extends controller
     public function getPage()
     {
 		$this->data = Loader::gi()->getModel($this->data);
+		Backstage::gi()->page_title = $this->data['item']->page_title;
 			// Handle data by Linquistic Queries
 		$this->data['query'] = $this->data['item']->layout_content.$this->data['item']->page_content;
 		$this->data = Loader::gi()->getLQ($this->data);
@@ -77,7 +78,7 @@ class cPages extends controller
 
         $block_rules_cnt = preg_match_all("/.*(\[\[([A-z0-9\-\_]+)\]\]).*/", $design->block, $block_rules, PREG_SET_ORDER);
         $structure_rules_cnt = preg_match_all("/(\[\[([A-z0-9\-\_]+)\]\])/", $design->structure, $structure_rules, PREG_SET_ORDER);
-        $fields = array('id', 'is_active', 'page_name', 'page_title');
+        $fields = array('id', 'is_active', 'page_name', 'page_title', 'is_external_link','page_content','external_url_target');
         $this->data['sequence'] = '';
 
         foreach ($this->data['items'] as $key => $menu_item)
@@ -88,6 +89,20 @@ class cPages extends controller
                 if (in_array($rule[2], $fields))
                     $item = str_replace($rule[1], $menu_item->$rule[2], $item);
             }
+            //Is External link
+            if ($menu_item->is_external_link==1)
+            {
+            	if ($menu_item->external_url_target!='_self' && $menu_item->external_url_target!='')
+            	{
+            		$item = preg_replace("/href=\".*\"/", "href=\"".$menu_item->page_content."\" target=\"".$menu_item->external_url_target."\" ", $item);		
+            	}
+            	else
+            	{
+            		$item = preg_replace("/href=\".*\"/", "href=".$menu_item->page_content, $item);	
+            	}
+            	
+            }
+            //End link replacement
                
             if (trim($menu_item->page_sub_menu) != '')
             {

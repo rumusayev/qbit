@@ -74,6 +74,16 @@ class DBManager
 	}	
 	
 	/**
+	 * @var $group string
+	 * @description Sets groups
+	 */		
+	public function group($group)
+	{
+        $this->group = $group;
+        return $this;
+	}	
+
+	/**
 	 * @var $limit string
 	 * @description Sets limits
 	 */		

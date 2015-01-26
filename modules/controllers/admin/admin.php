@@ -17,19 +17,19 @@ class cAdmin extends controller
 
     public function pages()
     {
-		$pages = json_decode(Loader::gi()->callAPI('GET', Backstage::gi()->portal_url.'pages', array('order'=>'page_name')), true);
+		$pages = Loader::gi()->callModule('GET', 'pages', array('order'=>'page_name'));
 		$pages_arr = array();
-		foreach ($pages as $key=>$page) 
-            $pages_arr[$page['id']] = $page['page_name'];
+		foreach ($pages['items'] as $key=>$page) 
+            $pages_arr[$page->id] = $page->page_name;
 
-		$layouts = json_decode(Loader::gi()->callAPI('GET', Backstage::gi()->portal_url.'layouts', array('order'=>'layout_name')), true);
+		$layouts = Loader::gi()->callModule('GET', 'layouts', array('order'=>'layout_name'));
 		$layouts_arr = array();
-		foreach ($layouts as $key=>$layout) 
-            $layouts_arr[$layout['id']] = $layout['layout_name'];
+		foreach ($layouts['items'] as $key=>$layout) 
+            $layouts_arr[$layout->id] = $layout->layout_name;
 
         $crud_pages = new Crud("pages");
         $this->data['crud_pages'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'pages')
-            ->setFields('id', 'page_name', 'page_title', 'parent_id', 'page_meta_title', 'page_meta_keywords', 'page_meta_description', 'page_content', 'page_menu_group', 'page_sub_menu', 'layout_id', 'is_visible', 'is_active', 'is_main', 'ordering')
+            ->setFields('id', 'page_name', 'page_title', 'parent_id', 'page_meta_title', 'page_meta_keywords', 'page_meta_description', 'page_content', 'page_menu_group', 'page_sub_menu', 'layout_id', 'is_visible', 'is_active','is_external_link','external_url_target', 'is_main', 'ordering')
             ->setSearch('*')
             ->setIDs('id')
             ->validateUnique('page_name')
@@ -47,6 +47,8 @@ class cAdmin extends controller
                 'layout_id', 'Layout',
                 'is_visible', 'Visibility',
                 'is_active', 'Active',
+                'is_external_link','Link to external URL',
+                'external_url_target','External URL Target',
                 'is_main', 'Main',
 				'ordering', 'Order number')
             ->disabledTableFields('child_count')
@@ -58,6 +60,7 @@ class cAdmin extends controller
                 'parent_id', 'select:' . json_encode($pages_arr),
                 'is_visible', 'checkbox:1',
                 'is_active', 'checkbox:1',
+                'is_external_link','checkbox:1',
                 'is_main', 'checkbox:1')
             ->setGrants('pages')
             ->addEasyLQ('page_name', 'page_title', 'page_meta_title', 'page_meta_keywords', 'page_meta_description', 'page_content', 'page_menu_group', 'page_sub_menu')
