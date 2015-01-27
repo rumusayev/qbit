@@ -253,7 +253,7 @@ $(function()
 
     $('.<?php echo $name;?>-crud_delete_btn').click(function(e)
     {
-        if (confirm("Siz əminsiz?"))
+        if (confirm("<?php echo Translations::gi()->are_you_sure; ?>"))
         {
 			deleting_data = [];
 			item = {
@@ -425,7 +425,6 @@ $(function()
         return false;
     });
 
-
 		// Search form
     $('#<?php echo $name;?>-crud_search_form').submit(function(e) {
         <?php echo $name;?>_load();
@@ -585,7 +584,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 <div class="table-responsive">
     <?php if (!in_array('add', $restrictions)) { ?>
     <button type="button" data-id="0" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#<?php echo $name;?>-crud_edit_modal" class="<?php echo $name;?>-crud_add_btn btn btn-warning">
-        <span class="glyphicon glyphicon-floppy-open"></span> Əlavə etmək
+        <span class="glyphicon glyphicon-floppy-open"></span> <?php echo Translations::gi()->add_note; ?>
     </button>
     <?php } ?>
     <?php if (!in_array('export', $restrictions)) { ?>
@@ -600,7 +599,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
     <?php } ?>
     <?php if (!in_array('delete', $restrictions)) { ?>
     <button type="button" class="<?php echo $name;?>-crud_delete_all_btn btn btn-danger">
-        <span class="glyphicon glyphicon-floppy-remove"></span> Pozmaq
+        <span class="glyphicon glyphicon-floppy-remove"></span> <?php echo Translations::gi()->delete; ?>
     </button>
     <?php } ?>
 	<form name="<?php echo $name;?>-crud_search_form" id="<?php echo $name;?>-crud_search_form">
@@ -690,13 +689,14 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 					echo '<td>'.$search_input.'</td>';
 			}
 			?>
-			<td width="100px">
+			<td width="130px" class="text-center">
 				<select name="search_condition">
-					<option value="like" <?php if ($crud_search_condition === 'like') echo 'selected';?>>Oxşar</option>
-					<option value="not like" <?php if ($crud_search_condition === 'not like') echo 'selected';?>>Fərqli</option>
-					<option value=">" <?php if ($crud_search_condition === '>') echo 'selected';?>>Böyükdür</option>
-					<option value="<" <?php if ($crud_search_condition === '<') echo 'selected';?>>Kiçikdir</option>
+					<option value="like" <?php if ($crud_search_condition === 'like') echo 'selected';?>><?php echo Translations::gi()->similar; ?></option>
+					<option value="not like" <?php if ($crud_search_condition === 'not like') echo 'selected';?>><?php echo Translations::gi()->different; ?></option>
+					<option value=">" <?php if ($crud_search_condition === '>') echo 'selected';?>><?php echo Translations::gi()->greater; ?></option>
+					<option value="<" <?php if ($crud_search_condition === '<') echo 'selected';?>><?php echo Translations::gi()->greater; ?></option>
 				</select>
+                <br>
 				<button type="submit" class="btn btn-info btn-sm">
 					<span class="glyphicon glyphicon-search"></span>
 				</button>
@@ -782,7 +782,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 					}
 				}
 			}
-			echo '<td width="100px">';
+			echo '<td width="130px">';
 			if (!in_array('view', $restrictions))
 			{
 				// View button
@@ -1029,8 +1029,8 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 			</form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Bağlamaq</button>
-        <button type="button" class="btn btn-primary" id="<?php echo $name;?>-crud_save_btn">Yaddaşa vermək</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Translations::gi()->close; ?></button>
+        <button type="button" class="btn btn-primary" id="<?php echo $name;?>-crud_save_btn"><?php echo Translations::gi()->save; ?></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -1058,7 +1058,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 		</dl>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Bağlamaq</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Translations::gi()->close; ?></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

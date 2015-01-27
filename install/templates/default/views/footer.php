@@ -5,7 +5,7 @@
     <p class="text-center">
         Создано qBit
         <br>
-        © 2013 <a href="http://bitep.net/">BITEP</a>
+        © <script>document.write(new Date().getFullYear());</script> <a href="http://bitep.net/">BITEP</a>
     </p>
 </div>
 

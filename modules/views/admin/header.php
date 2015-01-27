@@ -33,8 +33,8 @@
 <body>
 
 <div id="header">
-<div id="logo">
-    <a href="<?php echo Backstage::gi()->portal_url; ?>admin/"><img src="<?php echo Backstage::gi()->TEMPLATE_URL; ?>images/qbit.png"></a>
+<div id="logo" style="padding:10px">
+    <a href="<?php echo Backstage::gi()->portal_url; ?>admin/"><img width="80px" src="<?php echo Backstage::gi()->TEMPLATE_URL; ?>images/qbit.png"></a>
 </div>
 </div>
 <div id="admin_content">

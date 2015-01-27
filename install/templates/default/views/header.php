@@ -22,8 +22,8 @@
 <body>
 
 <div id="header">
-<div id="logo">
-    <img src="templates/default/images/qbit.png">
+<div id="logo" style="padding:10px">
+    <img width="80px;" src="templates/default/images/qbit.png">
 </div>
 </div>
 <div id="admin_content">
