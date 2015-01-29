@@ -357,6 +357,8 @@ CREATE TABLE `pages` (
   `page_sub_menu` varchar(255) NOT NULL,
   `is_main` tinyint(1) NOT NULL DEFAULT '0',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `is_external_link`  varchar(1) NOT NULL DEFAULT '0',
+  `external_url_target`  varchar(255) NOT NULL,
   `is_visible` tinyint(1) NOT NULL DEFAULT '1',
   `ordering` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
