@@ -671,70 +671,10 @@ CREATE TABLE `update_licenses` (
 DROP TABLE IF EXISTS `translations_words`;
 CREATE TABLE `translations_words` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `w_key` varchar(255) DEFAULT NULL,
-  `w_value` varchar(255) DEFAULT NULL,
+  `w_key` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf32;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of update_licenses
 -- ----------------------------
-INSERT INTO `translations_words` VALUES ('1', 'notfound', null);
-INSERT INTO `translations_words` VALUES ('2', 'copyright', null);
-INSERT INTO `translations_words` VALUES ('3', 'welcome', null);
-INSERT INTO `translations_words` VALUES ('4', 'poweredby', null);
-INSERT INTO `translations_words` VALUES ('5', 'log_in', null);
-INSERT INTO `translations_words` VALUES ('6', 'your_login', null);
-INSERT INTO `translations_words` VALUES ('7', 'your_password', null);
-INSERT INTO `translations_words` VALUES ('8', 'you_entered', null);
-INSERT INTO `translations_words` VALUES ('9', 'login', null);
-INSERT INTO `translations_words` VALUES ('10', 'logout', null);
-INSERT INTO `translations_words` VALUES ('11', 'password', null);
-INSERT INTO `translations_words` VALUES ('12', 'registration', null);
-INSERT INTO `translations_words` VALUES ('13', 'login_success', null);
-INSERT INTO `translations_words` VALUES ('14', 'login_error', null);
-INSERT INTO `translations_words` VALUES ('15', 'logout_success', null);
-INSERT INTO `translations_words` VALUES ('16', 'logout_error', null);
-INSERT INTO `translations_words` VALUES ('17', 'layouts', null);
-INSERT INTO `translations_words` VALUES ('18', 'pages', null);
-INSERT INTO `translations_words` VALUES ('19', 'contents', null);
-INSERT INTO `translations_words` VALUES ('20', 'blogs', null);
-INSERT INTO `translations_words` VALUES ('21', 'galleries', null);
-INSERT INTO `translations_words` VALUES ('22', 'catalogs', null);
-INSERT INTO `translations_words` VALUES ('23', 'designs', null);
-INSERT INTO `translations_words` VALUES ('24', 'forms', null);
-INSERT INTO `translations_words` VALUES ('25', 'profiles', null);
-INSERT INTO `translations_words` VALUES ('26', 'streaming', null);
-INSERT INTO `translations_words` VALUES ('27', 'current_version', null);
-INSERT INTO `translations_words` VALUES ('28', 'check_server_for_upd', null);
-INSERT INTO `translations_words` VALUES ('29', 'new_update_v', null);
-INSERT INTO `translations_words` VALUES ('30', 'downloading_new_upd', null);
-INSERT INTO `translations_words` VALUES ('31', 'couldnt_save_upd_abort', null);
-INSERT INTO `translations_words` VALUES ('32', 'upd_downloaded_and_saved', null);
-INSERT INTO `translations_words` VALUES ('33', 'upd_already_downloaded', null);
-INSERT INTO `translations_words` VALUES ('34', 'created_directory', null);
-INSERT INTO `translations_words` VALUES ('35', 'executed', null);
-INSERT INTO `translations_words` VALUES ('36', 'updated', null);
-INSERT INTO `translations_words` VALUES ('37', 'install_now', null);
-INSERT INTO `translations_words` VALUES ('38', 'no_upd_available', null);
-INSERT INTO `translations_words` VALUES ('39', 'couldnt_find_latest_rel', null);
-INSERT INTO `translations_words` VALUES ('40', 'updated_to_v', null);
-INSERT INTO `translations_words` VALUES ('41', 'update_ready', null);
-INSERT INTO `translations_words` VALUES ('42', 'installed', null);
-INSERT INTO `translations_words` VALUES ('43', 'not_installed', null);
-INSERT INTO `translations_words` VALUES ('44', 'upd_avail_with_lic', null);
-INSERT INTO `translations_words` VALUES ('45', 'check', null);
-INSERT INTO `translations_words` VALUES ('46', 'lic_passes_checking', null);
-INSERT INTO `translations_words` VALUES ('47', 'lic_error', null);
-INSERT INTO `translations_words` VALUES ('48', 'lic_already_used', null);
-INSERT INTO `translations_words` VALUES ('49', 'checking_lic_key', null);
-INSERT INTO `translations_words` VALUES ('50', 'not_this_file_lic', null);
-INSERT INTO `translations_words` VALUES ('51', 'add_note', null);
-INSERT INTO `translations_words` VALUES ('52', 'delete', null);
-INSERT INTO `translations_words` VALUES ('53', 'close', null);
-INSERT INTO `translations_words` VALUES ('54', 'save', null);
-INSERT INTO `translations_words` VALUES ('55', 'are_you_sure', null);
-INSERT INTO `translations_words` VALUES ('56', 'similar', null);
-INSERT INTO `translations_words` VALUES ('57', 'different', null);
-INSERT INTO `translations_words` VALUES ('58', 'greater', null);
-INSERT INTO `translations_words` VALUES ('59', 'less', null);

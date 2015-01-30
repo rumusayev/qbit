@@ -323,15 +323,15 @@ class cAdmin extends controller
     {
         $crud_pages = new Crud("translations_words");
         $this->data['crud_static_translations'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'translations_words')
-            ->setFields('id, w_key, w_value')
+            ->setFields('*')
             ->setSearch('*')
             ->validateUnique('w_key')
             ->setIDs('id')
-            //->restrict('add','edit','delete')
             ->mapTitles(
                 'w_key', 'Key',
-                'w_value', 'Translation')
-            ->setTranslations('w_value')
+                'w_value_az', 'AZ',
+                'w_value_ru', 'RU',
+                'w_value_en', 'EN')
             ->execute();
 
         $this->data['view_name'] = 'static_translations';

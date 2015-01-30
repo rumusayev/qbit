@@ -135,11 +135,15 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
 
     }
 
+    $static_translations_add = file_get_contents("translations/translations_structure.html");
+    $static_translations_add = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $static_translations_add);
+    $qr = $db->exec($static_translations_add);
+
     foreach ($_POST['portal_langs'] as $langLong) {
         $langLong = explode('|', $langLong);
         $static_translations = file_get_contents("translations/" . $langLong[0] . ".html");
-        $static_translations = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $static_translations);
-        $static_translations = str_replace("SELECT id FROM `", "SELECT id FROM `" . @$_POST['db_table_prefix'] . "", $static_translations);
+        $static_translations = str_replace("ALTER TABLE `", "ALTER TABLE `" . @$_POST['db_table_prefix'] . "", $static_translations);
+        $static_translations = str_replace("UPDATE `", "UPDATE `" . @$_POST['db_table_prefix'] . "", $static_translations);
         $static_translations = str_replace("translations_words'", @$_POST['db_table_prefix'] . "translations_words'", $static_translations);
         $qr = $db->exec($static_translations);
 
