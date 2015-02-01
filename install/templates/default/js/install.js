@@ -144,7 +144,7 @@ $(function () {
 
 
             $.ajax({
-                dataType: 'json',
+                dataType: 'text',
                 url: "install.php",
                 method: "POST",
                 data: $('#installForm').serialize(),
@@ -152,6 +152,7 @@ $(function () {
 					console.log(thrownError);
 				},
                 success: function (data) {
+					console.log(data);
                     if (data['status'].indexOf('DB Error') > -1) {
                         responseTxt = "<p class='text-danger text-center bg-danger'>Database connection error: " + data['status'] + "</p>";
                         $('.statusRow').html(responseTxt);

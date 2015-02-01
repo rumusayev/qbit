@@ -17,7 +17,7 @@ $(function()
     }
     if (isset($where)) 
     {
-        echo "var where = '".$where."';";
+        echo "var where = '".base64_encode($where)."';";
         echo "$('#{$name}-crud_params_form #where').val(where);";
     }
     if (isset($tables))

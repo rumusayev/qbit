@@ -18,7 +18,7 @@ class cCrud extends controller
 		if (isset($crud_params_form['name']))
 			$this->data['name'] = $crud_params_form['name'];
 		if (isset($crud_params_form['where']))
-			$this->data['where'] = $crud_params_form['where'];
+			$this->data['where'] = base64_decode($crud_params_form['where']);
 		if (isset($crud_params_form['query']))
 			$this->data['query'] = base64_decode($crud_params_form['query']);
 		if (isset($crud_params_form['tables']))
