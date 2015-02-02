@@ -62,7 +62,7 @@ $languagesInstall = array(
    "ru" => "Русский",
 );
 
-$templatesInstall = array("default", "master");
+$templatesInstall = array("default" => "Empty template", "master" => "Master");
 
 require_once('templates/default/views/header.php');
 echo '<h1 class="text-center">Installation</h1>';
@@ -169,13 +169,13 @@ echo '<hr/>';
                             <td class="active">Template</td>
                             <td>
                                 <?php
-                                foreach ($templatesInstall as $value){
+                                foreach ($templatesInstall as $key=>$value){
 
                                     $checked = $value=='default' ? 'checked="checked"' : '';
 
                                     echo '<div class="radio">
                                                 <label>
-                                                    <input class="template_name" type="radio" value="' . $value . '" name="template_name" ' . $checked . '>
+                                                    <input class="template_name" type="radio" value="' . $key . '" name="template_name" ' . $checked . '>
                                                     ' . $value . '
                                                     </label>
                                             </div>';

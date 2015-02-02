@@ -96,7 +96,7 @@ $(function () {
 
     $('.savePortalData').click(function () {
 
-        console.log( $('.error').length );
+        console.log($('.error').length);
 
         var comp2 = 0;
 
@@ -144,15 +144,14 @@ $(function () {
 
 
             $.ajax({
-                dataType: 'text',
+                dataType: 'json',
                 url: "install.php",
                 method: "POST",
                 data: $('#installForm').serialize(),
-				error: function (xhr, ajaxOptions, thrownError) {
-					console.log(thrownError);
-				},
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(thrownError);
+                },
                 success: function (data) {
-					console.log(data);
                     if (data['status'].indexOf('DB Error') > -1) {
                         responseTxt = "<p class='text-danger text-center bg-danger'>Database connection error: " + data['status'] + "</p>";
                         $('.statusRow').html(responseTxt);
@@ -160,11 +159,22 @@ $(function () {
                         $('.configData').show();
                         $('.savingConfig').hide();
                     } else if (data['status'].indexOf('Done') > -1) {
+
+                        if (data['materials'].indexOf('empty') > -1) {
+                            materials = "";
+                        } else if (data['materials'].indexOf('MATERROR') > -1) {
+                            materials = "<p>Materials not found</p>";
+                        }
+                        else if (data['materials'].indexOf('MATADD') > -1) {
+                            materials = "<p>Materials added</p>";
+                        }
+
                         responseTxt = "<p class='text-info bg-info'>Status: " + data['status'] + "</p>"
-                            + "<p class='bg-info'>Welcome</p>"
-                            + "<p>Now you can enter your web-site <a href='" + $('#portal_url').val() + "'>" + $('#portal_url').val() + "</a></p>"
-                            + "<p>Admin panel of web-site <a href='" + $('#portal_url').val() + "admin/'>" + $('#portal_url').val() + "admin/</a></p>"
-                            + "<p class='text-danger'><b>Please remove installation directory !!!</b></p>";
+                        + "<p class='bg-info'>Welcome</p>"
+                        + "<p>Now you can enter your web-site <a href='" + $('#portal_url').val() + "'>" + $('#portal_url').val() + "</a></p>"
+                        + "<p>Admin panel of web-site <a href='" + $('#portal_url').val() + "admin/'>" + $('#portal_url').val() + "admin/</a></p>"
+                        + materials
+                        + "<p class='text-danger'><b>Please remove installation directory !!!</b></p>";
                         $('.statusRow').html(responseTxt);
                         $('.savingConfig').hide();
 
@@ -181,18 +191,20 @@ $(function () {
     var templatesWithDemoData = ["master"];
 
 
-    if (!$.inArray($('.template_name').val(), templatesWithDemoData)){
+    if (!$.inArray($('.template_name').val(), templatesWithDemoData)) {
         $('.add_demo_data').attr("disabled", false);
     } else {
-        $('.add_demo_data').attr("disabled", true).attr('checked', false);;
+        $('.add_demo_data').attr("disabled", true).attr('checked', false);
+        ;
     }
 
-    $('.template_name').change(function() {
+    $('.template_name').change(function () {
 
-        if (!$.inArray($(this).val(), templatesWithDemoData)){
+        if (!$.inArray($(this).val(), templatesWithDemoData)) {
             $('.add_demo_data').attr("disabled", false);
         } else {
-            $('.add_demo_data').attr("disabled", true).attr('checked', false);;
+            $('.add_demo_data').attr("disabled", true).attr('checked', false);
+            ;
         }
     });
 

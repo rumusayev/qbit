@@ -78,6 +78,14 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
         }
         echo '{"status":"' . $status . '"}';
 
+
+        $rollbackCNF = file_get_contents($fname);
+        $rollbackCNF = str_replace('"portal_installed" => 1', '"portal_installed" => 0', $rollbackCNF);
+
+        $frb = fopen($fname, "w") or die("Unable to open file!");
+        fwrite($frb, $rollbackCNF);
+        fclose($frb);
+
         die();
     }
 
@@ -108,18 +116,25 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $qr = $db->exec($sql);
 
     // Add DEMO DATA
-    if (!empty($_POST['add_demo_data']) && $_POST['add_demo_data']==1) {
+    if (!empty($_POST['add_demo_data']) && $_POST['add_demo_data'] == 1) {
+        $catalogs = 'data/' . $_POST['template_name'] . '/materials/catalogs.zip';
         // Unzip materials
-        $zip = new ZipArchive;
-        $res = $zip->open('data/' . $_POST['template_name'] . '/materials/catalogs.zip');
-        if ($res === TRUE) {
-            $zip->extractTo('../materials/catalogs/');
-            $zip->close();
-        } else {
+        if (file_exists($catalogs)) {
 
+            $zip = new ZipArchive;
+            $res = $zip->open($catalogs);
+            if ($res === TRUE) {
+                $zip->extractTo('../materials/catalogs/');
+                $zip->close();
+            } else {
+                $materials = "MATERROR";
+            }
+            $materials = "MATADD";
+        } else {
+            $materials = "MATERROR";
         }
 
-        $dataStructure = file_get_contents("data/structure.html");
+        $dataStructure = file_get_contents("data/" . $_POST['template_name'] . "/structure.html");
         $dataStructure = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $dataStructure);
         $db->exec($dataStructure);
 
@@ -132,7 +147,9 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
             $db->exec($demoData);
 
         }
-
+        $materials_status = ', "materials":"' . $materials . '"';
+    } else {
+        $materials_status = ', "materials":"empty"';
     }
 
     $static_translations_add = file_get_contents("translations/translations_structure.html");
@@ -148,10 +165,8 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
         $qr = $db->exec($static_translations);
 
     }
-
-
-
     $status = "Done";
 
-    echo '{"status":"' . $status . '"}';
+    echo '{"status":"' . $status . '" ' . $materials_status . '}';
+
 }
