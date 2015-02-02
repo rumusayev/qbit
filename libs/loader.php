@@ -209,12 +209,16 @@ class Loader
 	 * @method	POST, PUT, GET, DELETE
 	 * @url		Acceptable request url
 	 * @data 	Data that will be sent as parameters: array("param" => "value") ==> index.php?param=value
+	 * there could be system parameters, e.g. module = 'nnn'. When module is set then the second parameter (or part of it) will pe interpreted as a controller_name 
 	 */	
 	public function callModule($method, $url, $parameters = array())
 	{	
 		$routes = explode('/', $url);
 		$data['request'] = new stdClass();		
-		$data['request']->module_name = $routes[0];
+		if (!isset($parameters['module']))
+			$data['request']->module_name = $routes[0];
+		else
+			$data['request']->module_name = $parameters['module'];
 		$data['request']->controller_name = $routes[0];
 		if (isset($routes[1]))
 			$data['request']->action_name = $routes[1];
