@@ -95,7 +95,6 @@ class Responser
 							$this->data['response']->body = json_encode($this->data['response']->body);
 						break;
 						default:
-							$this->data['response']->body = $this->data['response']->body;
 						break;
 					}					
 				break;
