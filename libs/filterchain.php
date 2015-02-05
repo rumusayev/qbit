@@ -22,14 +22,6 @@ class FilterChain
 	
 	private function run()
 	{			
-			// Check for permissions
-		if (($this->data['request']->module_name === 'admin' || $this->data['request']->module_name === 'cms') && !Pretorian::gi()->check($this->data['request']->module_name, $this->data['request']->method))
-		{
-			$this->data['request']->module_name = 'auth';
-			$this->data['request']->controller_name = 'auth';
-			$this->data['request']->action_name = 'get';
-		}
-		
 			// Check if the resource exists
 		if (!isset($this->data['request']->controller_name))
 			$this->data['request']->controller_name = $this->data['request']->module_name;
@@ -44,27 +36,33 @@ class FilterChain
 			throw new QException(array('ER-00014', $controller_file));
 			
 		if (!Pretorian::gi()->check($this->data['request']->module_name, $this->data['request']->method))
+		{
+			if ($this->data['request']->routing === 'static')
 			{
-			Logger::getLogger('main')->warn('goto auth page from filterchain');
-			$this->data['request']->module_name = 'auth';
-			$this->data['request']->controller_name = 'auth';
-			$this->data['request']->action_name = 'get';
+				//Logger::getLogger('main')->warn('Goto auth page from filterchain');
+				$this->data['show_messages'] = '-';
+				$this->data['WARNING'] = Translations::gi()->access_denied;
+				$this->data['request']->module_name = 'auth';
+				$this->data['request']->controller_name = 'auth';
+				$this->data['request']->action_name = 'get';
 			}
-			// switch($this->data['request']->method)  
-			// {
-			// 	case 'GET':  
-			// 		throw new QException(array('ER-00010'));
-			// 		break;  
-			// 	case 'POST':  
-			// 		throw new QException(array('ER-00011'));
-			// 		break;  
-			// 	case 'PUT':  
-			// 		throw new QException(array('ER-00012'));
-			// 		break;
-			// 	case 'DELETE':  
-			// 		throw new QException(array('ER-00013'));
-			// 		break;  
-			// }
+			else
+			switch($this->data['request']->method)  
+			{
+				case 'GET':  
+					throw new QException(array('ER-00010'));
+					break;  
+				case 'POST':  
+					throw new QException(array('ER-00011'));
+					break;  
+				case 'PUT':  
+					throw new QException(array('ER-00012'));
+					break;
+				case 'DELETE':  
+					throw new QException(array('ER-00013'));
+					break;  
+			}
+		}
 			
 		if(file_exists($controller_file))
 		{

@@ -209,12 +209,17 @@ class Loader
 	 * @method	POST, PUT, GET, DELETE
 	 * @url		Acceptable request url
 	 * @data 	Data that will be sent as parameters: array("param" => "value") ==> index.php?param=value
+	 * there could be system parameters, e.g. module_name = 'nnn'. When module_name is set then the second parameter (or part of it) will pe interpreted as a controller_name 
 	 */	
 	public function callModule($method, $url, $parameters = array())
 	{	
+		$data['request'] = new stdClass;
+		$data['request']->routing = 'internal';
 		$routes = explode('/', $url);
-		$data['request'] = new stdClass();		
-		$data['request']->module_name = $routes[0];
+		if (!isset($parameters['module_name']))
+			$data['request']->module_name = $routes[0];
+		else
+			$data['request']->module_name = $parameters['module_name'];
 		$data['request']->controller_name = $routes[0];
 		if (isset($routes[1]))
 			$data['request']->action_name = $routes[1];
@@ -250,7 +255,20 @@ class Loader
 			}				
 		}
 
-			// Check if the resource exists
+			// We have module_name, controller_name, action_name and data_type. Loading filterchain.
+		new Responser($data);
+		/*
+			// Check for permissions
+		if (!Pretorian::gi()->check($data['request']->module_name, $data['request']->method))
+		{
+			$this->data['show_messages']='-';
+            $this->data['WARNING']=Translations::gi()->access_denied;
+			$data['request']->module_name = 'auth';
+			$data['request']->controller_name = 'auth';
+			$data['request']->action_name = 'getPublic';
+		}
+
+		// Check if the resource exists
 		if (!isset($data['request']->controller_name))
 			$data['request']->controller_name = $data['request']->module_name;
 		if (!isset($data['request']->module_name))
@@ -259,18 +277,9 @@ class Loader
 		$controller_file = Backstage::gi()->CONTROLLERS_DIR.$data['request']->module_name.Backstage::gi()->DR.$data['request']->controller_name.'.php';
 		$model_file = Backstage::gi()->MODELS_DIR.$data['request']->module_name.Backstage::gi()->DR.$data['request']->controller_name.'.php';
 		
-			// Check for permissions
 		if(!file_exists($controller_file) && !file_exists($model_file)) 
 			throw new QException(array('ER-00014', $controller_file));
-			
-		if (!Pretorian::gi()->check($data['request']->module_name, $data['request']->method))
-			{
-			$this->data['show_messages']='-';
-            $this->data['WARNING']=Translations::gi()->access_denied;
-			$data['request']->module_name = 'auth';
-			$data['request']->controller_name = 'auth';
-			$data['request']->action_name = 'getPublic';
-			}
+
 			// switch($data['request']->method)  
 			// {
 			// 	case 'GET':  
@@ -293,5 +302,6 @@ class Loader
 			$data = Loader::gi()->getModel($data);
 			
 		return $data;
+		*/
 	}	
 }

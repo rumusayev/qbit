@@ -63,8 +63,8 @@ class mTranslations extends model
     {
         $where = '';
 
-        $this->data['items'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . 'translations_words')
-            ->fields('w_key, w_value_' . Backstage::gi()->portal_current_lang . ' as word')
+        $this->data['items'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . 'translations')
+            ->fields('field_name', Backstage::gi()->portal_current_lang . ' as word')
             ->where($where)
             ->select();
 

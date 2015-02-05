@@ -321,17 +321,20 @@ class cAdmin extends controller
 
     public function translations()
     {
-        $crud_pages = new Crud("translations_words");
-        $this->data['crud_static_translations'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'translations_words')
-            ->setFields('*')
+		$languages = Loader::gi()->callModule('GET', 'translations', array('module_name'=>'common'));
+		$languages_arr = array();
+		foreach ($languages['items'] as $key=>$language) 
+            $languages_arr[$language->id] = $language->short;
+			
+        $crud_pages = new Crud("translations");
+        $this->data['crud_static_translations'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'translations')
+            ->setFields('id, field_name, '.join($languages_arr, ','))
             ->setSearch('*')
+            ->setWhere('row_id = 0')
             ->validateUnique('w_key')
             ->setIDs('id')
             ->mapTitles(
-                'w_key', 'Key',
-                'w_value_az', 'AZ',
-                'w_value_ru', 'RU',
-                'w_value_en', 'EN')
+                'field_name', 'Key')
             ->execute();
 
         $this->data['view_name'] = 'static_translations';

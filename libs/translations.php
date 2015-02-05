@@ -21,7 +21,7 @@ class Translations
         $items = array();
 
         foreach ($data['items'] as $key => $value) {
-            $items[$value->w_key] = $value->word;
+            $items[$value->field_name] = $value->word;
         }
 
         $words = $items;
