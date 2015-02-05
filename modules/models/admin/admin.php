@@ -26,4 +26,14 @@ class mAdmin extends model
         return $this->data;
     }
 
+    public function siteConfigs(){
+
+        $table_languages = Backstage::gi()->db_table_prefix . 'languages';
+        $this->data['languages'] = $this->dbmanager->tables($table_languages)
+            ->fields('short, language')
+            ->select();
+
+        return $this->data;
+    }
+
 }

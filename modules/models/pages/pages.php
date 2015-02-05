@@ -47,7 +47,7 @@ class mPages extends model
         foreach ($this->data['items'] as $key=>$item)
         {
 			$translations = Translations::gi()->getTranslations('pages', $item->id, Backstage::gi()->portal_current_lang);
-			if (!empty($translations)) 
+			if (!empty($translations))
 			{
 				foreach ($translations as $field => $translation)
 					$this->data['items'][$key]->$field = $translation->translation;

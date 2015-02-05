@@ -36,7 +36,16 @@
                 <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/grants/">Grants</a></li>
                 <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/translations/">Translations</a></li>
                 <li class="dropdown"><a href="#dummy">|</a></li>
-                <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>updates/form/">Update</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                        Settings <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>admin/siteConfigs/">Configurations</a></li>
+                        <li class="dropdown"><a href="<?php echo Backstage::gi()->portal_url; ?>updates/form/">Update</a></li>
+                    </ul>
+                </li>
+
                 <li class="dropdown"><a href="#dummy" id="logout">Logout</a></li>
             </ul>
         </div><!--/.nav-collapse -->
