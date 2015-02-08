@@ -24,15 +24,27 @@ class mTranslations extends model
     {
         $fields = Translations::gi()->getFields($this->data['translations_table_name']);
         $where = '';
+		$lang_fields = Backstage::gi()->portal_langs;
+		$lang_fields_arr = explode(',', $lang_fields);
+			// Select only one language if needed
         if ($this->data['translations_language'] !== '')
-            $where = 'ln.short = "' . strtolower($this->data['translations_language']) . '"';
-        foreach ($fields as $field) {
-            $this->data['translations'][$field->field] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "languages ln left join " . Backstage::gi()->db_table_prefix . "translations tr on tr.language_id = ln.id and tr.table_name = '" . $this->data['translations_table_name'] . "' and tr.field_name = '" . $field->field . "' and tr.row_id = " . $this->data['translations_row_id'])
-                ->fields('tr.translation, ln.id language_id, ln.short')
-                ->where($where)
-                ->select();
+			$lang_fields = strtolower($this->data['translations_language']);
+		//$fields_str = implode(', ', array_map(function($f) {return ''''.$f->field.'''';}, $fields));
+
+        foreach ($fields as $field) 
+		{
+            $translations = $this->dbmanager->tables(Backstage::gi()->db_table_prefix."translations tr")
+                ->fields($lang_fields)
+                ->where("tr.table_name = '{$this->data['translations_table_name']}' and tr.field_name = '{$field->field}' and tr.row_id = {$this->data['translations_row_id']}")
+                ->getScalar();
             if ($this->data['translations_language'] !== '')
-                $this->data['translations'][$field->field] = $this->data['translations'][$field->field][0];
+				$this->data['translations'][$field->field]->translation = $translations->{$this->data['translations_language']};
+			else
+				foreach ($lang_fields_arr as $lang_key => $lang_field)
+				{
+					$this->data['translations'][$field->field][$lang_key]->short = $lang_field;
+					$this->data['translations'][$field->field][$lang_key]->translation = $translations->{$lang_field};
+				}
         }
         return $this->data;
     }
@@ -40,21 +52,22 @@ class mTranslations extends model
 
     function setTranslations()
     {
-        foreach ($this->data['translations_translations'] as $field => $values) {
-            foreach ($values as $language_id => $value) {
-                $cnt = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
-                    ->where("language_id = $language_id and table_name = '" . $this->data['translations_table_name'] . "' and row_id = " . $this->data['translations_row_id'] . " and field_name = '$field'")
-                    ->count();
-                if ($cnt > 0) {
-                    $this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
-                        ->values(array('translation' => $value))
-                        ->where("language_id = $language_id and table_name = '" . $this->data['translations_table_name'] . "' and row_id = " . $this->data['translations_row_id'] . " and field_name = '$field'")
-                        ->update();
-                } else
-                    $this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
-                        ->values(array('id' => '', 'language_id' => $language_id, 'table_name' => $this->data['translations_table_name'], 'row_id' => $this->data['translations_row_id'], 'field_name' => $field, 'translation' => $value))
-                        ->insert();
-            }
+        foreach ($this->data['translations_translations'] as $field => $values) 
+		{			
+			$cnt = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
+				->where("table_name = '" . $this->data['translations_table_name'] . "' and row_id = " . $this->data['translations_row_id'] . " and field_name = '$field'")
+				->count();
+			if ($cnt > 0) 
+			{
+				$this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
+					->values($values)
+					->where("table_name = '" . $this->data['translations_table_name'] . "' and row_id = " . $this->data['translations_row_id'] . " and field_name = '$field'")
+					->update();
+			} 
+			else
+				$this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
+					->values(array_merge($values, array('id' => '', 'language_id' => $language_id, 'table_name' => $this->data['translations_table_name'], 'row_id' => $this->data['translations_row_id'], 'field_name' => $field)))
+					->insert();
         }
         return $this->data;
     }

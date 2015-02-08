@@ -21,14 +21,7 @@ class Controller
 	 */	
 	public function get()
 	{
-		if (!isset($this->data['request']->data_type))
-			$this->data['request']->data_type = Backstage::gi()->default_data_type;
-		if (!isset($this->data['request']->resource_name))
-			$this->data['request']->resource_name = $this->data['request']->module_name;	
 		$this->data = Loader::gi()->getModel($this->data);
-		if ($this->data['request']->data_type === 'json')
-			$this->data['items'] = json_encode($this->data['items']);
-		$this->data['body'] = $this->data['items'];
 
 		return $this->data;
 	}

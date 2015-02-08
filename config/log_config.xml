@@ -1,0 +1,12 @@
+    <configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="myAppender" class="LoggerAppenderFile">
+    
+    <param name="file" value="D:/server/www/qbit/myLog.log" />
+    </appender>
+    
+    <root>
+    <level value="INFO" />
+        
+    <appender_ref ref="myAppender" />
+    </root>
+    </configuration>

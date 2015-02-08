@@ -34,8 +34,8 @@ class FilterChain
 			// Check for permissions
 		if(!file_exists($controller_file) && !file_exists($model_file)) 
 			throw new QException(array('ER-00014', $controller_file));
-			
-		if (!Pretorian::gi()->check($this->data['request']->module_name, $this->data['request']->method))
+		
+		if (!Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method))
 		{
 			if ($this->data['request']->routing === 'static')
 			{
@@ -47,33 +47,35 @@ class FilterChain
 				$this->data['request']->action_name = 'get';
 			}
 			else
-			switch($this->data['request']->method)  
-			{
-				case 'GET':  
-					throw new QException(array('ER-00010'));
-					break;  
-				case 'POST':  
-					throw new QException(array('ER-00011'));
-					break;  
-				case 'PUT':  
-					throw new QException(array('ER-00012'));
-					break;
-				case 'DELETE':  
-					throw new QException(array('ER-00013'));
-					break;  
-			}
+				switch($this->data['request']->method)  
+				{
+					case 'GET':  
+						throw new QException(array('ER-00010'));
+						break;  
+					case 'POST':  
+						throw new QException(array('ER-00011'));
+						break;  
+					case 'PUT':  
+						throw new QException(array('ER-00012'));
+						break;
+					case 'DELETE':  
+						throw new QException(array('ER-00013'));
+						break;  
+				}
 		}
 			
 		if(file_exists($controller_file))
 		{
 			$this->data = Loader::gi()->getController($this->data);
-			if (!isset($this->data['body']))
+				// Let's not return error when internal resources are used
+			if (!isset($this->data['body']) && $this->data['request']->routing !== 'internal')
 				throw new QException(array('ER-00016', $controller_file));
 		}
 		else
 		{
 			$this->data = Loader::gi()->getModel($this->data);
-			if (!isset($this->data['body']))
+				// Let's not return error when internal resources are used
+			if (!isset($this->data['body']) && $this->data['request']->routing !== 'internal')
 				throw new QException(array('ER-00016', $model_file));
 		}
 			

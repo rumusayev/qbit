@@ -33,20 +33,26 @@ define('EXTERNAL_DIR', ROOT_DIR . 'external' . DR);
 define('CGI_DIR', ROOT_DIR . 'cgi' . DR);
 
 
+require_once EXTERNAL_DIR."apache-log4php-2.3.0/src/main/php/Logger.php";
+Logger::configure(CONFIG_DIR."log_config.xml");
+    	
+
 // Autoloading classes
-function __autoload($class_name)
+function q_autoload($class_name) 
 {
-    $filename = strtolower($class_name) . '.php';
-    $libs_file = LIBS_DIR . $filename;
-    $config_file = CONFIG_DIR . $filename;
-    if (!file_exists($libs_file))
-        if (!file_exists($config_file))
-            return false;
-        else
-            include($config_file);
-    else
-        include($libs_file);
+	$filename = strtolower($class_name).'.php';
+	$libs_file = LIBS_DIR.$filename;
+	$config_file = CONFIG_DIR.$filename;
+	if (!file_exists($libs_file))
+		if (!file_exists($config_file))
+			return false;
+		else
+			include ($config_file);
+	else
+		include ($libs_file);
 }
+
+spl_autoload_register('q_autoload');
 
 if (Backstage::gi()->portal_installed == 0) {
     header("Location: install");

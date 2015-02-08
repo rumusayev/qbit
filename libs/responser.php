@@ -10,9 +10,11 @@
 class Responser 
 {
 	private $data = array();
+	private $format_output_flag = true;
 	
-	function __construct($data) 
+	function __construct($data, $format_output_flag = true) 
 	{
+		$this->format_output_flag = $format_output_flag;
 		$this->data = $data;
 		$this->run();
 	}
@@ -72,35 +74,38 @@ class Responser
 			}
 			
 				// Format the returned data to json, xml or other format
-			$response_body_type = gettype($this->data['response']->body);
-			switch ($this->data['request']->data_type)
+			if ($this->format_output_flag)
 			{
-				case 'json':
-					switch($response_body_type)
-					{
-						case 'array':
-						case 'object':
-							$this->data['response']->body = json_encode($this->data['response']->body);
-						break;
-						default:
-							$this->data['response']->body = json_encode($this->data['response']->body);
-						break;
-					}
-				break;
-				default:
-					switch($response_body_type)
-					{
-						case 'array':
-						case 'object':
-							$this->data['response']->body = json_encode($this->data['response']->body);
-						break;
-						default:
-						break;
-					}					
-				break;
+				$response_body_type = gettype($this->data['response']->body);
+				switch ($this->data['request']->data_type)
+				{
+					case 'json':
+						switch($response_body_type)
+						{
+							case 'array':
+							case 'object':
+								$this->data['response']->body = json_encode($this->data['response']->body);
+							break;
+							default:
+								$this->data['response']->body = json_encode($this->data['response']->body);
+							break;
+						}
+					break;
+					default:
+						switch($response_body_type)
+						{
+							case 'array':
+							case 'object':
+								$this->data['response']->body = json_encode($this->data['response']->body);
+							break;
+							default:
+							break;
+						}					
+					break;
+				}
+				
+				$this->sendResponse($this->data['response']->status, $this->data['response']->body);
 			}
-			
-			$this->sendResponse($this->data['response']->status, $this->data['response']->body);
 		}
 	}
 	
@@ -207,4 +212,9 @@ class Responser
   
         return (isset($codes[$status])) ? $codes[$status] : '';
 	}
+	
+	public function getData()
+	{
+		return $this->data;
+	}	
 }

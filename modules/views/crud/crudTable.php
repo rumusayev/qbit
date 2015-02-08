@@ -147,8 +147,8 @@ $(function()
 			{
 				$.each(value, function(tr_el, tr_val)
 				{
-					$("#<?php echo $name;?>-crud_form input:text[name$=\\^"+el+"\\["+(tr_el+1)+"\\]]").val(tr_val.translation);
-					$("#<?php echo $name;?>-crud_form textarea[name$=\\^"+el+"\\["+(tr_el+1)+"\\]]").val(tr_val.translation);
+					$("#<?php echo $name;?>-crud_form input:text[name$=\\^"+el+"\\["+(tr_val.short)+"\\]]").val(tr_val.translation);
+					$("#<?php echo $name;?>-crud_form textarea[name$=\\^"+el+"\\["+(tr_val.short)+"\\]]").val(tr_val.translation);
 				});
 			}/*
 			else if (el === 'uploader_files')
@@ -963,7 +963,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 						{
                             // LQ Button For Translations
                             if (in_array($field['name'], $add_lq_button)){
-                                $buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'['.($key+1).']" alt="' . $field['type'] . '">Add LQ</button>';
+                                $buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'['.($lang).']" alt="' . $field['type'] . '">Add LQ</button>';
                             } else {
                                 $buttonLQ = '';
                             }
@@ -971,13 +971,13 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 
 							echo "<div class='tab-pane' id='".$field['table'].'_'.$field['name']."_". $lang."'>";
 							if (in_array(strtoupper($field['type']), $textarea_types))
-								echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($key+1).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
+								echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
 							elseif (in_array(strtoupper($field['type']), $text_types))
-								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($key+1).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
+								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
 							elseif (in_array(strtoupper($field['type']), $date_types))
-								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($key+1).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
+								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
 							else
-								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($key+1).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
 
 							echo '</div>';
 						}

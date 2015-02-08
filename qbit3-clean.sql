@@ -263,9 +263,10 @@ INSERT INTO `grants` VALUES ('69', 'licenses', '0', 'DELETE', 'modules');
 INSERT INTO `grants` VALUES ('70', 'updates', '0', 'POST', 'modules');
 INSERT INTO `grants` VALUES ('71', 'updates', '0', 'PUT', 'modules');
 INSERT INTO `grants` VALUES ('72', 'updates', '0', 'DELETE', 'modules');
-INSERT INTO `grants` VALUES ('73', 'materials', '0', 'PUT', 'modules');
-INSERT INTO `grants` VALUES ('74', 'materials', '0', 'DELETE', 'modules');
-INSERT INTO `grants` VALUES ('75', 'materials', '0', 'GET', 'modules');
+INSERT INTO `grants` VALUES ('73', 'translations', '0', 'GET', 'modules');
+INSERT INTO `grants` VALUES ('74', 'translations', '0', 'PUT', 'modules');
+INSERT INTO `grants` VALUES ('75', 'translations', '0', 'POST', 'modules');
+INSERT INTO `grants` VALUES ('76', 'translations', '0', 'DELETE', 'modules');
 
 -- ----------------------------
 -- Table structure for languages

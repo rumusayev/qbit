@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries>
+    <test>select * from s_configuration where id = [id] and name = [name]</test>
+    
+    
+    <!--w_documents-->
+    
+    <all_packages>SELECT s_packages.id,s_packages.package_type,s_packages.status,s_packages.reg_date,s_packages.change_date,s_packages.details FROM s_packages</all_packages>
+    
+    <packages_by_type>SELECT s_packages.id,s_package_types.name type,s_packages.status,s_packages.reg_date,s_packages.details FROM s_packages,s_package_types WHERE s_packages.package_type = s_package_types.id  and package_type in ([package_type]) order by s_packages.reg_date desc</packages_by_type>
+    
+    <!--END w_documents-->
+    
+    <!--w_warehouse controller-->
+    
+    <inventarisation_crud>select nf_operations.id,t2.item_name,t3.name,t3.last_name,nf_operations.count from nf_operations, h_items t2, h_contractors t3 where nf_operations.respondent_id=t3.id and nf_operations.item_id = t2.id and nf_operations.package_id = [package_id]</inventarisation_crud>
+    
+    <clearing_crud>select nf_operations.id,t2.item_name,t3.name,nf_operations.count from nf_operations, h_items t2, h_storages t3  where nf_operations.storage_id=t3.id and nf_operations.item_id = t2.id  and nf_operations.package_id =[package_id]</clearing_crud>
+
+    <income_crud>select nf_operations.id, nf_operations.item_name, t2.name, nf_operations.count, nf_operations.price, nf_operations.sell_price, nf_operations.vat, nf_operations.vat_amount from nf_operations, h_storages t2 where nf_operations.storage_id = t2.id and nf_operations.package_id =[package_id]</income_crud>
+
+    <outgo_crud>select nf_operations.id, nf_operations.item_name, t2.name, nf_operations.count, nf_operations.price, nf_operations.vat, nf_operations.vat_amount from nf_operations, h_storages t2 where nf_operations.storage_id = t2.id and nf_operations.package_id = [package_id]</outgo_crud>    
+
+    <reservation_migration_crud>select nf_operations.id,t2.item_name,t3.name,nf_operations.count from nf_operations , h_items t2, h_storages t3  where nf_operations.storage_id=t3.id and nf_operations.item_id = t2.id  and nf_operations.package_id = [package_id]</reservation_migration_crud>
+                  
+    <selling_crud>select nf_operations.id,t2.item_name,t3.name,nf_operations.count from nf_operations, h_items t2, h_storages t3  where t2.storage_id=t3.id and nf_operations.item_id = t2.id  and nf_operations.package_id = [package_id]</selling_crud>
+    
+    <itemslist>SELECT * FROM  ( SELECT
+  m.id, m.item_name, m.item_code, ts.name as 'storage_name', ti.name as 'category_name', m.measure_id, m.price ,m.currency_code,m.sell_price, SUM(m.count) as count, SUM(m.reserved)  as reserved
+   FROM (
+		 SELECT t1.id, t1.item_name, t1.item_code, t1.storage_id, t1.category_id, t1.measure_id, t1.price, t1.currency_code, t1.sell_price, getCountByItemId(
+            t1.id
+            ) AS count, getReservedCountByItemId(
+            t1.id
+            ) AS reserved
+            FROM h_items t1
+			  ) m 
+     LEFT JOIN  h_storages ts ON m.storage_id  = ts.id 
+	 LEFT JOIN s_item_categories ti ON m.category_id = ti.id 
+    GROUP BY m.id ) n</itemslist>
+    
+    <!--END w_warehouse controller-->
+    
+    <!--w_warehouse model-->
+    
+    <operation_rule>
+    select * from
+        (
+        select 
+            id,
+         case 
+          when credit like ('^[%]$') then 
+        (select value from s_configuration where name = trim(TRAILING ']$' from trim(LEADING '^[' from credit)) )
+          else credit
+          end as credit_val,
+         case 
+          when debet like ('^[%]$') then 
+        (select value from s_configuration where name = trim(TRAILING ']$' from trim(LEADING '^[' from debet)) )
+          else debet
+          end as debet_val
+         from s_operation_rules 
+         ) as val_table 
+         where   '[credit]' regexp credit_val and '[debet]' regexp debet_val
+</operation_rule>
+
+<transaction_rules>
+    select * from
+        (
+        select 
+            id,
+         case 
+          when credit like ('^[%]$') then 
+        (select value from s_configuration where name = trim(TRAILING ']$' from trim(LEADING '^[' from credit)) )
+          else credit
+          end as credit_val,
+         case 
+          when debet like ('^[%]$') then 
+        (select value from s_configuration where name = trim(TRAILING ']$' from trim(LEADING '^[' from debet)) )
+          else debet
+          end as debet_val,
+            amount,operation_rule_id,currency_code
+         from s_transaction_rules 
+         ) as val_table 
+          where   operation_rule_id = [operation_rule_id]
+</transaction_rules>
+
+<check_package_id>select count(*) as count from s_packages where id = [package_id] and package_type = [package_type] and status = [status]</check_package_id>
+
+<get_main_currency>select id, code, value from s_currencies where is_main = 1</get_main_currency>
+
+<get_currency_details>select id, code, name, value, is_main from s_currencies where code = '[code]'</get_currency_details>
+
+<get_account_type>select type from f_accounts where account_num='[account_num]'</get_account_type>
+
+<get_items_json>select t1.id as `id`,t2.name as `category`,t3.id as `storage_id`,t3.name as `storage`,t1.item_name as `name`, t1.limit_cnt from h_items t1,s_item_categories t2,h_storages t3 
+        where t1.category_id = t2.id and t1.storage_id = t3.id and (t1.item_name like('%[param]%') or t1.item_code like('%[param]%') or t1.details  like('%[param]%') or t1.barcode  like('%[param]%') or t1.details  like('%[param]%') or t2.name  like('%[param]%') or t3.name  like('%$query%') or t1.id like('%[param]%')) 
+</get_items_json>
+
+<get_items_categories_json>
+    select id, name, (select name from s_item_categories t2 where t2.id = t1.parent_id) as parent_name from s_item_categories t1 where name like('%[param]%') or details like('%[param]%')
+</get_items_categories_json>
+
+<get_storages_json>
+    select id,name from h_storages where name like('%[param]%')
+</get_storages_json>
+
+<get_contragents_json>
+    select id,reg_num,name,last_name,father_name,CONCAT_WS(" ",name,last_name,father_name) as full_name from h_contractors where name like ('%[param]%') or last_name like ('%[param]%') or father_name like ('%[param]%') 
+</get_contragents_json>
+
+<get_invoices_json>
+    select id, reg_date, package_type, status, account_num, (select sum(total_amount) from nf_operations where package_id = s.id) as amount from s_packages s where (id like ('%[param]%') or reg_date like ('%[param]%')) and [where]
+</get_invoices_json>
+
+<get_accounts_json>
+    select CONCAT_WS(" ", co.name, co.last_name, co.father_name) full_name, ac.account_num, ac.details,co.id contragent_id from f_accounts ac,h_contractors co where ac.reg_num = co.reg_num [where]
+</get_accounts_json>
+
+<get_payment_types_json>
+    select id,name from s_payment_types where name like ('%[param]%')
+</get_payment_types_json>
+
+<get_count_by_item_id_free>
+    select ifnull(SUM(count),-9999) `count` from nf_operations where [where]
+</get_count_by_item_id_free>
+
+<get_count_by_item_id>
+    select ifnull(SUM(count),-9999) `count` from nf_operations where item_id=[item_id] and status='AC' and operation_type_id not in (1,2,6) 
+</get_count_by_item_id>
+
+<get_count_by_item_id_reserved>
+    select ifnull(SUM(count),-9999) `count` from nf_operations where [where]
+</get_count_by_item_id_reserved>
+
+<copy_item_old_item>
+    select `item_name`,`item_code`,`price`,`sell_price`,`currency_code`,`category_id`,`storage_id`,`brand_id`,`barcode`,`error_code`,`status`,`details`,`respondent_id`,`reg_date`,`count`,`payment_type_id`,`netto`,`brutto`,`limit_cnt`,`reserved_cnt`,`guarantee`,`measure_id`,`expiration_date` from h_items where id = [item_id]
+</copy_item_old_item>
+
+<check_package_counts>
+    select * from (SELECT item_id,
+    case (s_packages.package_type)
+    when 1 then
+    if (SUM(nf_operations.count) &gt; 0,getCountByItemId(item_id) - getInventarisedCountByItemIdAndContractorId(item_id,0)-SUM( nf_operations.count ),SUM(nf_operations.count)+getInventarisedCountByItemIdAndContractorId
+    		(item_id,nf_operations.respondent_id))
+    when 4 then 
+    if (SUM(nf_operations.count) &gt; 0,getCountByItemId(item_id) - getReservedCountByItemIdAndContractorId(item_id,0)-SUM( nf_operations.count ),SUM(nf_operations.count)+getReservedCountByItemIdAndContractorId
+    		(item_id,nf_operations.respondent_id))
+    else
+    SUM( nf_operations.count ) + getCountByItemId(item_id)
+    end as items
+    
+    FROM nf_operations, s_packages
+    WHERE package_id =[package_id]
+    AND s_packages.id = nf_operations.package_id
+    AND s_packages.status = 1 
+    GROUP BY item_id
+    ) alias WHERE items &lt; 0
+</check_package_counts>
+
+<copy_item_check>
+    select t1.id from h_items t1, h_items t2 where t1.id &lt;&gt; t2.id and t1.item_code = t2.item_code and t1.item_name = t2.item_name and t1.category_id = t2.category_id and t1.storage_id &lt;&gt; t2.storage_id and t1.storage_id = [new_storage_id] and t2.id=[item_id]
+</copy_item_check>
+
+
+<get_item_sell_price>
+    select sell_price from h_items where id = [item_id]
+</get_item_sell_price>
+
+<get_item_data>
+    select * from h_items where id = [item_id]
+</get_item_data>
+
+<get_debet_and_credit>
+    select name,value from s_configuration where name = 'common_buyers' or name = 'company_[payment_type]' 
+</get_debet_and_credit>
+
+<get_value_from_s_configuration>
+    select name,value from s_configuration where name = '[name]'
+</get_value_from_s_configuration>
+
+<get_main_storage>
+    select id,name from h_storages where is_main = 1
+</get_main_storage>
+
+<get_currencies>
+    select id,code,is_main from s_currencies order by is_main desc,code
+</get_currencies>
+
+<get_payment_types>
+    select id,name from s_payment_types
+</get_payment_types>
+
+<!--END w_warehouse model-->
+
+<!--w_resources model-->
+
+<get_account_sub_num>
+    select account_num,sub_num from f_chart_of_accounts where account_num = [account_num]
+</get_account_sub_num>
+
+<get_item_categories>
+    select id,name from s_item_categories
+</get_item_categories>
+
+<get_item_by_bar_code>
+    select id,sell_price from h_items where barcode='[barcode]'
+</get_item_by_bar_code>
+
+<!--END w_resources model-->
+    
+</queries>

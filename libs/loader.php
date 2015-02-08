@@ -84,7 +84,7 @@ class Loader
 			throw new QException(array('ER-00005'));
 			
 		if (!isset($data['request']->model_name))
-			$data['request']->model_name = $data['request']->module_name;
+			$data['request']->model_name = $data['request']->controller_name;
 		if (!isset($data['request']->module_name))
 			$data['request']->module_name = $data['request']->model_name;
 
@@ -255,53 +255,8 @@ class Loader
 			}				
 		}
 
-			// We have module_name, controller_name, action_name and data_type. Loading filterchain.
-		new Responser($data);
-		/*
-			// Check for permissions
-		if (!Pretorian::gi()->check($data['request']->module_name, $data['request']->method))
-		{
-			$this->data['show_messages']='-';
-            $this->data['WARNING']=Translations::gi()->access_denied;
-			$data['request']->module_name = 'auth';
-			$data['request']->controller_name = 'auth';
-			$data['request']->action_name = 'getPublic';
-		}
-
-		// Check if the resource exists
-		if (!isset($data['request']->controller_name))
-			$data['request']->controller_name = $data['request']->module_name;
-		if (!isset($data['request']->module_name))
-			$data['request']->module_name = $data['request']->controller_name;
-
-		$controller_file = Backstage::gi()->CONTROLLERS_DIR.$data['request']->module_name.Backstage::gi()->DR.$data['request']->controller_name.'.php';
-		$model_file = Backstage::gi()->MODELS_DIR.$data['request']->module_name.Backstage::gi()->DR.$data['request']->controller_name.'.php';
-		
-		if(!file_exists($controller_file) && !file_exists($model_file)) 
-			throw new QException(array('ER-00014', $controller_file));
-
-			// switch($data['request']->method)  
-			// {
-			// 	case 'GET':  
-			// 		throw new QException(array('ER-00010'));
-			// 		break;  
-			// 	case 'POST':  
-			// 		throw new QException(array('ER-00011'));
-			// 		break;  
-			// 	case 'PUT':  
-			// 		throw new QException(array('ER-00012'));
-			// 		break;
-			// 	case 'DELETE':  
-			// 		throw new QException(array('ER-00013'));
-			// 		break;  
-			// }
-			
-		if(file_exists($controller_file))
-			$data = Loader::gi()->getController($data);
-		else
-			$data = Loader::gi()->getModel($data);
-			
-		return $data;
-		*/
+			// Loading filterchain. We set flag to false because we need not the output to be formatted
+		$responser = new Responser($data, false);
+		return $responser->getData();
 	}	
 }

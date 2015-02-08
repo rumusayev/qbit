@@ -40,6 +40,11 @@ class Model
 	 */	
 	public function get()
 	{	
+		if (!isset($this->data['request']->data_type))
+			$this->data['request']->data_type = Backstage::gi()->default_data_type;
+		if (!isset($this->data['request']->resource_name))
+			$this->data['request']->resource_name = $this->data['request']->model_name;
+			
 		$where = '';
 		$order = 'id';
 		
@@ -75,6 +80,11 @@ class Model
 					$this->data['items'][$key]->$field = $translation->translation;
 			}				
         }
+		
+		if ($this->data['request']->data_type === 'json')
+			$this->data['items'] = json_encode($this->data['items']);
+		$this->data['body'] = $this->data['items'];
+		
 		return $this->data;
 	}	
 	
