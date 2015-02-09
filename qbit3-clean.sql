@@ -484,11 +484,9 @@ INSERT INTO `role_grants` VALUES ('109', '2', '75');
 DROP TABLE IF EXISTS `translations`;
 CREATE TABLE `translations` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `language_id` int(10) NOT NULL,
   `table_name` varchar(255) NOT NULL,
   `row_id` int(10) NOT NULL,
   `field_name` varchar(255) NOT NULL,
-  `translation` longtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -659,20 +657,6 @@ CREATE TABLE `update_licenses` (
   `is_active` tinyint(1) NOT NULL DEFAULT '0',
   `file_id` int(11) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of update_licenses
--- ----------------------------
-
--- ----------------------------
--- Table structure for translations_words
--- ----------------------------
-DROP TABLE IF EXISTS `translations_words`;
-CREATE TABLE `translations_words` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `w_key` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

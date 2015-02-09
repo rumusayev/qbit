@@ -368,6 +368,9 @@ class cAdmin extends controller
                     // Editing config file
                     $portal_langs = trim($this->data['request']->parameters['portal_all_langs'], ",");
 
+                    $this->data['portal_all_langs'] = $portal_langs;
+                    $this->data = Loader::gi()->getModel($this->data);
+
                     $portal_default_lang = substr($this->data['request']->parameters['portal_default_lang'], 0, strpos($this->data['request']->parameters['portal_default_lang'], "|"));
 
                     // Write to config

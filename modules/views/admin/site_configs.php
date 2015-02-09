@@ -56,11 +56,13 @@ echo '<hr/>';
                                                     <label>
                                                         <input class="portal_langs" type="checkbox" value="' . $lang->short . '|' . $lang->language . '"
                                                                name="portal_langs[]" ' . $checked . '>
-                                                        ' .$lang->language . '
+                                                        ' .$lang->language . ' (<b class="langAbbr">' . $lang->short . '</b>)' . '
                                                     </label>
                                                 </div>';
                                 }
                                 ?>
+                                <div class="newPortalLangs"></div>
+                                <a class="addNewPortalLangs" href="#">+</a>
                             </td>
                         </tr>
 
@@ -81,6 +83,7 @@ echo '<hr/>';
                                                 </div>';
                                 }
                                 ?>
+                                <div class="newPortalDefaultLang"></div>
                             </td>
                         </tr>
 
