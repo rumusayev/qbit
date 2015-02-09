@@ -7,6 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
+header('Content-Type: application/json');
+
 error_reporting(0);
 
 if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['db_name']) && !empty($_POST['db_user']) && !empty($_POST['db_pass'])) {
