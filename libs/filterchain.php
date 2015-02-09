@@ -63,7 +63,7 @@ class FilterChain
 						break;  
 				}
 		}
-			
+
 		if(file_exists($controller_file))
 		{
 			$this->data = Loader::gi()->getController($this->data);
@@ -78,7 +78,10 @@ class FilterChain
 			if (!isset($this->data['body']) && $this->data['request']->routing !== 'internal')
 				throw new QException(array('ER-00016', $model_file));
 		}
-			
+		
+		if (!isset($this->data['body']) && $this->data['request']->routing === 'internal')
+			$this->data['body'] = '';
+		
 		$this->response->body = $this->data['body'];
 		$this->data['response'] = $this->response;
 	}

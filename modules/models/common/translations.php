@@ -66,7 +66,7 @@ class mTranslations extends model
 			} 
 			else
 				$this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix . "translations")
-					->values(array_merge($values, array('id' => '', 'language_id' => $language_id, 'table_name' => $this->data['translations_table_name'], 'row_id' => $this->data['translations_row_id'], 'field_name' => $field)))
+					->values(array_merge($values, array('id' => '', 'table_name' => $this->data['translations_table_name'], 'row_id' => $this->data['translations_row_id'], 'field_name' => $field)))
 					->insert();
         }
         return $this->data;
