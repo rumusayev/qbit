@@ -9,7 +9,7 @@
 
 header('Content-Type: application/json');
 
-error_reporting(0);
+error_reporting(-1);
 
 if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['db_name']) && !empty($_POST['db_user']) && !empty($_POST['db_pass'])) {
 
