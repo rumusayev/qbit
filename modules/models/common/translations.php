@@ -37,11 +37,22 @@ class mTranslations extends model
                 ->fields($lang_fields)
                 ->where("tr.table_name = '{$this->data['translations_table_name']}' and tr.field_name = '{$field->field}' and tr.row_id = {$this->data['translations_row_id']}")
                 ->getScalar();
+			if (!$translations)
+			{
+				$translations = new stdClass();
+				foreach ($lang_fields_arr as $lang_key => $lang_field)
+					$translations->$lang_field = '';
+			}
+			
             if ($this->data['translations_language'] !== '')
+			{
+				$this->data['translations'][$field->field] = new stdClass();
 				$this->data['translations'][$field->field]->translation = $translations->{$this->data['translations_language']};
+			}
 			else
 				foreach ($lang_fields_arr as $lang_key => $lang_field)
 				{
+					$this->data['translations'][$field->field][$lang_key] = new stdClass();
 					$this->data['translations'][$field->field][$lang_key]->short = $lang_field;
 					$this->data['translations'][$field->field][$lang_key]->translation = $translations->{$lang_field};
 				}

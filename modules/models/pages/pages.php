@@ -36,7 +36,8 @@ class mPages extends model
 										->where('find_in_set("'.$group.'", page_menu_group) <> 0')
 										->order('parent_id')
 										->getScalar();
-			$this->data['request']->parameters['parent_id'] = $parent_id->parent_id;
+			isset($parent_id->parent_id)?$this->data['request']->parameters['parent_id'] = $parent_id->parent_id:$this->data['request']->parameters['parent_id'] = 0;
+			
 		}
 
 		$this->data['items'] = $this->dbmanager->tables($table)
