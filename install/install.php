@@ -9,7 +9,7 @@
 
 header('Content-Type: application/json');
 
-error_reporting(-1);
+error_reporting(0);
 
 if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['db_name']) && !empty($_POST['db_user']) && !empty($_POST['db_pass'])) {
 
@@ -100,6 +100,26 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
 
     $qr = $db->exec($sql);
 
+    foreach ($_POST['portal_langs'] as $colNames) {
+        $colNames = substr($colNames, 0, strpos($colNames, "|"));
+        $findColumn = "DESCRIBE " . @$_POST['db_table_prefix'] . "translations;";
+
+        $table_fields = $db->query($findColumn);
+        $result = $table_fields->fetchAll(PDO::FETCH_OBJ);
+
+        $colExists = false;
+        foreach ($result as $item){
+            if ($item->Field == $colNames){
+                $colExists = true;
+            }
+        }
+        if ($colExists) {
+        } else {
+            $addColumn = "ALTER TABLE " . @$_POST['db_table_prefix'] . "translations ADD " . $colNames . " LONGTEXT;";
+            $qr = $db->exec($addColumn);
+        }
+    }
+
 
     if (!empty($_POST['portal_langs'])) {
         foreach ($_POST['portal_langs'] as $langLong) {
@@ -118,6 +138,21 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $qr = $db->exec($sql);
 
     // Add DEMO DATA
+
+    if (!empty($_POST['template_name']) && $_POST['template_name'] != 'default') {
+        $dataStructure = file_get_contents("data/" . $_POST['template_name'] . "/structure.html");
+        $dataStructure = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $dataStructure);
+        $db->exec($dataStructure);
+
+        foreach ($_POST['portal_langs'] as $langData) {
+            $langsDatas = explode('|', $langData);
+            $demoData = file_get_contents("data/" . $_POST['template_name'] . "/structure_" . $langsDatas[0] . ".html");
+            $demoData = str_replace("UPDATE `", "UPDATE `" . @$_POST['db_table_prefix'] . "", $demoData);
+            $db->exec($demoData);
+
+        }
+    }
+
     if (!empty($_POST['add_demo_data']) && $_POST['add_demo_data'] == 1) {
         $catalogs = 'data/' . $_POST['template_name'] . '/materials/catalogs.zip';
         // Unzip materials
@@ -136,19 +171,19 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
             $materials = "MATERROR";
         }
 
-        $dataStructure = file_get_contents("data/" . $_POST['template_name'] . "/structure.html");
-        $dataStructure = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $dataStructure);
-        $db->exec($dataStructure);
+
+        $data_structure = file_get_contents("data/" . $_POST['template_name'] . "/data_structure.html");
+        $data_structure = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $data_structure);
+        $db->exec($data_structure);
 
         foreach ($_POST['portal_langs'] as $langData) {
             $langsDatas = explode('|', $langData);
-            $demoData = file_get_contents("data/" . $_POST['template_name'] . "/" . $langsDatas[0] . ".html");
-            $demoData = str_replace("INSERT INTO `", "INSERT INTO `" . @$_POST['db_table_prefix'] . "", $demoData);
-            $demoData = str_replace("SELECT id FROM `", "SELECT id FROM `" . @$_POST['db_table_prefix'] . "", $demoData);
-            $demoData = str_replace("translations_words'", @$_POST['db_table_prefix'] . "translations_words'", $demoData);
+            $demoData = file_get_contents("data/" . $_POST['template_name'] . "/data_" . $langsDatas[0] . ".html");
+            $demoData = str_replace("UPDATE `", "UPDATE `" . @$_POST['db_table_prefix'] . "", $demoData);
             $db->exec($demoData);
 
         }
+
         $materials_status = ', "materials":"' . $materials . '"';
     } else {
         $materials_status = ', "materials":"empty"';
@@ -159,11 +194,11 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
     $qr = $db->exec($static_translations_add);
 
     foreach ($_POST['portal_langs'] as $langLong) {
-        $langLong = explode('|', $langLong);
-        $static_translations = file_get_contents("translations/" . $langLong[0] . ".html");
+
+        $langLong = substr($langLong, 0, strpos($langLong, "|"));
+        $static_translations = file_get_contents("translations/" . $langLong . ".html");
         $static_translations = str_replace("ALTER TABLE `", "ALTER TABLE `" . @$_POST['db_table_prefix'] . "", $static_translations);
         $static_translations = str_replace("UPDATE `", "UPDATE `" . @$_POST['db_table_prefix'] . "", $static_translations);
-        $static_translations = str_replace("translations_words'", @$_POST['db_table_prefix'] . "translations_words'", $static_translations);
         $qr = $db->exec($static_translations);
 
     }

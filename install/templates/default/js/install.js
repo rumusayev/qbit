@@ -205,7 +205,6 @@ $(function () {
             $('.add_demo_data').attr("disabled", false);
         } else {
             $('.add_demo_data').attr("disabled", true).attr('checked', false);
-            ;
         }
     });
 

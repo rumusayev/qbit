@@ -1,0 +1,14 @@
+UPDATE `translations` SET en='Main' WHERE table_name='pages' AND field_name='page_title' AND row_id=1;
+UPDATE `translations` SET en='[[module type=contents name=main action=getContent container=central_container]]' WHERE table_name='pages' AND field_name='page_content' AND row_id=1;
+UPDATE `translations` SET en='News' WHERE table_name='catalogs' AND field_name='catalog_title' AND row_id=1;
+UPDATE `translations` SET en='' WHERE table_name='catalogs' AND field_name='catalog_content' AND row_id=1;
+UPDATE `translations` SET en='News' WHERE table_name='pages' AND field_name='page_title' AND row_id=2;
+UPDATE `translations` SET en='[[module type=contents name=news_item action=getContent container=central_container]]' WHERE table_name='pages' AND field_name='page_content' AND row_id=2;
+UPDATE `translations` SET en='[[module type=catalogs name=news action=getCatalog design=news_design order=insert_date|DESC]]' WHERE table_name='contents' AND field_name='content' AND row_id=1;
+UPDATE `translations` SET en='[[module type=catalogs name=news action=getCatalogItem design=news_item_design material_design=news_item_material_design]]' WHERE table_name='contents' AND field_name='content' AND row_id=3;
+UPDATE `translations` SET en='About us' WHERE table_name='pages' AND field_name='page_title' AND row_id=3;
+UPDATE `translations` SET en='[[module type=contents name=about_us action=getContent container=central_container]]' WHERE table_name='pages' AND field_name='page_content' AND row_id=3;
+UPDATE `translations` SET en='<h3>We are leading company</h3>\r\n						<p>\r\n							Donec elementum mi vitae enim fermentum lobortis. In hac habitasse platea dictumst. Ut pellentesque, orci sed mattis consequat, libero ante lacinia arcu, ac porta lacus urna in lorem. Praesent consectetur tristique augue, eget elementum diam suscipit id.\r\n						</p>\r\n						<h3>Wide range of services</h3>\r\n						<p>\r\n							Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam condimentum laoreet sagittis. Duis quis ullamcorper leo. Suspendisse potenti.\r\n						</p>' WHERE table_name='contents' AND field_name='content' AND row_id=4;
+UPDATE `translations` SET en='Contacts' WHERE table_name='pages' AND field_name='page_title' AND row_id=4;
+UPDATE `translations` SET en='[[module type=contents name=contact_us action=getContent container=central_container]]' WHERE table_name='pages' AND field_name='page_content' AND row_id=4;
+UPDATE `translations` SET en='<p class=\"contact-us-details\">\r\n	        				<b>Address:</b> 123 Fake Street, LN1 2ST, London, United Kingdom<br/>\r\n	        				<b>Phone:</b> +44 123 654321<br/>\r\n	        				<b>Fax:</b> +44 123 654321<br/>\r\n	        				<b>Email:</b> <a href=\"mailto:[[$portal_email]]\">[[$portal_email]]</a>\r\n	        			</p>' WHERE table_name='contents' AND field_name='content' AND row_id=5;
