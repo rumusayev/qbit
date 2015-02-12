@@ -14,6 +14,7 @@ class mCatalogs extends model
         $where = isset($this->data['request']->parameters['parent_id']) ? 'parent_id = ' . $this->data['request']->parameters['parent_id'] : 'parent_id = (select id from ' . $table . ' where ' . (isset($this->data['request']->parameters['id']) ? 'id="' . $this->data['request']->parameters['id'] : 'catalog_name="' . $this->data['request']->parameters['lq']['name']) . '")';
 
 
+        // Paging
         if (isset($this->data['request']->parameters['lq']['navigation'])) {
 
             if (isset($this->data['request']->parameters['pcat']) && isset($this->data['request']->parameters['pnum']) && $this->data['request']->parameters['lq']['name'] == $this->data['request']->parameters['pcat']) {
@@ -33,7 +34,6 @@ class mCatalogs extends model
             $limit = '';
         }
 
-
         // Check usage of ID parameter in LQ. If exist - show it, else get parameter from URL. ( If both not exists - 404 page must be created )
         if (isset($this->data['request']->parameters['lq']['id'])) {
             if (!empty($where))
@@ -48,7 +48,7 @@ class mCatalogs extends model
         }
 
         $this->data['items'] = $this->dbmanager->tables($table)
-            ->fields('a.*, (SELECT catalog_name FROM ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' WHERE id = a.parent_id) parent_name, (select count(*) from ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' where parent_id = a.id) cnt, (select count(*) from catalogs WHERE ' . $where . ') cnt_parent')
+            ->fields('a.*, (SELECT catalog_name FROM ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' WHERE id = a.parent_id) parent_name, (select count(*) from ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' where parent_id = a.id AND is_visible=1) cnt, (select count(*) from catalogs WHERE ' . $where . ' AND is_visible=1) cnt_parent')
             ->where('is_visible = 1 and ' . $where)
             ->order($order . $limit)
             ->select();
