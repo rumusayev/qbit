@@ -845,15 +845,56 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 			echo '<div class="col-md-10"><ul class="pagination" style="margin: 0 0;">';
 			if ($crud_current_page != 1)
 				echo '<li><a href="#" data-page="1" class="'.$name.'-crud_page">&laquo;</a></li>';
-			for ($i=1;$i<=$crud_pages_count;$i++)
+			if ($crud_pages_count <= 15)
 			{
-				if ($i == $crud_current_page)
-					echo '<li class="active"><a href="#" data-page="'.$i.'" class="'.$name.'-crud_current_page">'.$i.' <span class="sr-only">(current)</span></a></li>';
-				else
-					echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				for ($i=1; $i<=$crud_pages_count; $i++)
+				{
+					if ($i == $crud_current_page)
+						echo '<li class="active"><a href="#" data-page="'.$i.'" class="'.$name.'-crud_current_page">'.$i.' <span class="sr-only">(current)</span></a></li>';
+					else
+						echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				}
 			}
-			if ($crud_current_page != $i-1)
-				echo '<li><a href="#" data-page="'.($i-1).'" class="'.$name.'-crud_page">&raquo;</a></li>';
+			elseif ($crud_current_page >= 5 &&  $crud_current_page <= $crud_pages_count-4)
+			{
+				for ($i=1; $i<=2; $i++)
+				{
+					echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				}
+				echo '<li><a href="#">...</a></li>';
+				for ($i=$crud_current_page-1; $i<=$crud_current_page+1; $i++)
+				{
+					if ($i == $crud_current_page)
+						echo '<li class="active"><a href="#" data-page="'.$i.'" class="'.$name.'-crud_current_page">'.$i.' <span class="sr-only">(current)</span></a></li>';
+					else
+						echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				}
+				echo '<li><a href="#">...</a></li>';
+				for ($i=$crud_pages_count-1; $i<=$crud_pages_count; $i++)
+				{
+					echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				}
+			}
+			else
+			{
+				for ($i=1; $i<=5; $i++)
+				{
+					if ($i == $crud_current_page)
+						echo '<li class="active"><a href="#" data-page="'.$i.'" class="'.$name.'-crud_current_page">'.$i.' <span class="sr-only">(current)</span></a></li>';
+					else
+						echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				}
+				echo '<li><a href="#">...</a></li>';
+				for ($i=$crud_pages_count-4; $i<=$crud_pages_count; $i++)
+				{
+					if ($i == $crud_current_page)
+						echo '<li class="active"><a href="#" data-page="'.$i.'" class="'.$name.'-crud_current_page">'.$i.' <span class="sr-only">(current)</span></a></li>';
+					else
+						echo '<li><a href="#" data-page="'.$i.'" class="'.$name.'-crud_page">'.$i.'</a></li>';
+				}
+			}
+				if ($crud_current_page != $i-1)
+					echo '<li><a href="#" data-page="'.($i-1).'" class="'.$name.'-crud_page">&raquo;</a></li>';
 			echo '</ul></div>';
 		}
 	?>
