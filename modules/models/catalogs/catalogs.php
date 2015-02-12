@@ -13,16 +13,26 @@ class mCatalogs extends model
         $table = Backstage::gi()->db_table_prefix . 'catalogs a';
         $where = isset($this->data['request']->parameters['parent_id']) ? 'parent_id = ' . $this->data['request']->parameters['parent_id'] : 'parent_id = (select id from ' . $table . ' where ' . (isset($this->data['request']->parameters['id']) ? 'id="' . $this->data['request']->parameters['id'] : 'catalog_name="' . $this->data['request']->parameters['lq']['name']) . '")';
 
+
         if (isset($this->data['request']->parameters['lq']['navigation'])) {
-            if (isset($this->data['request']->parameters['pnum'])) {
-                $start = $this->data['request']->parameters['pnum']*$this->data['request']->parameters['lq']['navigation']-$this->data['request']->parameters['lq']['navigation'];
+
+            if (isset($this->data['request']->parameters['pcat']) && isset($this->data['request']->parameters['pnum']) && $this->data['request']->parameters['lq']['name'] == $this->data['request']->parameters['pcat']) {
+
+                if (isset($this->data['request']->parameters['pnum'])) {
+                    $start = $this->data['request']->parameters['pnum'] * $this->data['request']->parameters['lq']['navigation'] - $this->data['request']->parameters['lq']['navigation'];
+                } else {
+                    $start = 0;
+                }
+                $limit = ' LIMIT ' . ($start) . ',' . $this->data['request']->parameters['lq']['navigation'];
             } else {
                 $start = 0;
+                $limit = ' LIMIT ' . ($start) . ',' . $this->data['request']->parameters['lq']['navigation'];
             }
-            $limit = ' LIMIT ' . ($start) . ',' . $this->data['request']->parameters['lq']['navigation'];
         } else {
-            $limit='';
+
+            $limit = '';
         }
+
 
         // Check usage of ID parameter in LQ. If exist - show it, else get parameter from URL. ( If both not exists - 404 page must be created )
         if (isset($this->data['request']->parameters['lq']['id'])) {
@@ -38,7 +48,7 @@ class mCatalogs extends model
         }
 
         $this->data['items'] = $this->dbmanager->tables($table)
-            ->fields('a.*, (select count(*) from ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' where parent_id = a.id) cnt, (select count(*) from catalogs WHERE '.$where.') cnt_parent')
+            ->fields('a.*, (SELECT catalog_name FROM ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' WHERE id = a.parent_id) parent_name, (select count(*) from ' . Backstage::gi()->db_table_prefix . 'catalogs' . ' where parent_id = a.id) cnt, (select count(*) from catalogs WHERE ' . $where . ') cnt_parent')
             ->where('is_visible = 1 and ' . $where)
             ->order($order . $limit)
             ->select();

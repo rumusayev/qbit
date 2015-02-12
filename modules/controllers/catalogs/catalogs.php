@@ -59,10 +59,15 @@ class cCatalogs extends controller
 
         $design->block = str_replace('[[navigation]]', @$navigation, $design->block);
 
-        $fields = array('id', 'catalog_name', 'catalog_title', 'catalog_content', 'insert_date', 'is_category', 'form_id');
+        $fields = array('id', 'catalog_name', 'catalog_title', 'catalog_content', 'insert_date', 'is_category', 'form_id', 'parent_name');
         $this->data['sequence'] = '';
 
         foreach ($this->data['items'] as $key => $cur_item) {
+
+            // Get navigation design if there is any
+            if ($navigation_design_data['items']) {
+                $design->block = str_replace('[[parent_name]]', $cur_item->parent_name, $design->block);
+            }
             // Cut
             $cut = explode('[[cut]]', $cur_item->catalog_content);
             $this->data['items'][$key]->catalog_content = $cut[0];
