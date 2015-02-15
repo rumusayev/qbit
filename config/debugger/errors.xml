@@ -27,4 +27,5 @@
     <ER-00025>Data was not found by the given criterias: [0].</ER-00025>
     <ER-00026>Design "[0]" was not found or is not specified.</ER-00026>
     <ER-00027>QBIT versions server error. Please Contact us</ER-00027>
+    <ER-00028>Parent table is not specified (use setParentTable)</ER-00028>
 </errors>

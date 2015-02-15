@@ -146,6 +146,11 @@ $(function()
         echo "var crud_parent_id = '".$crud_parent_id."';";
         echo "$('#{$name}-crud_params_form #crud_parent_id').val(crud_parent_id);";
     }
+    if (isset($crud_parent_table)) 
+    {
+        echo "var crud_parent_table = '".$crud_parent_table."';";
+        echo "$('#{$name}-crud_params_form #crud_parent_table').val(crud_parent_table);";
+    }
     if (isset($uploader_object_type)) 
     {
         echo "var uploader_object_type = '".$uploader_object_type."';";
@@ -276,6 +281,7 @@ function <?php echo $name;?>_load()
     <input type="hidden" name="after_delete_method_path" id="after_delete_method_path" value=""/>
     <input type="hidden" name="override_orig_save" id="override_orig_save" value=""/>
     <input type="hidden" name="crud_parent_id" id="crud_parent_id" value="0"/>
+    <input type="hidden" name="crud_parent_table" id="crud_parent_table" value=""/>
     <input type="hidden" name="uploader_object_type" id="uploader_object_type" value=""/>
     <input type="hidden" name="crud_resource_types" id="crud_resource_types" value=""/>
     <input type="hidden" name="unique_fields" id="unique_fields" value=""/>

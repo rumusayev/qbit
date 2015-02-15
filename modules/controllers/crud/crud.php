@@ -92,6 +92,7 @@ class cCrud extends controller
 		$this->data['crud_count_per_page'] = isset($crud_params_form['crud_count_per_page'])?$crud_params_form['crud_count_per_page']:10;                
 		
 		$this->data['crud_parent_id'] = $crud_params_form['crud_parent_id'];
+		$this->data['crud_parent_table'] = $crud_params_form['crud_parent_table'];
 		
 			// Get search fields
 		if (!empty($this->data['search']))
@@ -198,6 +199,7 @@ class cCrud extends controller
 			$mapped_fields = json_decode($form_params['mapped_fields']);		
 		$this->data['mapped_parents'] = json_decode($form_params['mapped_parents'], true);
 		$this->data['crud_parent_id'] = $form_params['crud_parent_id'];
+		$this->data['crud_parent_table'] = $form_params['crud_parent_table'];
 		$this->data['crud_resource_types'] = json_decode($form_params['crud_resource_types'], true);
 		$translations = json_decode($form_params['translations']);
 		$mapped_passwords = json_decode($form_params['mapped_passwords'], true);

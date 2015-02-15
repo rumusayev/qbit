@@ -84,9 +84,9 @@ class PDODB
 	function selectByQuery($query, $debug = -1)
 	{
 		$params_arr = array();		
-		$this->parsed = $this->link->prepare($query);
 		try
 		{
+			$this->parsed = $this->link->prepare($query);
 			$result = $this->parsed->execute($params_arr);
         }
 		catch(Exception $e)

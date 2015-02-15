@@ -47,6 +47,7 @@ class Crud
     private $add_lq_button = array();
     private $add_editor_list = array();
     private $crud_parent_id = 0;
+    private $crud_parent_table = '';
     private $crud_resource_types = array();
     private $unique_fields = array();
     private $additional_form_field = '';
@@ -236,6 +237,20 @@ class Crud
         return $this;
     }	
 	
+	/**
+	 * Set a table which is to be used as a parent object
+	 *
+	 * @param string Table name
+	 * ...
+	 * @return object Self object
+	 */	
+    public function setParentTable($crud_parent_table)
+    {
+        $this->crud_parent_table = $crud_parent_table;
+
+        return $this;
+    }	
+
 	/**
 	 * Map a field(s) to a parent field(s) to make hierarchical view
 	 *
@@ -612,6 +627,7 @@ class Crud
         $data['translations'] = $this->translations;
         $data['uploader_object_type'] = $this->uploader_object_type;
         $data['crud_parent_id'] = $this->crud_parent_id;
+        $data['crud_parent_table'] = $this->crud_parent_table;
         $data['crud_resource_types'] = $this->crud_resource_types;
         $data['unique_fields'] = $this->unique_fields;
         $data['additional_form_field'] = $this->additional_form_field;

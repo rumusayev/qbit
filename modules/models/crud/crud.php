@@ -20,6 +20,7 @@ class mCrud extends model
 
         if ($this->data['query'] !== '') 
 		{
+			$orig_query = $this->data['query'];
             if (isset($this->data['search_fields']) && !empty($this->data['search_fields'])) 
 			{
                 if (stristr($this->data['query'], 'where'))
@@ -62,10 +63,20 @@ class mCrud extends model
                 $this->data['crud_current_page'] = 1;
             $from = ($this->data['crud_current_page'] - 1) * $this->data['crud_count_per_page'];
 
-            if ($this->data['crud_count_per_page'] > 0) {
+            if ($this->data['crud_count_per_page'] > 0) 
+			{
                 $limit = $this->data['crud_count_per_page'];
                 $this->data['query'] .= " limit {$from},{$limit}";
             }
+			
+			if (!empty($this->data['mapped_parents']))
+			{
+				if (empty($this->data['crud_parent_table']))
+					throw new QException(array('ER-00028'));
+				$pos = stripos($this->data['query'], 'select');
+				if ($pos !== false)
+					$this->data['query'] = substr_replace($this->data['query'], "SELECT (SELECT count(*) FROM {$this->data['crud_parent_table']} ch WHERE ch.parent_id={$this->data['crud_parent_table']}.id) as child_count,", $pos, 6);
+			}			
             $this->data['rows'] = $this->dbmanager->selectByQuery($this->data['query']);
         } 
 		else 
@@ -115,7 +126,8 @@ class mCrud extends model
                 $conditions['limit'] = "{$from},{$limit}";
             }
 
-            if (strpos($conditions['fields'], 'parent_id') !== false ){
+            if (strpos($conditions['fields'], 'parent_id') !== false)
+			{
                 $conditions['fields'] .= ", (SELECT count(*) FROM ".$this->data['tables']." ch WHERE ch.parent_id=".$this->data['tables'].".id) as child_count";
             }
 
