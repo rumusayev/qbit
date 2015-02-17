@@ -135,6 +135,11 @@ $(function()
     {
         echo "var disabled_table_fields = '".json_encode($disabled_table_fields)."';";
         echo "$('#{$name}-crud_params_form #disabled_table_fields').val(disabled_table_fields);";
+    }   
+	if (isset($disabled_saving_tables)) 
+    {
+        echo "var disabled_saving_tables = '".json_encode($disabled_saving_tables)."';";
+        echo "$('#{$name}-crud_params_form #disabled_saving_tables').val(disabled_saving_tables);";
     }
     if (isset($translations)) 
     {
@@ -270,6 +275,7 @@ function <?php echo $name;?>_load()
     <input type="hidden" name="hidden_edit_fields" id="hidden_edit_fields" value=""/>
     <input type="hidden" name="disabled_edit_fields" id="disabled_edit_fields" value=""/>
     <input type="hidden" name="disabled_table_fields" id="disabled_table_fields" value=""/>
+    <input type="hidden" name="disabled_saving_tables" id="disabled_saving_tables" value=""/>
     <input type="hidden" name="add_editor_list" id="add_editor_list" value=""/>
     <input type="hidden" name="add_lq_button" id="add_lq_button" value=""/>
     <input type="hidden" name="translations" id="translations" value=""/>

@@ -78,10 +78,13 @@ class Core
 	private function getFullURL()
 	{
 		$page_url = "http";
-		if (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on") 
+		if (isset($_SERVER["HTTPS"]) && !Backstage::gi()->development_mode)
 			$page_url .= "s";
+		elseif (Backstage::gi()->development_mode)
+			$page_url .= "s";
+		
 		$page_url .= "://";
-		if (isset($_SERVER["SERVER_PORT"]) && $_SERVER["SERVER_PORT"] != "80")
+		if (isset($_SERVER["SERVER_PORT"]) && $_SERVER["SERVER_PORT"] != "80" && !Backstage::gi()->development_mode)
 		{
 			$page_url .= @$_SERVER["SERVER_NAME"].":".@$_SERVER["SERVER_PORT"].@$_SERVER["REQUEST_URI"];
 		} 

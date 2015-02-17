@@ -284,7 +284,7 @@ class LQ
 					// Type should be specified
 				if (!isset($lq['type']))
 					throw new QException(array('ER-00023', 'type', $lq['lq']));
-		         
+		        $parameters['routing'] = 'static'; 
 	         	$module_data = Loader::gi()->callModule('GET', $lq['type'].'/'.$lq['action'], $parameters);
 				$out = $module_data['body'];
 				if (array_key_exists('container', $lq) && !empty($lq['container']))

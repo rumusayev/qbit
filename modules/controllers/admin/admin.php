@@ -44,14 +44,16 @@ class cAdmin extends controller
                 'page_menu_group', 'Menu group',
                 'page_sub_menu', 'Sub menu',
                 'layout_id', 'Layout',
+                'layout_name', 'Layout name',
                 'is_visible', 'Visibility',
                 'is_active', 'Active',
                 'is_external_link', 'Link to external URL',
                 'external_url_target', 'External URL Target',
                 'is_main', 'Main',
                 'ordering', 'Order number')
-            ->disabledTableFields('child_count')
-            ->disabledEditFields('layout_name')
+            ->disabledTableFields('child_count', 'layout_id')
+//            ->disabledEditFields('layout_name')
+            ->disableSavingToTables('layouts')
             ->mapParents('id', 'parent_id')
             ->setParentTable('pages')
             ->setTranslations('page_title', 'page_content')

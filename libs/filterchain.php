@@ -39,12 +39,16 @@ class FilterChain
 		{
 			if ($this->data['request']->routing === 'static')
 			{
+				if ($this->data['request']->module_name === 'admin')
+					$action_name = 'get';
+				else 
+					$action_name = 'getPublic';
 				//Logger::getLogger('main')->warn('Goto auth page from filterchain');
 				$this->data['show_messages'] = '-';
 				$this->data['WARNING'] = Translations::gi()->access_denied;
 				$this->data['request']->module_name = 'auth';
 				$this->data['request']->controller_name = 'auth';
-				$this->data['request']->action_name = 'get';
+				$this->data['request']->action_name = $action_name;
 			}
 			else
 				switch($this->data['request']->method)  

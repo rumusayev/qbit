@@ -44,7 +44,8 @@ class Config
 			"portal_default_lang" => "",
 			"portal_time_correction" => 10,
 			"portal_installed" => 0,
-			
+			"development_mode" => 0,
+						
                         // Image parameters
 			"image_max_width" => 800,
 			"image_max_height" => 400,

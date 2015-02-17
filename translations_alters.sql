@@ -11,15 +11,16 @@ CREATE TABLE `translations_tmp` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-insert into translations_tmp (select 0, table_name, row_id, field_name, translation, 
-ifnull((select translation from translations b where b.language_id=2 
-and a.table_name = b.table_name 
-and a.row_id = b.row_id 
-and a.field_name = b.field_name), ''), 
-ifnull((select translation from translations b where b.language_id=3 
-and a.table_name = b.table_name 
-and a.row_id = b.row_id 
-and a.field_name = b.field_name),'') from translations a where language_id = 1); 
+
+INSERT INTO `translations_tmp` (select 0, table_name, row_id, field_name, `translation`, 
+ifnull((select `translation` from translations b where b.language_id=2 
+and b.table_name = a.table_name 
+and b.row_id = a.row_id 
+and b.field_name = a.field_name limit 1), ''), 
+ifnull((select `translation` from translations b where b.language_id=3 
+and b.table_name = a.table_name 
+and b.row_id = a.row_id 
+and b.field_name = a.field_name limit 1),'') from translations a where language_id = 1); 
 
 drop table translations;
 

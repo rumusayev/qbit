@@ -44,6 +44,27 @@ class Translations
             return (string)$words[$key];
         }
     }
+    
+	/**
+	 * Trasnalting array
+	 */
+	public function translateArray($arr)
+	{
+		$translated_arr = array();
+		$i = 0;
+		foreach ($arr as $key=>$val)
+		{
+				if (isset($this->words->$val)) 
+				{ 
+					$translated_arr[$key] = (string)$this->words->$val;
+				}
+				else
+				{
+					$translated_arr[$key] = $val;
+				}	
+		}
+		return $translated_arr;
+	}    
 
     public function getFields($table_name, $module_name = '')
     {
@@ -65,6 +86,7 @@ class Translations
         $data['translations_row_id'] = $row_id;
         $data['translations_language'] = $language;
         $data['translations_module_name'] = $module_name;
+
         $data = Loader::gi()->getModel($data);
         if (!isset($data['translations']))
             return false;

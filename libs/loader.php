@@ -214,7 +214,10 @@ class Loader
 	public function callModule($method, $url, $parameters = array())
 	{	
 		$data['request'] = new stdClass;
-		$data['request']->routing = 'internal';
+		if (!isset($parameters['routing']))
+			$data['request']->routing = 'internal';
+		else
+			$data['request']->routing = $parameters['routing'];
 		$routes = explode('/', $url);
 		if (!isset($parameters['module_name']))
 			$data['request']->module_name = $routes[0];

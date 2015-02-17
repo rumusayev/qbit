@@ -31,6 +31,7 @@ class Crud
     private $hidden_edit_fields = array();
     private $disabled_edit_fields = array();
     private $disabled_table_fields = array();
+    private $disabled_saving_tables = array();
     private $query = '';
     private $tables = '';
     private $where = '1=1';
@@ -507,6 +508,22 @@ class Crud
         foreach ($arg_list as $arg)
             $this->disabled_table_fields[] = strtolower($arg);
         return $this;
+    }        
+	
+	/**
+	 * Disable saving to one or more tables which are indicated in the query
+	 *
+	 * @param string Table name
+	 * ...
+	 * @return object Self object
+	 */	
+
+    public function disableSavingToTables()
+    {
+        $arg_list = func_get_args();
+        foreach ($arg_list as $arg)
+            $this->disabled_saving_tables[] = strtolower($arg);
+        return $this;
     }    
     
     // Event before save
@@ -608,6 +625,7 @@ class Crud
         $data['hidden_edit_fields'] = $this->hidden_edit_fields;
         $data['disabled_edit_fields'] = $this->disabled_edit_fields;
         $data['disabled_table_fields'] = $this->disabled_table_fields;
+        $data['disabled_saving_tables'] = $this->disabled_saving_tables;
         $data['add_editor_list'] = $this->add_editor_list;
         $data['add_lq_button'] = $this->add_lq_button;
         $data['titles'] = $this->titles;
@@ -636,6 +654,7 @@ class Crud
         switch ($data_type)
         {
             case 'json':
+                $data['where'] = base64_encode($data['where']);
                 $data['query'] = base64_encode($data['query']);
                 $data['mapped_values_f'] = json_encode($data['mapped_values_f']);
                 $data['search'] = json_encode($data['search']);
@@ -658,6 +677,7 @@ class Crud
                 $data['hidden_edit_fields'] = json_encode($data['hidden_edit_fields']);
                 $data['disabled_edit_fields'] = json_encode($data['disabled_edit_fields']);
                 $data['disabled_table_fields'] = json_encode($data['disabled_table_fields']);
+                $data['disabled_saving_tables'] = json_encode($data['disabled_saving_tables']);
                 $data['translations'] = json_encode($data['translations']);
                 $data['add_editor_list'] = json_encode($data['add_editor_list']);
                 $data['add_lq_button'] = json_encode($data['add_lq_button']);

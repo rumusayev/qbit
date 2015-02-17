@@ -69,6 +69,8 @@ class cCrud extends controller
 			$this->data['disabled_edit_fields'] = json_decode($crud_params_form['disabled_edit_fields'], true);
 		if (isset($crud_params_form['disabled_table_fields']))
 			$this->data['disabled_table_fields'] = json_decode($crud_params_form['disabled_table_fields'], true);
+		if (isset($crud_params_form['disabled_saving_tables']))
+			$this->data['disabled_saving_tables'] = json_decode($crud_params_form['disabled_saving_tables'], true);
         if (isset($crud_params_form['translations']))
             $this->data['translations'] = json_decode($crud_params_form['translations'], true);
         if (isset($crud_params_form['add_editor_list']))
@@ -201,6 +203,7 @@ class cCrud extends controller
 		$this->data['crud_parent_id'] = $form_params['crud_parent_id'];
 		$this->data['crud_parent_table'] = $form_params['crud_parent_table'];
 		$this->data['crud_resource_types'] = json_decode($form_params['crud_resource_types'], true);
+		$this->data['disabled_saving_tables'] = json_decode($form_params['disabled_saving_tables'], true);
 		$translations = json_decode($form_params['translations']);
 		$mapped_passwords = json_decode($form_params['mapped_passwords'], true);
 
@@ -253,30 +256,33 @@ class cCrud extends controller
 			$el_parts = explode('^', $el);
 			
 			$el_field = $el_parts[1];
-			if (!empty($mapped_fields) && array_key_exists($el_field, $mapped_fields))
-				$el_field = $mapped_fields[$el_field];  
-					
-			if (in_array($el_parts[1], $ids))
+			if (!in_array($el_parts[0], $this->data['disabled_saving_tables']))
 			{
-				if ($val !== '' && $val > 0)
+				if (!empty($mapped_fields) && array_key_exists($el_field, $mapped_fields))
+					$el_field = $mapped_fields[$el_field];  
+						
+				if (in_array($el_parts[1], $ids))
 				{
-					$values[$el_parts[0]]['reserved_id'] = $val;
-					$where[$el_parts[0]] = "{$el_field} = {$val}";
+					if ($val !== '' && $val > 0)
+					{
+						$values[$el_parts[0]]['reserved_id'] = $val;
+						$where[$el_parts[0]] = "{$el_field} = {$val}";
+					}
 				}
+				elseif (in_array($el_field, $translations))	// Parsing translations
+				{
+					unset($val[0]);
+					$values[$el_parts[0]]['translations'][$el_field] = $val;
+					$values[$el_parts[0]][$el_field] = '';
+				}
+				elseif (array_key_exists($el_field, $mapped_passwords))	// Parsing passwords
+				{
+					if ($mapped_passwords[$el_field] === 'md5' && $val != '')
+						$values[$el_parts[0]][$el_field] = md5($val); 
+				}			
+				else
+					$values[$el_parts[0]][$el_field] = "{$val}";
 			}
-			elseif (in_array($el_field, $translations))	// Parsing translations
-			{
-				unset($val[0]);
-				$values[$el_parts[0]]['translations'][$el_field] = $val;
-				$values[$el_parts[0]][$el_field] = '';
-			}
-			elseif (array_key_exists($el_field, $mapped_passwords))	// Parsing passwords
-			{
-				if ($mapped_passwords[$el_field] === 'md5' && $val != '')
-					$values[$el_parts[0]][$el_field] = md5($val); 
-			}			
-			else
-				$values[$el_parts[0]][$el_field] = "{$val}";
 		}
 		
 		$this->data['where'] = $where;

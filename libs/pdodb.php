@@ -152,6 +152,9 @@ class PDODB
 			$column_arr[(String)$row->Field] = $row->Field;
 			$type_arr[(String)$row->Field] = $row->Type;
 		}
+		$params_arr = array();
+		$values_arr = array();
+		$fields_arr = array();
 		foreach($data as $curr_field => $curr_value) 
 		{
 			if( in_array($curr_field, $column_arr) && $curr_field!='id' ) 
@@ -167,9 +170,9 @@ class PDODB
 			}
 		}
 		$query = "INSERT INTO ".$table_name." (".implode(",",$fields_arr).") VALUES (".implode(",",$values_arr).")";
-		$this->parsed = $this->link->prepare($query);
 		try
 		{
+			$this->parsed = $this->link->prepare($query);
 			$result = $this->parsed->execute($params_arr);
         }
 		catch(Exception $e)
