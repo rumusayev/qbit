@@ -21,7 +21,7 @@
 			foreach ($field->field_title as $translation)
 			{
 				echo "<div class='tab-pane' id='field_title_".$field->num."_".$translation->short."'>";
-				echo '<input name="field_title['.$field->num.']['.$translation->language_id.']" class="form-control" value="'.$translation->translation.'"/>';
+				echo '<input name="field_title['.$field->num.']['.$translation->short.']" class="form-control" value="'.$translation->translation.'"/>';
 				echo '</div>';
 			}
 			echo '</div>';
@@ -68,18 +68,18 @@
         ?>
     </td>
     <td><input type="text" name="field_width[<?php echo $field->num; ?>]" value="<?php echo $field->field_width; ?>" class="form-control"></td>    
-    <?php $checked = ''; if ($field->translation == 1) $checked = 'checked'; ?>
+    <?php $translation = ''; if ($field->translation == 1) $translation = 'checked'; ?>
     <?php $required = ''; if ($field->required == 1) $required = 'checked'; ?>
     <?php $datetime = ''; if ($field->datetime == 1) $datetime = 'checked'; ?>
     <td>
 		<input type="hidden" id="translation" name="translation[<?php echo $field->num; ?>]" value="0"/>
-		<input type="checkbox" id="translation" name="translation[<?php echo $field->num; ?>]" value="1" <?php echo $checked;?>></td>
-    <td>
-        <input type="hidden" id="required" name="required[<?php echo $field->num; ?>]" value="0"/>
-        <input type="checkbox" id="required" name="required[<?php echo $field->num; ?>]" value="1" <?php echo $required;?>></td>
+		<input type="checkbox" id="translation" name="translation[<?php echo $field->num; ?>]" value="1" <?php echo $translation;?>></td>
     <td>
         <input type="hidden" id="datetime" name="datetime[<?php echo $field->num; ?>]" value="0"/>
         <input type="checkbox" id="datetime" name="datetime[<?php echo $field->num; ?>]" value="1" <?php echo $datetime;?>></td>
+    <td>
+        <input type="hidden" id="required" name="required[<?php echo $field->num; ?>]" value="0"/>
+        <input type="checkbox" id="required" name="required[<?php echo $field->num; ?>]" value="1" <?php echo $required;?>></td>
     <td><button type="button" data-id="<?php echo $field->id; ?>" data-num="<?php echo $field->num; ?>" onclick="deleteField(this);" class="form_field_delete_btn btn btn-danger btn-xs"><span class="glyphicon glyphicon-floppy-remove"></span></button></td>
 <?php	
 	echo '</tr>';

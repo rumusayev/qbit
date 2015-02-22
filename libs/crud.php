@@ -32,6 +32,7 @@ class Crud
     private $disabled_edit_fields = array();
     private $disabled_table_fields = array();
     private $disabled_saving_tables = array();
+    private $removed_fields = array();
     private $query = '';
     private $tables = '';
     private $where = '1=1';
@@ -190,7 +191,7 @@ class Crud
         $cnt = count($arg_list);
         for ($i=0; $i<$cnt-1; $i++) 
             if(!($i&1)) 
-                $mapped_search[$arg_list[$i]] = base64_encode($arg_list[$i+1]);
+                $mapped_search[$arg_list[$i]] = $arg_list[$i+1];
         $this->mapped_search = $mapped_search;
 
         return $this;
@@ -211,7 +212,7 @@ class Crud
         $cnt = count($arg_list);
         for ($i=0; $i<$cnt-1; $i++)
             if(!($i&1)) 
-                $mapped_field_inputs[$arg_list[$i]] = base64_encode($arg_list[$i+1]);
+                $mapped_field_inputs[$arg_list[$i]] = $arg_list[$i+1];
         $this->mapped_field_inputs = $mapped_field_inputs;
 
         return $this;
@@ -330,7 +331,7 @@ class Crud
         $cnt = count($arg_list);
         for ($i=0; $i<$cnt-1; $i++) 
 			if(!($i&1)) 
-				$mapped_values_f[$arg_list[$i]] = base64_encode($arg_list[$i+1]);
+				$mapped_values_f[$arg_list[$i]] = $arg_list[$i+1];
         $this->mapped_values_f = $mapped_values_f;
         return $this;
     }
@@ -511,6 +512,34 @@ class Crud
     }        
 	
 	/**
+	 * Remove fields from redacting in selected modal windows or table
+	 *
+	 * @param string Fields names separated by commas
+	 * @param string Functionalities where fields should be removed separated by commas (e.g. 'add,edit,table')
+	 * ...
+	 * @return object Self object
+	 */	
+
+    public function removeFields()
+    {
+        $arg_list = func_get_args();
+        $removed_fields = array();
+        $cnt = count($arg_list);
+        for ($i=0; $i<$cnt-1; $i++) 
+			if(!($i&1))
+			{
+				// Functionalities
+				$funcs = explode(',', $arg_list[$i+1]);
+				foreach ($funcs as $func)
+				{
+					$removed_fields[$func] = explode(',', str_replace(' ', '', $arg_list[$i]));
+				}
+			}
+        $this->removed_fields = $removed_fields;    
+        return $this;
+    }    	
+
+	/**
 	 * Disable saving to one or more tables which are indicated in the query
 	 *
 	 * @param string Table name
@@ -607,96 +636,70 @@ class Crud
 
     public function execute($data_type = 'crud')
     {        
-        $data['query'] = $this->query;
-        $data['tables'] = $this->tables;
-        $data['field_names'] = $this->field_names;
-        $data['order'] = $this->order;
-        $data['search'] = $this->search;
-        $data['ids'] = $this->ids;
-        $data['mapped_fields'] = $this->mapped_fields;
-        $data['before_save_method_path'] = $this->before_save_method_path;
-        $data['after_save_method_path'] = $this->after_save_method_path;
-        $data['after_load_method_path'] = $this->after_load_method_path;
-        $data['after_delete_method_path'] = $this->after_delete_method_path;
-        $data['override_orig_save'] = $this->override_orig_save;
-        $data['name'] = $this->name;
-        $data['where'] = $this->where;
-        $data['restrictions'] = $this->restrictions;
-        $data['hidden_edit_fields'] = $this->hidden_edit_fields;
-        $data['disabled_edit_fields'] = $this->disabled_edit_fields;
-        $data['disabled_table_fields'] = $this->disabled_table_fields;
-        $data['disabled_saving_tables'] = $this->disabled_saving_tables;
-        $data['add_editor_list'] = $this->add_editor_list;
-        $data['add_lq_button'] = $this->add_lq_button;
-        $data['titles'] = $this->titles;
-        $data['mapped_values'] = $this->mapped_values;
-        $data['mapped_values_f'] = $this->mapped_values_f;
-        $data['mapped_parents'] = $this->mapped_parents;
-        $data['mapped_passwords'] = $this->mapped_passwords;
-        $data['types'] = $this->types;
-        $data['totals'] = $this->totals;
-        $data['links'] = $this->links;
-        $data['buttons'] = $this->buttons;
-        $data['js_handlers'] = $this->js_handlers;
-        $data['format_rules'] = $this->format_rules;
-        $data['form_fields_dimensions'] = $this->form_fields_dimensions;
-        $data['mapped_search'] = $this->mapped_search;
-        $data['mapped_field_inputs'] = $this->mapped_field_inputs;
-        $data['translations'] = $this->translations;
-        $data['uploader_object_type'] = $this->uploader_object_type;
-        $data['crud_parent_id'] = $this->crud_parent_id;
-        $data['crud_parent_table'] = $this->crud_parent_table;
-        $data['crud_resource_types'] = $this->crud_resource_types;
-        $data['unique_fields'] = $this->unique_fields;
-        $data['additional_form_field'] = $this->additional_form_field;
-        $data['additional_form_table'] = $this->additional_form_table;
-        $data['manual_search_format'] = $this->manual_search_format;
+        $crud_data['query'] = $this->query;
+        $crud_data['tables'] = $this->tables;
+        $crud_data['field_names'] = $this->field_names;
+        $crud_data['order'] = $this->order;
+        $crud_data['search'] = $this->search;
+        $crud_data['ids'] = $this->ids;
+        $crud_data['mapped_fields'] = $this->mapped_fields;
+        $crud_data['before_save_method_path'] = $this->before_save_method_path;
+        $crud_data['after_save_method_path'] = $this->after_save_method_path;
+        $crud_data['after_load_method_path'] = $this->after_load_method_path;
+        $crud_data['after_delete_method_path'] = $this->after_delete_method_path;
+        $crud_data['override_orig_save'] = $this->override_orig_save;
+        $crud_data['where'] = $this->where;
+        $crud_data['restrictions'] = $this->restrictions;
+        $crud_data['hidden_edit_fields'] = $this->hidden_edit_fields;
+        $crud_data['disabled_edit_fields'] = $this->disabled_edit_fields;
+        $crud_data['disabled_table_fields'] = $this->disabled_table_fields;
+        $crud_data['disabled_saving_tables'] = $this->disabled_saving_tables;
+        $crud_data['removed_fields'] = $this->removed_fields;
+        $crud_data['add_editor_list'] = $this->add_editor_list;
+        $crud_data['add_lq_button'] = $this->add_lq_button;
+        $crud_data['titles'] = $this->titles;
+        $crud_data['mapped_values'] = $this->mapped_values;
+        $crud_data['mapped_values_f'] = $this->mapped_values_f;
+        $crud_data['mapped_parents'] = $this->mapped_parents;
+        $crud_data['mapped_passwords'] = $this->mapped_passwords;
+        $crud_data['types'] = $this->types;
+        $crud_data['totals'] = $this->totals;
+        $crud_data['links'] = $this->links;
+        $crud_data['buttons'] = $this->buttons;
+        $crud_data['js_handlers'] = $this->js_handlers;
+        $crud_data['format_rules'] = $this->format_rules;
+        $crud_data['form_fields_dimensions'] = $this->form_fields_dimensions;
+        $crud_data['mapped_search'] = $this->mapped_search;
+        $crud_data['mapped_field_inputs'] = $this->mapped_field_inputs;
+        $crud_data['translations'] = $this->translations;
+        $crud_data['uploader_object_type'] = $this->uploader_object_type;
+        $crud_data['crud_parent_id'] = $this->crud_parent_id;
+        $crud_data['crud_parent_table'] = $this->crud_parent_table;
+        $crud_data['crud_resource_types'] = $this->crud_resource_types;
+        $crud_data['unique_fields'] = $this->unique_fields;
+        $crud_data['additional_form_field'] = $this->additional_form_field;
+        $crud_data['additional_form_table'] = $this->additional_form_table;
+        $crud_data['manual_search_format'] = $this->manual_search_format;
+		
+		$crud_params['name'] = $this->name;
+		
         switch ($data_type)
         {
             case 'json':
-                $data['where'] = base64_encode($data['where']);
-                $data['query'] = base64_encode($data['query']);
-                $data['mapped_values_f'] = json_encode($data['mapped_values_f']);
-                $data['search'] = json_encode($data['search']);
-                $data['titles'] = json_encode($data['titles']);
-                $data['mapped_values'] = json_encode($data['mapped_values']);
-                $data['types'] = json_encode($data['types']);
-                $data['totals'] = json_encode($data['totals']);
-                $data['links'] = json_encode($data['links']);
-                $data['buttons'] = json_encode($data['buttons']);
-                $data['js_handlers'] = json_encode($data['js_handlers']);
-                $data['format_rules'] = json_encode($data['format_rules']);
-                $data['form_fields_dimensions'] = json_encode($data['form_fields_dimensions']);
-                $data['ids'] = json_encode($data['ids']);
-                $data['mapped_parents'] = json_encode($data['mapped_parents']);
-                $data['mapped_fields'] = json_encode($data['mapped_fields']);
-                $data['mapped_search'] = json_encode($data['mapped_search']);
-                $data['mapped_field_inputs'] = json_encode($data['mapped_field_inputs']);
-                $data['mapped_passwords'] = json_encode($data['mapped_passwords']);
-                $data['restrictions'] = json_encode($data['restrictions']);
-                $data['hidden_edit_fields'] = json_encode($data['hidden_edit_fields']);
-                $data['disabled_edit_fields'] = json_encode($data['disabled_edit_fields']);
-                $data['disabled_table_fields'] = json_encode($data['disabled_table_fields']);
-                $data['disabled_saving_tables'] = json_encode($data['disabled_saving_tables']);
-                $data['translations'] = json_encode($data['translations']);
-                $data['add_editor_list'] = json_encode($data['add_editor_list']);
-                $data['add_lq_button'] = json_encode($data['add_lq_button']);
-                $data['crud_resource_types'] = json_encode($data['crud_resource_types']);
-                $data['unique_fields'] = json_encode($data['unique_fields']);
-                $data['manual_search_format'] = json_encode($data['manual_search_format']);
-
-                $data = Loader::gi()->callModule('POST', 'crud/load', array('crud_params_form'=>json_encode($data), 'crud_search_form'=>'[]'));
+                $data = Loader::gi()->callModule('POST', 'crud/load', array('crud_params_form'=>json_encode($crud_params), 'crud_data'=>json_encode($crud_data), 'crud_search_form'=>'[]'));
                 $data['body'] = $data['rows'];
             break;
             default:
                 $data['controller_name'] = 'crud';        
                 $data['action_name'] = 'execute';		
+                $data['crud_data'] = base64_encode(json_encode($crud_data));
+                $data['crud_params'] = $crud_params;
                 if ($this->query !== '' || $this->tables !== '')
                 {
                     $data = Loader::gi()->getController($data);			
                 }
                 else
-                    throw new Exception('No query or tables specified');        
+                    throw new QException('No query or tables specified');        
                     
             break;
         }

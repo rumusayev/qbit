@@ -280,7 +280,7 @@ class cForms extends controller
 				$items[$key]['field_select_id'] = $fields_form['field_select_id'][$key];
 				$items[$key]['linked_field_id'] = $fields_form['linked_field_id'][$key];
 				$items[$key]['required'] = $fields_form['required'][$key];
-				$items[$key]['datetime'] = $fields_form['required'][$key];
+				$items[$key]['datetime'] = $fields_form['datetime'][$key];
 			}
 		}
 		$this->data['items'] = $items;

@@ -242,9 +242,10 @@ class cPages extends controller
     {
 		if ($this->data['request']->method == 'POST')
 		{
-			$form_params = json_decode($this->data['request']->parameters['form_params'], true);
+			$crud_data = json_decode(base64_decode($this->data['request']->parameters['crud_data']), true);	
 			$form_values = json_decode($this->data['request']->parameters['form_values'], true);
-			$translations = json_decode($form_params['translations']);			
+
+			$translations = $crud_data['translations'];
 			$this->data['values'] = array();
 			$this->data['values']['id'] = $this->data['request']->parameters['id'];
 			if (in_array('page_content', $translations))

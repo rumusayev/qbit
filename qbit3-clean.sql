@@ -103,6 +103,7 @@ CREATE TABLE `form_fields` (
   `linked_field_id` int(11) NOT NULL,
   `translation` smallint(1) NOT NULL DEFAULT '0',
   `required` smallint(1) NOT NULL DEFAULT '0',
+  `datetime` smallint(1) NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

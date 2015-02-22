@@ -62,16 +62,16 @@ $(function()
 	// Add form
     $('.<?php echo $name;?>-crud_add_btn').click(function(e)
     {
-		<?php echo $name;?>_resetForm("#<?php echo $name;?>-crud_form");
-		$("#<?php echo $name;?>-crud_form textarea").each(function(e)
+		<?php echo $name;?>_resetForm("#<?php echo $name;?>-crud_add_form");
+		$("#<?php echo $name;?>-crud_add_form textarea").each(function(e)
 		{
 			$(this).val('');
 		});
-        $("#<?php echo $name;?>-crud_form input:text[name$=\\^id]").val('0');
-        $("#<?php echo $name;?>-crud_form input.datetime").val('<?php echo date('Y-m-d H:i:s'); ?>');
+        $("#<?php echo $name;?>-crud_add_form input:text[name$=\\^id]").val('0');
+        $("#<?php echo $name;?>-crud_add_form input.datetime").val('<?php echo date('Y-m-d H:i:s'); ?>');
 
 		if ($("#<?php echo $name;?>-crud_params_form #crud_parent_id").val() > 0)
-			$("#<?php echo $name;?>-crud_form select[id$=-<?php echo reset($mapped_parents); ?>]").val($("#<?php echo $name;?>-crud_params_form #crud_parent_id").val());
+			$("#<?php echo $name;?>-crud_add_form select[id$=-<?php echo reset($mapped_parents); ?>]").val($("#<?php echo $name;?>-crud_params_form #crud_parent_id").val());
 
 			// Here we will select the form of the parent element
 		if ($("#<?php echo $name;?>-crud_params_form #crud_parent_id").val() > 0 && $("#<?php echo $name;?>-crud_params_form #additional_form_field").val() != '')
@@ -87,8 +87,8 @@ $(function()
 				{
 					if (data != '')
 					{
-						$("#<?php echo $name;?>-crud_form select[id$=-<?php echo $additional_form_field; ?>]").val(data);
-						$("#<?php echo $name;?>-crud_form select[id$=-<?php echo $additional_form_field; ?>]").change();
+						$("#<?php echo $name;?>-crud_add_form select[id$=-<?php echo $additional_form_field; ?>]").val(data);
+						$("#<?php echo $name;?>-crud_add_form select[id$=-<?php echo $additional_form_field; ?>]").change();
 					}
 				},
 				error: function (request, status, error)
@@ -139,7 +139,7 @@ $(function()
 	// Edit form
     $('.<?php echo $name;?>-crud_edit_btn').click(function(e)
     {
-		<?php echo $name;?>_resetForm("#<?php echo $name;?>-crud_form");
+		<?php echo $name;?>_resetForm("#<?php echo $name;?>-crud_edit_form");
 		<?php echo $name;?>_current_id = $(this).attr("data-id");
         $.each(<?php echo $name;?>_data['id'+$(this).attr("data-id")], function(el, value)
         {
@@ -147,14 +147,14 @@ $(function()
 			{
 				$.each(value, function(tr_el, tr_val)
 				{
-					$("#<?php echo $name;?>-crud_form input:text[name$=\\^"+el+"\\["+(tr_val.short)+"\\]]").val(tr_val.translation);
-					$("#<?php echo $name;?>-crud_form textarea[name$=\\^"+el+"\\["+(tr_val.short)+"\\]]").val(tr_val.translation);
+					$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"\\["+(tr_val.short)+"\\]]").val(tr_val.translation);
+					$("#<?php echo $name;?>-crud_edit_form textarea[name$=\\^"+el+"\\["+(tr_val.short)+"\\]]").val(tr_val.translation);
 				});
 			}/*
 			else if (el === 'uploader_files')
 			{
 				$.each(value, function(fl_el, fl_val){
-					$('#<?php echo $name;?>-crud_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?><?php echo $uploader_object_type;?>/'+fl_val.object_id+'/thumbnail/'+fl_val.material_path+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile('+fl_val.id+', this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
+					$('#<?php echo $name;?>-crud_edit_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?><?php echo $uploader_object_type;?>/'+fl_val.object_id+'/thumbnail/'+fl_val.material_path+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile('+fl_val.id+', this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
 					<?php echo $name;?>_files[<?php echo $name;?>_file_num] = {id:fl_val.id, name: fl_val.material_path};
 					<?php echo $name;?>_file_num++;
 				});
@@ -163,11 +163,11 @@ $(function()
 			else
 			{
 				if (value == 1)
-					$("#<?php echo $name;?>-crud_form input:checkbox[name$=\\^"+el+"]").prop('checked', true);
-				$("#<?php echo $name;?>-crud_form select[name$=\\^"+el+"]").val(value);
-				$("#<?php echo $name;?>-crud_form select[name$=\\^"+el+"]").change(); // Trigger change event to activate form (if there is any)
-				$("#<?php echo $name;?>-crud_form input:text[name$=\\^"+el+"]").val(value);
-				$("#<?php echo $name;?>-crud_form textarea[name$=\\^"+el+"]").val(value);
+					$("#<?php echo $name;?>-crud_edit_form input:checkbox[name$=\\^"+el+"]").prop('checked', true);
+				$("#<?php echo $name;?>-crud_edit_form select[name$=\\^"+el+"]").val(value);
+				$("#<?php echo $name;?>-crud_edit_form select[name$=\\^"+el+"]").change(); // Trigger change event to activate form (if there is any)
+				$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").val(value);
+				$("#<?php echo $name;?>-crud_edit_form textarea[name$=\\^"+el+"]").val(value);
 			}
         });
 
@@ -185,8 +185,8 @@ $(function()
 				{
 					if (data != '')
 					{
-						$("#<?php echo $name;?>-crud_form select[id$=-<?php echo $additional_form_field; ?>]").val(data);
-						$("#<?php echo $name;?>-crud_form select[id$=-<?php echo $additional_form_field; ?>]").change();
+						$("#<?php echo $name;?>-crud_edit_form select[id$=-<?php echo $additional_form_field; ?>]").val(data);
+						$("#<?php echo $name;?>-crud_edit_form select[id$=-<?php echo $additional_form_field; ?>]").change();
 					}
 				},
 				error: function (request, status, error)
@@ -215,7 +215,7 @@ $(function()
 					success:function(data)
 					{
 						$.each(JSON.parse(data), function(fl_el, fl_val){
-							$('#<?php echo $name;?>-crud_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?><?php echo $uploader_object_type;?>/'+fl_val.object_id+'/thumbnail/'+fl_val.material_path+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile('+fl_val.id+', this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
+							$('#<?php echo $name;?>-crud_edit_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?><?php echo $uploader_object_type;?>/'+fl_val.object_id+'/thumbnail/'+fl_val.material_path+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile('+fl_val.id+', this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
 							<?php echo $name;?>_files[<?php echo $name;?>_file_num] = {id:fl_val.id, name: fl_val.material_path};
 							<?php echo $name;?>_file_num++;
 						});
@@ -267,7 +267,8 @@ $(function()
                 type: "DELETE",
                 data: {
 					deleting_data: JSON.stringify(deleting_data),
-					form_params: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
+					crud_data: '<?php echo $crud_data;?>',
+					crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
 				},
                 success:function(data)
                 {
@@ -304,7 +305,8 @@ $(function()
                 type: "DELETE",
                 data: {
 					deleting_data: JSON.stringify(deleting_data),
-					form_params: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
+					crud_data: '<?php echo $crud_data;?>',
+					crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
 				},
 
                 success:function(data)
@@ -340,13 +342,13 @@ $(function()
                 });
     }
 
-    // Validate and Save the form    
-    $('#<?php echo $name;?>-crud_save_btn').click(function(e)
+    // Validate and Save add form    
+    $('#<?php echo $name;?>-crud_add_save_btn').click(function(e)
     {
-        $('#<?php echo $name;?>-crud_form').submit();
+        $('#<?php echo $name;?>-crud_add_form').submit();
     });
 
-    $('#<?php echo $name;?>-crud_form').validate({
+    $('#<?php echo $name;?>-crud_add_form').validate({
         errorPlacement: function(error, element)
         {
             showPopover(element, error.html());
@@ -362,7 +364,8 @@ $(function()
 					type: "POST",
 					data: {
 						form_values: JSON.stringify($(form).serializeJSON()),
-						form_params: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
+						crud_data: '<?php echo $crud_data;?>',
+						crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
 					},
 
 					success:function(data)
@@ -382,6 +385,51 @@ $(function()
 			?>
         }
     });
+	
+    // Validate and Save edit form    
+    $('#<?php echo $name;?>-crud_edit_save_btn').click(function(e)
+    {
+        $('#<?php echo $name;?>-crud_edit_form').submit();
+    });
+
+    $('#<?php echo $name;?>-crud_edit_form').validate({
+        errorPlacement: function(error, element)
+        {
+            showPopover(element, error.html());
+        },
+        submitHandler: function(form)
+        {
+			<?php if (!empty($unique_fields))
+			{
+			?>
+				$.ajax(
+				{
+					url:"<?php echo Backstage::gi()->portal_url;?>crud/validateUnique/",
+					type: "POST",
+					data: {
+						form_values: JSON.stringify($(form).serializeJSON()),
+						crud_data: '<?php echo $crud_data;?>',
+						crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON())
+					},
+
+					success:function(data)
+					{
+						if (data == 0)
+							<?php echo $name;?>_submit_crud_form(form);
+						else
+							alert('The resource name is already busy.');
+					},
+					error: function (request, status, error)
+					{
+						console.log(request.responseText);
+					}
+				});
+			<?php } else
+				echo $name.'_submit_crud_form(form);'
+			?>
+        }
+    });
+
     function <?php echo $name;?>_submit_crud_form(form)
     {
 
@@ -397,7 +445,8 @@ $(function()
 			type: "POST",
 			data: {
 				form_values: JSON.stringify($(form).serializeJSON()),
-				form_params: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON()),
+				crud_data: '<?php echo $crud_data;?>',
+				crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON()),
 				files: JSON.stringify(<?php echo $name;?>_files),
 				additional_form: JSON.stringify($('#<?php echo $name;?>-crud_additional_form').serializeJSON())
 			},
@@ -583,7 +632,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 </script>
 <div class="table-responsive">
     <?php if (!in_array('add', $restrictions)) { ?>
-    <button type="button" data-id="0" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#<?php echo $name;?>-crud_edit_modal" class="<?php echo $name;?>-crud_add_btn btn btn-warning">
+    <button type="button" data-id="0" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#<?php echo $name;?>-crud_add_modal" class="<?php echo $name;?>-crud_add_btn btn btn-warning">
         <span class="glyphicon glyphicon-floppy-open"></span> <?php echo Translations::gi()->add_note; ?>
     </button>
     <?php } ?>
@@ -664,8 +713,8 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 
 					if (array_key_exists($field['name'], $mapped_search))
 					{
-						$search_input_part1 = substr(base64_decode($mapped_search[$field['name']]), 0, strpos(base64_decode($mapped_search[$field['name']]), ':'));
-						$search_input_part2 = substr(base64_decode($mapped_search[$field['name']]), strpos(base64_decode($mapped_search[$field['name']]), ':')+1);
+						$search_input_part1 = substr($mapped_search[$field['name']], 0, strpos($mapped_search[$field['name']], ':'));
+						$search_input_part2 = substr($mapped_search[$field['name']], strpos($mapped_search[$field['name']], ':')+1);
 						switch ($search_input_part1)
 						{
 							case 'select':
@@ -764,7 +813,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 					{
 						if (array_key_exists($field['name'], $mapped_values_f))
 						{
-		                    $functionp = explode("#", (base64_decode($mapped_values_f->{$field['name']})));
+		                    $functionp = explode("#", ($mapped_values_f->{$field['name']}));
 	                        $function = create_function($functionp[0], $functionp[1]);
 	                        $value = $function($row->{$field['name']});
 						}
@@ -897,9 +946,274 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 					echo '<li><a href="#" data-page="'.($i-1).'" class="'.$name.'-crud_page">&raquo;</a></li>';
 			echo '</ul></div>';
 		}
+		
+	/**
+	 * Is used to separately create "add" and "edit" forms
+	 *
+	 * @param string Form type ("add" or "edit")
+	 * @return object "HTML code"
+	 */
+	global $fields_global;
+	global $crud_data_global;
+	global $text_types_global;
+	global $textarea_types_global;
+	global $date_types_global;
+
+	$fields_global = $fields;
+	$crud_data_global = $crud_data;
+	$text_types_global = $text_types;
+	$textarea_types_global = $textarea_types;
+	$date_types_global = $date_types;
+		
+	function formBuilder($form_type)
+	{
+		global $fields_global;
+		global $crud_data_global;
+		global $text_types_global;
+		global $textarea_types_global;
+		global $date_types_global;
+		
+		extract(json_decode(base64_decode($crud_data_global), true));
+		$fields = $fields_global;
+		$text_types = $text_types_global;
+		$textarea_types = $textarea_types_global;
+		$date_types = $date_types_global;		
+		
+		foreach ($fields as $field)
+		{
+			if ($field['name'] == 'child_count')
+				continue;
+			if (isset($removed_fields[$form_type]) && in_array($field['name'], $removed_fields[$form_type]))
+				continue;
+			
+			$readonly = '';
+			$hidden = '';
+			$ckeditor = '';
+			$style = '';
+			$js_handler = '';
+
+			if (in_array($field['name'],$ids) || in_array($field['name'], $disabled_edit_fields))
+				$readonly = 'readonly';
+
+			if (in_array($field['name'], $hidden_edit_fields))
+				$style .= 'visibility:hidden; ';
+
+			if (in_array($field['name'],$ids) || in_array($field['name'], $add_editor_list))
+				$ckeditor = 'ckeditor_w';
+
+			if (array_key_exists($field['name'], $js_handlers))
+				$js_handler = $js_handlers[$field['name']]['event'].'="'.$js_handlers[$field['name']]['handler'].'(this)"';
+
+			if (strtoupper($field['name']) === strtoupper($additional_form_field))
+				$js_handler = 'onchange="'.$name.'_additionalFormOpen(this, \''.$additional_form_table.'\');"';
+
+			if (array_key_exists($field['name'], $form_fields_dimensions))
+			{
+				$dims = explode(',',$form_fields_dimensions[$field['name']]);
+				$style .= "width: ".trim($dims[0])."px; height: ".trim($dims[1])."px;";
+			}
+
+
+
+			echo '<div class="form-group">';
+
+
+			if (!in_array($field['name'], $hidden_edit_fields))
+			{
+				if (array_key_exists($field['name'], $titles))
+					echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$titles[$field['name']].'</label>';
+				else
+					echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$field['name'].'</label>';
+			}
+
+			echo '<div class="col-xs-9">';
+			if (array_key_exists($field['name'], $mapped_field_inputs))
+			{
+
+				$field_input_part1 = substr($mapped_field_inputs[$field['name']], 0, strpos($mapped_field_inputs[$field['name']], ':'));
+				$field_input_part2 = substr($mapped_field_inputs[$field['name']], strpos($mapped_field_inputs[$field['name']], ':')+1);
+
+				if ($readonly == 'readonly')
+					$readonly = 'disabled';
+				switch ($field_input_part1)
+				{
+					case 'autocomplete':
+						$changed_field_id = $field['table'].'-'.$field['name'];
+						$typehead_name = str_replace('-','',$changed_field_id);
+						$params_array = json_decode($field_input_part2, true);
+					//	$js_handler2  =  $js_handlers[substr($field['name'], 0,-5)]['handler'].'(this)"';
+						?>
+						<script>
+						 $(document).ready(function(){	// UNIVERSAL TYPEAHEAD
+								
+								var <?php echo $typehead_name?> = new Bloodhound({
+								  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+								  queryTokenizer: Bloodhound.tokenizers.whitespace,
+								  remote: {
+									url: '<?php echo Backstage::gi()->portal_url ?><?php echo $params_array['json_method']?>',
+									   replace: function(url, query) {
+											return url + "?q=" + encodeURIComponent(query);
+										}
+								  },
+								  limit:100
+								});
+								 
+								<?php echo $typehead_name?>.initialize();
+								
+							
+					
+								$('#modal_<?php echo $changed_field_id?>').typeahead(null, 
+								{
+								  name: '<?php echo $typehead_name?>',
+								  displayKey: '<?php echo $params_array['full_field']?>',
+								  source: <?php echo $typehead_name?>.ttAdapter(),
+								  templates: {
+									empty: [
+									  '<div class="empty-message">',
+									  '<?php echo Translations::gi()->cant_find ?>',
+									  '</div>'
+									].join('\n'),
+									suggestion: Handlebars.compile('<p>{{<?php echo $params_array['id_field']?>}} - <strong>{{<?php echo $params_array['full_field']?>}}</strong></p>')
+								  }
+								}).on('typeahead:selected', function (obj, datum) 
+								{    
+									
+									$('#<?php echo $params_array['hidden_field_id']?>').val(datum.<?php echo $params_array['id_field']?>);
+								   
+								});
+								//END UNIVERSAL TYPEAHEAD 
+								});
+								</script>
+						   <input type="text" id="modal_<?php echo $changed_field_id?>" name="modal_<?php echo $changed_field_id?>"  class="form-control" data-container="body" data-placement="right"/>
+							
+					<?php
+					break;						
+					case 'select':
+						echo '<select id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'>';
+						echo '<option value="0" selected>-</option>';
+						$select = json_decode($field_input_part2, true);
+
+						foreach ($select as $option_value=>$option_desc)
+						{
+							$selected = '';
+							//echo $value;
+							//if ($option_value === $value) echo 'selected';
+							echo '<option value="'.$option_value.'" '.$selected.'>'.$option_desc.'</option>';
+						}
+						echo '</select>';
+					break;
+					case 'checkbox':
+						echo '<input type="hidden" name="'.$field['table'].'^'.$field['name'].'" value="0">';
+						echo '<input type="checkbox" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" '.$readonly.' style="'.$style.'" value="'.$field_input_part2.'" '.$js_handler.'>';
+					break;
+				}
+			}
+			elseif (in_array($field['name'], $translations))	// Translations for the field are set
+			{
+
+				$langs = explode(',', Backstage::gi()->portal_langs);
+				echo '<ul class="nav nav-tabs" id="'.$field['table'].'_'.$field['name'].'_tab">';
+				foreach ($langs as $key => $lang)
+				{
+					echo "<li><a href='#".$field['table'].'_'.$field['name']."_".$lang."' data-toggle='tab'>".$lang."</a></li>";
+				}
+				echo '</ul>';
+				echo '<div class="tab-content">';
+
+				foreach ($langs as $key => $lang)
+				{
+					// LQ Button For Translations
+					if (in_array($field['name'], $add_lq_button)){
+						$buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'['.($lang).']" alt="' . $field['type'] . '">Add LQ</button>';
+					} else {
+						$buttonLQ = '';
+					}
+
+
+					echo "<div class='tab-pane' id='".$field['table'].'_'.$field['name']."_". $lang."'>";
+					if (in_array(strtoupper($field['type']), $textarea_types))
+						echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
+					elseif (in_array(strtoupper($field['type']), $text_types))
+						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
+					elseif (in_array(strtoupper($field['type']), $date_types))
+						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
+					else
+						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+
+					echo '</div>';
+				}
+				echo '</div>';
+			}
+			else
+			{
+				// LQ Button
+				if (in_array($field['name'], $add_lq_button)){
+					$buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'" alt="' . $field['type'] . '">Add LQ</button>';
+				} else {
+					$buttonLQ = '';
+				}
+
+				if (array_key_exists($field['name'], $mapped_passwords))
+					echo '<input type="password" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+				elseif (in_array(strtoupper($field['type']), $textarea_types))
+					echo '<textarea id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
+				elseif (in_array(strtoupper($field['type']), $text_types))
+					echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
+				elseif (in_array(strtoupper($field['type']), $date_types))
+					echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="datetime form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+				else
+					echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+			}
+			echo '</div>';
+			echo '<div class="form_hint"><span class="validation"></span></div>';
+			echo '</div>';
+		}
+			// Materials uploader
+		if (!empty($uploader_object_type))
+		{
+			?>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Uploaded files</label>
+				<div class="col-xs-9">
+					<div id="uploader_materials_div"></div>
+					<br/>
+					<input type="file" id="uploader_materials" name="uploader_materials" multiple="multiple" style="visibility:hidden;"/>
+				</div>
+			</div>
+			<?php
+		}
+		echo '</form>';
+	}
 	?>
         </div>
 </div>
+
+<!-- Modal add -->
+<div class="modal fade" id="<?php echo $name;?>-crud_add_modal" tabindex="-1" role="dialog" aria-labelledby="add_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="add_label">Elave etmek</h4>
+      </div>
+      <div class="modal-body">
+			<form name="<?php echo $name;?>-crud_add_form" id="<?php echo $name;?>-crud_add_form" role="form" class="form-horizontal" action="<?php echo Backstage::gi()->portal_url;?>crud/save/" method="post">
+			<?php
+				formBuilder("add");
+			?>
+			</form>
+			<form name="<?php echo $name;?>-crud_additional_form" id="<?php echo $name;?>-crud_additional_form" role="form" class="form-horizontal" method="post">
+				<div id="<?php echo $name;?>-crud_additional_form_div">
+				</div>
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Translations::gi()->close; ?></button>
+        <button type="button" class="btn btn-primary" id="<?php echo $name;?>-crud_add_save_btn"><?php echo Translations::gi()->save; ?></button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal edit -->
 
 <!-- Modal edit -->
 <div class="modal fade" id="<?php echo $name;?>-crud_edit_modal" tabindex="-1" role="dialog" aria-labelledby="edit_label" aria-hidden="true">
@@ -910,159 +1224,10 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
         <h4 class="modal-title" id="edit_label">Redakte etmek</h4>
       </div>
       <div class="modal-body">
-          <form name="<?php echo $name;?>-crud_form" id="<?php echo $name;?>-crud_form" role="form" class="form-horizontal" action="<?php echo Backstage::gi()->portal_url;?>crud/save/" method="post">
-          <?php
-				foreach ($fields as $field)
-                {
-                    if ( $field['name'] == 'child_count'){
-                        continue;
-                    }
-                    $readonly = '';
-                    $hidden = '';
-                    $ckeditor = '';
-                    $style = '';
-                    $js_handler = '';
-
-                    if (in_array($field['name'],$ids) || in_array($field['name'], $disabled_edit_fields))
-                        $readonly = 'readonly';
-
-                    if (in_array($field['name'], $hidden_edit_fields))
-                        $style .= 'visibility:hidden; ';
-
-                    if (in_array($field['name'],$ids) || in_array($field['name'], $add_editor_list))
-                        $ckeditor = 'ckeditor_w';
-
-                    if (array_key_exists($field['name'], $js_handlers))
-                        $js_handler = $js_handlers[$field['name']]['event'].'="'.$js_handlers[$field['name']]['handler'].'(this)"';
-
-					if (strtoupper($field['name']) === strtoupper($additional_form_field))
-                        $js_handler = 'onchange="'.$name.'_additionalFormOpen(this, \''.$additional_form_table.'\');"';
-
-					if (array_key_exists($field['name'], $form_fields_dimensions))
-					{
-						$dims = explode(',',$form_fields_dimensions[$field['name']]);
-                        $style .= "width: ".trim($dims[0])."px; height: ".trim($dims[1])."px;";
-					}
-
-
-
-                    echo '<div class="form-group">';
-
-
-					if (!in_array($field['name'], $hidden_edit_fields))
-					{
-						if (array_key_exists($field['name'], $titles))
-							echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$titles[$field['name']].'</label>';
-						else
-							echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$field['name'].'</label>';
-                    }
-
-                    echo '<div class="col-xs-9">';
-                    if (array_key_exists($field['name'], $mapped_field_inputs))
-                    {
-
-                        $field_input_part1 = substr(base64_decode($mapped_field_inputs[$field['name']]), 0, strpos(base64_decode($mapped_field_inputs[$field['name']]), ':'));
-                        $field_input_part2 = substr(base64_decode($mapped_field_inputs[$field['name']]), strpos(base64_decode($mapped_field_inputs[$field['name']]), ':')+1);
-
-						if ($readonly == 'readonly')
-							$readonly = 'disabled';
-                        switch ($field_input_part1)
-                        {
-                            case 'select':
-                                echo '<select id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'>';
-                                echo '<option value="0" selected>-</option>';
-                                $select = json_decode($field_input_part2, true);
-
-                                foreach ($select as $option_value=>$option_desc)
-                                {
-                                    $selected = '';
-                                    //echo $value;
-                                    //if ($option_value === $value) echo 'selected';
-                                    echo '<option value="'.$option_value.'" '.$selected.'>'.$option_desc.'</option>';
-                                }
-                                echo '</select>';
-							break;
-							case 'checkbox':
-                                echo '<input type="hidden" name="'.$field['table'].'^'.$field['name'].'" value="0">';
-                                echo '<input type="checkbox" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" '.$readonly.' style="'.$style.'" value="'.$field_input_part2.'" '.$js_handler.'>';
-							break;
-                        }
-                    }
-					elseif (in_array($field['name'], $translations))	// Translations for the field are set
-                    {
-
-						$langs = explode(',', Backstage::gi()->portal_langs);
-						echo '<ul class="nav nav-tabs" id="'.$field['table'].'_'.$field['name'].'_tab">';
-						foreach ($langs as $key => $lang)
-						{
-							echo "<li><a href='#".$field['table'].'_'.$field['name']."_".$lang."' data-toggle='tab'>".$lang."</a></li>";
-						}
-						echo '</ul>';
-                        echo '<div class="tab-content">';
-
-						foreach ($langs as $key => $lang)
-						{
-                            // LQ Button For Translations
-                            if (in_array($field['name'], $add_lq_button)){
-                                $buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'['.($lang).']" alt="' . $field['type'] . '">Add LQ</button>';
-                            } else {
-                                $buttonLQ = '';
-                            }
-
-
-							echo "<div class='tab-pane' id='".$field['table'].'_'.$field['name']."_". $lang."'>";
-							if (in_array(strtoupper($field['type']), $textarea_types))
-								echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
-							elseif (in_array(strtoupper($field['type']), $text_types))
-								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
-							elseif (in_array(strtoupper($field['type']), $date_types))
-								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
-							else
-								echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-
-							echo '</div>';
-						}
-                        echo '</div>';
-					}
-					else
-					{
-                        // LQ Button
-                        if (in_array($field['name'], $add_lq_button)){
-                            $buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'" alt="' . $field['type'] . '">Add LQ</button>';
-                        } else {
-                            $buttonLQ = '';
-                        }
-
-						if (array_key_exists($field['name'], $mapped_passwords))
-							echo '<input type="password" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-						elseif (in_array(strtoupper($field['type']), $textarea_types))
-							echo '<textarea id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
-						elseif (in_array(strtoupper($field['type']), $text_types))
-							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
-						elseif (in_array(strtoupper($field['type']), $date_types))
-							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="datetime form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-						else
-							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-					}
-                    echo '</div>';
-                    echo '<div class="form_hint"><span class="validation"></span></div>';
-                    echo '</div>';
-                }
-					// Materials uploader
-				if (!empty($uploader_object_type))
-				{
-					?>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Uploaded files</label>
-						<div class="col-xs-9">
-							<div id="uploader_materials_div"></div>
-							<br/>
-							<input type="file" id="uploader_materials" name="uploader_materials" multiple="multiple" style="visibility:hidden;"/>
-						</div>
-					</div>
-					<?php
-				}
-          ?>
+			<form name="<?php echo $name;?>-crud_edit_form" id="<?php echo $name;?>-crud_edit_form" role="form" class="form-horizontal" action="<?php echo Backstage::gi()->portal_url;?>crud/save/" method="post">
+			<?php
+				formBuilder("edit");
+			?>
 			</form>
 			<form name="<?php echo $name;?>-crud_additional_form" id="<?php echo $name;?>-crud_additional_form" role="form" class="form-horizontal" method="post">
 				<div id="<?php echo $name;?>-crud_additional_form_div">
@@ -1071,11 +1236,11 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Translations::gi()->close; ?></button>
-        <button type="button" class="btn btn-primary" id="<?php echo $name;?>-crud_save_btn"><?php echo Translations::gi()->save; ?></button>
+        <button type="button" class="btn btn-primary" id="<?php echo $name;?>-crud_edit_save_btn"><?php echo Translations::gi()->save; ?></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div><!-- /.modal edit -->
 
 <!-- Modal view -->
 <div class="modal fade" id="<?php echo $name;?>-crud_view_modal" tabindex="-1" role="dialog" aria-labelledby="view_label" aria-hidden="true">

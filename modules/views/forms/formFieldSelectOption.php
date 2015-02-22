@@ -20,7 +20,7 @@
 			foreach ($option->option_title as $translation)
 			{
 				echo "<div class='tab-pane' id='option_title_".$option->num."_".$translation->short."'>";
-				echo '<input name="option_title['.$option->num.']['.$translation->language_id.']" class="form-control" value="'.$translation->translation.'"/>';
+				echo '<input name="option_title['.$option->num.']['.$translation->short.']" class="form-control" value="'.$translation->translation.'"/>';
 				echo '</div>';
 			}
 			echo '</div>';

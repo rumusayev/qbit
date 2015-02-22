@@ -26,13 +26,13 @@ foreach ($items as $key=>$item)
 			switch ($item->type_name)
 			{
 				case 'text':
-					echo '<input type="text" id="'.$item->field_name.'" name="'.$item->field_name.'['.$translation->language_id.']" class="form-control input-sm" value="'.$translation->translation.'"/>';
+					echo '<input type="text" id="'.$item->field_name.'" name="'.$item->field_name.'['.$translation->short.']" class="form-control input-sm" value="'.$translation->translation.'"/>';
 				break;
 				case 'textarea':
-					echo '<textarea id="'.$item->field_name.'" name="'.$item->field_name.'['.$translation->language_id.']" class="form-control input-sm">'.$translation->translation.'</textarea>';
+					echo '<textarea id="'.$item->field_name.'" name="'.$item->field_name.'['.$translation->short.']" class="form-control input-sm">'.$translation->translation.'</textarea>';
 				break;
 				case 'button':
-					echo '<button id="'.$item->field_name.'" name="'.$item->field_name.'['.$translation->language_id.']" class="btn">'.$translation->translation.'</button>';
+					echo '<button id="'.$item->field_name.'" name="'.$item->field_name.'['.$translation->short.']" class="btn">'.$translation->translation.'</button>';
 				break;
 			}
 			echo '</div>';
