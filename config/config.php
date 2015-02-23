@@ -26,10 +26,10 @@ class Config
 	{
 		return array (
                         // DB parameters
-			"db_host" => "",
-			"db_name" => "",
-			"db_user" => "",
-			"db_pass" => "",
+			"db_host" => "localhost",
+			"db_name" => "qbit3",
+			"db_user" => "root",
+			"db_pass" => "1986519",
 			"db_table_prefix" => "",
 			
 			"db_adapter" => "PDODB",
@@ -37,15 +37,15 @@ class Config
 			"db_install_option" => "create,insert",				// recreate, create, alter, update, insert, delete
 			
                         // Portal parameters
-			"portal_email" => "",
-			"portal_name" => "",
-			"portal_url" => "",
-			"portal_langs" => "",
-			"portal_default_lang" => "",
+			"portal_email" => "admin@qbit.az",
+			"portal_name" => "qbit",
+			"portal_url" => "http://localhost/qbit/",
+			"portal_langs" => "az,en,ru",
+			"portal_default_lang" => "ru",
 			"portal_time_correction" => 10,
-			"portal_installed" => 0,
+			"portal_installed" => 1,
 			"development_mode" => 0,
-						
+			
                         // Image parameters
 			"image_max_width" => 800,
 			"image_max_height" => 400,
@@ -53,7 +53,7 @@ class Config
 			"image_thumb_max_height" => 200,
                         
                         // Core parameters
-			"template_name" => "",
+			"template_name" => "master",
 			"default_module_name" => "pages",						// which module will be called by default when the portal is opened
 			"default_action_name" => "getPage",
 			"default_view_name" => "default",

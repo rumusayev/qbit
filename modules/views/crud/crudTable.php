@@ -16,17 +16,6 @@ $(function()
 
 	$('input.datetime').datetimepicker({language:'en-gb'});
 
-    $.validator.addMethod("cRequired", $.validator.methods.required, "Bu dəyər boş olmamalıdır.");
-    $.validator.addMethod("cNonZero", $.validator.methods.min, $.format("Bu dəyər sıfırdan böyük olmalıdır."));
-
-    $.validator.addClassRules('required_field', {
-           cRequired: true
-       }
-    );
-    $.validator.addClassRules('non_zero_field', {
-           cNonZero: 1
-       }
-    );
     var <?php echo $name;?>_data = <?php echo json_encode($rows); ?>;
     $("#<?php echo $name;?>-crud_params_form #crud_current_page").val(<?php echo $crud_current_page;?>);
 
@@ -284,7 +273,7 @@ $(function()
     });
     $('.<?php echo $name;?>-crud_delete_all_btn').click(function(e)
     {
-        if (confirm("Siz əminsiz?"))
+        if (confirm("<?php echo Translations::gi()->are_you_sure; ?>"))
         {
 			deleting_data = [];
 			$("#<?php echo $name;?>-crud_search_form input[id^=crud_delete]").each(function(el, val)
@@ -342,6 +331,7 @@ $(function()
                 });
     }
 
+	<?php if (!!array_diff(array('add','edit'), $restrictions)) { ?>
     // Validate and Save add form    
     $('#<?php echo $name;?>-crud_add_save_btn').click(function(e)
     {
@@ -465,7 +455,9 @@ $(function()
 		});
 
     }
-
+	
+	<?php } ?> 
+	
     $('.<?php echo $name;?>-crud_page').click(function(e)
     {
         $("#<?php echo $name;?>-crud_params_form #crud_current_page").val($(this).attr("data-page"));
@@ -486,8 +478,8 @@ $(function()
         e.preventDefault();
     });
 
-
 		// Uploader form
+	<?php if (!!array_diff(array('add','edit'), $restrictions)) { ?>
 	$('#<?php echo $name;?>-crud_form #uploader_materials').uploadify({
 		'swf'      : '<?php echo Backstage::gi()->MATERIALS_URL; ?>temp/uploadify.swf',
 		'uploader' : '<?php echo Backstage::gi()->MATERIALS_URL; ?>temp/uploadify.php?session_id=<?php echo session_id(); ?>',
@@ -503,7 +495,7 @@ $(function()
 			<?php echo $name;?>_file_num++;
 		}
 	});
-
+	<?php } ?>
 		// Count per page
     $('#<?php echo $name;?>-select_count_per_page').change(function(e){
         $("#<?php echo $name;?>-crud_params_form #crud_count_per_page").val($(this).val());
@@ -953,239 +945,221 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 	 * @param string Form type ("add" or "edit")
 	 * @return object "HTML code"
 	 */
-	global $fields_global;
-	global $crud_data_global;
-	global $text_types_global;
-	global $textarea_types_global;
-	global $date_types_global;
-
-	$fields_global = $fields;
-	$crud_data_global = $crud_data;
-	$text_types_global = $text_types;
-	$textarea_types_global = $textarea_types;
-	$date_types_global = $date_types;
-		
-	function formBuilder($form_type)
+ if (!!array_diff(array('add','edit'), $restrictions)) 
+ { 
+	if (!function_exists('formBuilder')) 
 	{
-		global $fields_global;
-		global $crud_data_global;
-		global $text_types_global;
-		global $textarea_types_global;
-		global $date_types_global;
-		
-		extract(json_decode(base64_decode($crud_data_global), true));
-		$fields = $fields_global;
-		$text_types = $text_types_global;
-		$textarea_types = $textarea_types_global;
-		$date_types = $date_types_global;		
-		
-		foreach ($fields as $field)
+		function formBuilder($form_type, $fields, $crud_data, $text_types, $textarea_types, $date_types)
 		{
-			if ($field['name'] == 'child_count')
-				continue;
-			if (isset($removed_fields[$form_type]) && in_array($field['name'], $removed_fields[$form_type]))
-				continue;
-			
-			$readonly = '';
-			$hidden = '';
-			$ckeditor = '';
-			$style = '';
-			$js_handler = '';
-
-			if (in_array($field['name'],$ids) || in_array($field['name'], $disabled_edit_fields))
-				$readonly = 'readonly';
-
-			if (in_array($field['name'], $hidden_edit_fields))
-				$style .= 'visibility:hidden; ';
-
-			if (in_array($field['name'],$ids) || in_array($field['name'], $add_editor_list))
-				$ckeditor = 'ckeditor_w';
-
-			if (array_key_exists($field['name'], $js_handlers))
-				$js_handler = $js_handlers[$field['name']]['event'].'="'.$js_handlers[$field['name']]['handler'].'(this)"';
-
-			if (strtoupper($field['name']) === strtoupper($additional_form_field))
-				$js_handler = 'onchange="'.$name.'_additionalFormOpen(this, \''.$additional_form_table.'\');"';
-
-			if (array_key_exists($field['name'], $form_fields_dimensions))
+			extract(json_decode(base64_decode($crud_data), true));
+	
+			foreach ($fields as $field)
 			{
-				$dims = explode(',',$form_fields_dimensions[$field['name']]);
-				$style .= "width: ".trim($dims[0])."px; height: ".trim($dims[1])."px;";
-			}
-
-
-
-			echo '<div class="form-group">';
-
-
-			if (!in_array($field['name'], $hidden_edit_fields))
-			{
-				if (array_key_exists($field['name'], $titles))
-					echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$titles[$field['name']].'</label>';
-				else
-					echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$field['name'].'</label>';
-			}
-
-			echo '<div class="col-xs-9">';
-			if (array_key_exists($field['name'], $mapped_field_inputs))
-			{
-
-				$field_input_part1 = substr($mapped_field_inputs[$field['name']], 0, strpos($mapped_field_inputs[$field['name']], ':'));
-				$field_input_part2 = substr($mapped_field_inputs[$field['name']], strpos($mapped_field_inputs[$field['name']], ':')+1);
-
-				if ($readonly == 'readonly')
-					$readonly = 'disabled';
-				switch ($field_input_part1)
+				if ($field['name'] == 'child_count')
+					continue;
+				if (isset($removed_fields[$form_type]) && in_array($field['name'], $removed_fields[$form_type]))
+					continue;
+				
+				$readonly = '';
+				$hidden = '';
+				$ckeditor = '';
+				$style = '';
+				$js_handler = '';
+	
+				if (in_array($field['name'],$ids) || in_array($field['name'], $disabled_edit_fields))
+					$readonly = 'readonly';
+	
+				if (in_array($field['name'], $hidden_edit_fields))
+					$style .= 'visibility:hidden; ';
+	
+				if (in_array($field['name'],$ids) || in_array($field['name'], $add_editor_list))
+					$ckeditor = 'ckeditor_w';
+	
+				if (array_key_exists($field['name'], $js_handlers))
+					$js_handler = $js_handlers[$field['name']]['event'].'="'.$js_handlers[$field['name']]['handler'].'(this)"';
+	
+				if (strtoupper($field['name']) === strtoupper($additional_form_field))
+					$js_handler = 'onchange="'.$name.'_additionalFormOpen(this, \''.$additional_form_table.'\');"';
+	
+				if (array_key_exists($field['name'], $form_fields_dimensions))
 				{
-					case 'autocomplete':
-						$changed_field_id = $field['table'].'-'.$field['name'];
-						$typehead_name = str_replace('-','',$changed_field_id);
-						$params_array = json_decode($field_input_part2, true);
-					//	$js_handler2  =  $js_handlers[substr($field['name'], 0,-5)]['handler'].'(this)"';
-						?>
-						<script>
-						 $(document).ready(function(){	// UNIVERSAL TYPEAHEAD
-								
-								var <?php echo $typehead_name?> = new Bloodhound({
-								  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-								  queryTokenizer: Bloodhound.tokenizers.whitespace,
-								  remote: {
-									url: '<?php echo Backstage::gi()->portal_url ?><?php echo $params_array['json_method']?>',
-									   replace: function(url, query) {
-											return url + "?q=" + encodeURIComponent(query);
-										}
-								  },
-								  limit:100
-								});
-								 
-								<?php echo $typehead_name?>.initialize();
-								
-							
-					
-								$('#modal_<?php echo $changed_field_id?>').typeahead(null, 
-								{
-								  name: '<?php echo $typehead_name?>',
-								  displayKey: '<?php echo $params_array['full_field']?>',
-								  source: <?php echo $typehead_name?>.ttAdapter(),
-								  templates: {
-									empty: [
-									  '<div class="empty-message">',
-									  '<?php echo Translations::gi()->cant_find ?>',
-									  '</div>'
-									].join('\n'),
-									suggestion: Handlebars.compile('<p>{{<?php echo $params_array['id_field']?>}} - <strong>{{<?php echo $params_array['full_field']?>}}</strong></p>')
-								  }
-								}).on('typeahead:selected', function (obj, datum) 
-								{    
+					$dims = explode(',',$form_fields_dimensions[$field['name']]);
+					$style .= "width: ".trim($dims[0])."px; height: ".trim($dims[1])."px;";
+				}
+	
+	
+	
+				echo '<div class="form-group">';
+	
+	
+				if (!in_array($field['name'], $hidden_edit_fields))
+				{
+					if (array_key_exists($field['name'], $titles))
+						echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$titles[$field['name']].'</label>';
+					else
+						echo '<label for="'.$field['name'].'" class="col-sm-2 control-label">'.$field['name'].'</label>';
+				}
+	
+				echo '<div class="col-xs-9">';
+				if (array_key_exists($field['name'], $mapped_field_inputs))
+				{
+	
+					$field_input_part1 = substr($mapped_field_inputs[$field['name']], 0, strpos($mapped_field_inputs[$field['name']], ':'));
+					$field_input_part2 = substr($mapped_field_inputs[$field['name']], strpos($mapped_field_inputs[$field['name']], ':')+1);
+	
+					if ($readonly == 'readonly')
+						$readonly = 'disabled';
+					switch ($field_input_part1)
+					{
+						case 'autocomplete':
+							$changed_field_id = $field['table'].'-'.$field['name'];
+							$typehead_name = str_replace('-','',$changed_field_id);
+							$params_array = json_decode($field_input_part2, true);
+						//	$js_handler2  =  $js_handlers[substr($field['name'], 0,-5)]['handler'].'(this)"';
+							?>
+							<script>
+							 $(document).ready(function(){	// UNIVERSAL TYPEAHEAD
 									
-									$('#<?php echo $params_array['hidden_field_id']?>').val(datum.<?php echo $params_array['id_field']?>);
-								   
-								});
-								//END UNIVERSAL TYPEAHEAD 
-								});
-								</script>
-						   <input type="text" id="modal_<?php echo $changed_field_id?>" name="modal_<?php echo $changed_field_id?>"  class="form-control" data-container="body" data-placement="right"/>
-							
-					<?php
-					break;						
-					case 'select':
-						echo '<select id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'>';
-						echo '<option value="0" selected>-</option>';
-						$select = json_decode($field_input_part2, true);
-
-						foreach ($select as $option_value=>$option_desc)
-						{
-							$selected = '';
-							//echo $value;
-							//if ($option_value === $value) echo 'selected';
-							echo '<option value="'.$option_value.'" '.$selected.'>'.$option_desc.'</option>';
+									var <?php echo $typehead_name?> = new Bloodhound({
+									  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+									  queryTokenizer: Bloodhound.tokenizers.whitespace,
+									  remote: {
+										url: '<?php echo Backstage::gi()->portal_url ?><?php echo $params_array['json_method']?>',
+										   replace: function(url, query) {
+												return url + "?q=" + encodeURIComponent(query);
+											}
+									  },
+									  limit:100
+									});
+									 
+									<?php echo $typehead_name?>.initialize();
+									
+								
+						
+									$('#modal_<?php echo $changed_field_id?>').typeahead(null, 
+									{
+									  name: '<?php echo $typehead_name?>',
+									  displayKey: '<?php echo $params_array['full_field']?>',
+									  source: <?php echo $typehead_name?>.ttAdapter(),
+									  templates: {
+										empty: [
+										  '<div class="empty-message">',
+										  '<?php echo Translations::gi()->cant_find ?>',
+										  '</div>'
+										].join('\n'),
+										suggestion: Handlebars.compile('<p>{{<?php echo $params_array['id_field']?>}} - <strong>{{<?php echo $params_array['full_field']?>}}</strong></p>')
+									  }
+									}).on('typeahead:selected', function (obj, datum) 
+									{    
+										
+										$('#<?php echo $params_array['hidden_field_id']?>').val(datum.<?php echo $params_array['id_field']?>);
+									   
+									});
+									//END UNIVERSAL TYPEAHEAD  
+									});
+									</script>
+							   <input type="text" id="modal_<?php echo $changed_field_id?>" name="modal_<?php echo $changed_field_id?>"  class="form-control" data-container="body" data-placement="right" value="bambino"/>
+						
+						<?php
+						break;					
+						case 'select':
+							echo '<select id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'>';
+							echo '<option value="0" selected>-</option>';
+							$select = json_decode($field_input_part2, true);
+	
+							foreach ($select as $option_value=>$option_desc)
+							{
+								$selected = '';
+								//echo $value;
+								//if ($option_value === $value) echo 'selected';
+								echo '<option value="'.$option_value.'" '.$selected.'>'.$option_desc.'</option>';
+							}
+							echo '</select>';
+						break;
+						case 'checkbox':
+							echo '<input type="hidden" name="'.$field['table'].'^'.$field['name'].'" value="0">';
+							echo '<input type="checkbox" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" '.$readonly.' style="'.$style.'" value="'.$field_input_part2.'" '.$js_handler.'>';
+						break;
+					}
+				}
+				elseif (in_array($field['name'], $translations))	// Translations for the field are set
+				{
+	
+					$langs = explode(',', Backstage::gi()->portal_langs);
+					echo '<ul class="nav nav-tabs" id="'.$field['table'].'_'.$field['name'].'_tab">';
+					foreach ($langs as $key => $lang)
+					{
+						echo "<li><a href='#".$field['table'].'_'.$field['name']."_".$lang."' data-toggle='tab'>".$lang."</a></li>";
+					}
+					echo '</ul>';
+					echo '<div class="tab-content">';
+	
+					foreach ($langs as $key => $lang)
+					{
+						// LQ Button For Translations
+						if (in_array($field['name'], $add_lq_button)){
+							$buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'['.($lang).']" alt="' . $field['type'] . '">Add LQ</button>';
+						} else {
+							$buttonLQ = '';
 						}
-						echo '</select>';
-					break;
-					case 'checkbox':
-						echo '<input type="hidden" name="'.$field['table'].'^'.$field['name'].'" value="0">';
-						echo '<input type="checkbox" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" '.$readonly.' style="'.$style.'" value="'.$field_input_part2.'" '.$js_handler.'>';
-					break;
+	
+	
+						echo "<div class='tab-pane' id='".$field['table'].'_'.$field['name']."_". $lang."'>";
+						if (in_array(strtoupper($field['type']), $textarea_types))
+							echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
+						elseif (in_array(strtoupper($field['type']), $text_types))
+							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
+						elseif (in_array(strtoupper($field['type']), $date_types))
+							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
+						else
+							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+	
+						echo '</div>';
+					}
+					echo '</div>';
 				}
-			}
-			elseif (in_array($field['name'], $translations))	// Translations for the field are set
-			{
-
-				$langs = explode(',', Backstage::gi()->portal_langs);
-				echo '<ul class="nav nav-tabs" id="'.$field['table'].'_'.$field['name'].'_tab">';
-				foreach ($langs as $key => $lang)
+				else
 				{
-					echo "<li><a href='#".$field['table'].'_'.$field['name']."_".$lang."' data-toggle='tab'>".$lang."</a></li>";
-				}
-				echo '</ul>';
-				echo '<div class="tab-content">';
-
-				foreach ($langs as $key => $lang)
-				{
-					// LQ Button For Translations
+					// LQ Button
 					if (in_array($field['name'], $add_lq_button)){
-						$buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'['.($lang).']" alt="' . $field['type'] . '">Add LQ</button>';
+						$buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'" alt="' . $field['type'] . '">Add LQ</button>';
 					} else {
 						$buttonLQ = '';
 					}
-
-
-					echo "<div class='tab-pane' id='".$field['table'].'_'.$field['name']."_". $lang."'>";
-					if (in_array(strtoupper($field['type']), $textarea_types))
-						echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
+	
+					if (array_key_exists($field['name'], $mapped_passwords))
+						echo '<input type="password" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+					elseif (in_array(strtoupper($field['type']), $textarea_types))
+						echo '<textarea id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
 					elseif (in_array(strtoupper($field['type']), $text_types))
-						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
+						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
 					elseif (in_array(strtoupper($field['type']), $date_types))
-						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
+						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="datetime form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
 					else
-						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-
-					echo '</div>';
+						echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
 				}
 				echo '</div>';
+				echo '<div class="form_hint"><span class="validation"></span></div>';
+				echo '</div>';
 			}
-			else
+				// Materials uploader
+			if (!empty($uploader_object_type))
 			{
-				// LQ Button
-				if (in_array($field['name'], $add_lq_button)){
-					$buttonLQ = '<button type="button" class="addLQbtn btn btn-primary btn-sm" rel="'.$field['table'].'^'.$field['name'].'" alt="' . $field['type'] . '">Add LQ</button>';
-				} else {
-					$buttonLQ = '';
-				}
-
-				if (array_key_exists($field['name'], $mapped_passwords))
-					echo '<input type="password" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-				elseif (in_array(strtoupper($field['type']), $textarea_types))
-					echo '<textarea id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
-				elseif (in_array(strtoupper($field['type']), $text_types))
-					echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
-				elseif (in_array(strtoupper($field['type']), $date_types))
-					echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="datetime form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-				else
-					echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
-			}
-			echo '</div>';
-			echo '<div class="form_hint"><span class="validation"></span></div>';
-			echo '</div>';
-		}
-			// Materials uploader
-		if (!empty($uploader_object_type))
-		{
-			?>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Uploaded files</label>
-				<div class="col-xs-9">
-					<div id="uploader_materials_div"></div>
-					<br/>
-					<input type="file" id="uploader_materials" name="uploader_materials" multiple="multiple" style="visibility:hidden;"/>
+				?>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Uploaded files</label>
+					<div class="col-xs-9">
+						<div id="uploader_materials_div"></div>
+						<br/>
+						<input type="file" id="uploader_materials" name="uploader_materials" multiple="multiple" style="visibility:hidden;"/>
+					</div>
 				</div>
-			</div>
-			<?php
-		}
-		echo '</form>';
+				<?php
+			}
+		} // end of the function formBuilder
 	}
 	?>
-        </div>
+	</div>
 </div>
 
 <!-- Modal add -->
@@ -1199,7 +1173,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
       <div class="modal-body">
 			<form name="<?php echo $name;?>-crud_add_form" id="<?php echo $name;?>-crud_add_form" role="form" class="form-horizontal" action="<?php echo Backstage::gi()->portal_url;?>crud/save/" method="post">
 			<?php
-				formBuilder("add");
+				formBuilder("add", $fields, $crud_data, $text_types, $textarea_types, $date_types);
 			?>
 			</form>
 			<form name="<?php echo $name;?>-crud_additional_form" id="<?php echo $name;?>-crud_additional_form" role="form" class="form-horizontal" method="post">
@@ -1226,7 +1200,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
       <div class="modal-body">
 			<form name="<?php echo $name;?>-crud_edit_form" id="<?php echo $name;?>-crud_edit_form" role="form" class="form-horizontal" action="<?php echo Backstage::gi()->portal_url;?>crud/save/" method="post">
 			<?php
-				formBuilder("edit");
+				formBuilder("edit", $fields, $crud_data, $text_types, $textarea_types, $date_types);
 			?>
 			</form>
 			<form name="<?php echo $name;?>-crud_additional_form" id="<?php echo $name;?>-crud_additional_form" role="form" class="form-horizontal" method="post">
@@ -1242,35 +1216,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal edit -->
 
-<!-- Modal view -->
-<div class="modal fade" id="<?php echo $name;?>-crud_view_modal" tabindex="-1" role="dialog" aria-labelledby="view_label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="view_label">Baxmaq</h4>
-      </div>
-      <div class="modal-body">
-		<dl class="dl-horizontal">
-		<?php
-			foreach ($fields as $field)
-			{
-				if (array_key_exists($field['name'], $titles))
-					echo '<dt>'.$titles[$field['name']].':</dt> <dd class="clearfix"><span id="'.$name.'-crud_view_'.$field['name'].'"></span></dd>';
-				else
-					echo '<dt>'.$field['name'].':</dt> <dd class="clearfix"><span id="'.$name.'-crud_view_'.$field['name'].'"></span></dd>';
-			}
-		?>
-		</dl>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Translations::gi()->close; ?></button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<!-- Modal view -->
+<!-- Modal LQ -->
 <div class="modal fade" id="insertLQModal" tabindex="-1" role="dialog" aria-labelledby="view_label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1448,4 +1394,34 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<?php } ?>
+
+<!-- Modal view -->
+<div class="modal fade" id="<?php echo $name;?>-crud_view_modal" tabindex="-1" role="dialog" aria-labelledby="view_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="view_label">Baxmaq</h4>
+      </div>
+      <div class="modal-body">
+		<dl class="dl-horizontal">
+		<?php
+			foreach ($fields as $field)
+			{
+				if (array_key_exists($field['name'], $titles))
+					echo '<dt>'.$titles[$field['name']].':</dt> <dd class="clearfix"><span id="'.$name.'-crud_view_'.$field['name'].'"></span></dd>';
+				else
+					echo '<dt>'.$field['name'].':</dt> <dd class="clearfix"><span id="'.$name.'-crud_view_'.$field['name'].'"></span></dd>';
+			}
+		?>
+		</dl>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Translations::gi()->close; ?></button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

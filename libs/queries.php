@@ -71,8 +71,6 @@ class Queries
  			$this->xml->$key = str_replace($match[0],$message_parts[$match[1]],$this->xml->$key);
  		}
 
-		return $this->xml->$key;
+		return (string)$this->xml->$key;
 	}
-        
-
 }

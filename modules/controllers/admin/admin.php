@@ -144,20 +144,20 @@ class cAdmin extends controller
 
     public function catalogs()
     {
-        $designs = json_decode(Loader::gi()->callAPI('GET', Backstage::gi()->portal_url . 'designs', array('order' => 'design_name')), true);
+        $designs = Loader::gi()->callModule('GET', 'designs', array('order' => 'design_name'));
         $designs_arr = array();
-        foreach ($designs as $key => $design)
-            $designs_arr[$design['id']] = $design['design_name'];
+        foreach ($designs['items'] as $key => $design)
+            $designs_arr[$design->id] = $design->design_name;
 
-        $catalogs = json_decode(Loader::gi()->callAPI('GET', Backstage::gi()->portal_url . 'catalogs', array('order' => 'catalog_name')), true);
+        $catalogs = Loader::gi()->callModule('GET', 'catalogs', array('order' => 'catalog_name'));
         $catalogs_arr = array();
-        foreach ($catalogs as $key => $catalog)
-            $catalogs_arr[$catalog['id']] = $catalog['catalog_name'];
+        foreach ($catalogs['items'] as $key => $catalog)
+            $catalogs_arr[$catalog->id] = $catalog->catalog_name;
 
-        $forms = json_decode(Loader::gi()->callAPI('GET', Backstage::gi()->portal_url . 'forms'), true);
+        $forms = Loader::gi()->callModule('GET', 'forms');
         $forms_arr = array();
-        foreach ($forms as $key => $form)
-            $forms_arr[$form['id']] = $form['form_name'];
+        foreach ($forms['items'] as $key => $form)
+            $forms_arr[$form->id] = $form->form_name;
 
         $crud_pages = new Crud("catalogs");
         $this->data['crud_catalogs'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'catalogs')

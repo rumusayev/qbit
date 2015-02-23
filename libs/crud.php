@@ -636,6 +636,7 @@ class Crud
 
     public function execute($data_type = 'crud')
     {        
+        $crud_data['name'] = $this->name;
         $crud_data['query'] = $this->query;
         $crud_data['tables'] = $this->tables;
         $crud_data['field_names'] = $this->field_names;
@@ -682,17 +683,19 @@ class Crud
         $crud_data['manual_search_format'] = $this->manual_search_format;
 		
 		$crud_params['name'] = $this->name;
+		$crud_params['crud_current_page'] = 1;
+		$crud_params['crud_count_per_page'] = 10;
 		
         switch ($data_type)
         {
             case 'json':
-                $data = Loader::gi()->callModule('POST', 'crud/load', array('crud_params_form'=>json_encode($crud_params), 'crud_data'=>json_encode($crud_data), 'crud_search_form'=>'[]'));
+                $data = Loader::gi()->callModule('POST', 'crud/load', array('crud_params_form'=>json_encode($crud_params), 'crud_data'=>base64_encode(json_encode($crud_data)), 'crud_search_form'=>'[]'));
                 $data['body'] = $data['rows'];
             break;
             default:
                 $data['controller_name'] = 'crud';        
                 $data['action_name'] = 'execute';		
-                $data['crud_data'] = base64_encode(json_encode($crud_data));
+                $data['crud_data'] = $crud_data;
                 $data['crud_params'] = $crud_params;
                 if ($this->query !== '' || $this->tables !== '')
                 {
