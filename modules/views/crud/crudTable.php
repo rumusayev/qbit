@@ -154,6 +154,9 @@ $(function()
 			{
 				if (value == 1)
 					$("#<?php echo $name;?>-crud_edit_form input:checkbox[name$=\\^"+el+"]").prop('checked', true);
+				else if (value == 0)
+					$("#<?php echo $name;?>-crud_edit_form input:checkbox[name$=\\^"+el+"]").prop('checked', false);
+				
 				$("#<?php echo $name;?>-crud_edit_form select[name$=\\^"+el+"]").val(value);
 				$("#<?php echo $name;?>-crud_edit_form select[name$=\\^"+el+"]").change(); // Trigger change event to activate form (if there is any)
 				$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").val(value);
