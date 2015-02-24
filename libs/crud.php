@@ -201,7 +201,7 @@ class Crud
 	 * Map a field(s) to a custom form input(s)
 	 *
 	 * @param string Field name
-	 * @param string json-type string (input_type:options_in_json)
+	 * @param string json-type string (input_type:options_in_json) or string (e.g. 'checkbox:1,checked' or 'checkbox:1')
 	 * ...
 	 * @return object Self object
 	 */    	

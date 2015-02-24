@@ -3,6 +3,7 @@ var <?php echo $name;?>_file_num = 0;
 var <?php echo $name;?>_files = [];
 var <?php echo $name;?>_current_id = 0;
 var name = '<?php echo $name;?>';
+var <?php echo $name;?>_data = '';
 
 $(function()
 {
@@ -16,7 +17,7 @@ $(function()
 
 	$('input.datetime').datetimepicker({language:'en-gb'});
 
-    var <?php echo $name;?>_data = <?php echo json_encode($rows); ?>;
+    <?php echo $name;?>_data = <?php echo json_encode($rows); ?>;
     $("#<?php echo $name;?>-crud_params_form #crud_current_page").val(<?php echo $crud_current_page;?>);
 
     $('.<?php echo $name;?>-crud_header').click(function(e)
@@ -508,7 +509,10 @@ $(function()
 	foreach ($fields as $field)
 	{
 		if (in_array($field['name'], $translations))
-			echo "$('#".$field['table']."_".$field['name']."_tab a:first').tab('show');";
+		{
+			echo "$('#add_".$field['table']."_".$field['name']."_tab a:first').tab('show');";
+			echo "$('#edit_".$field['table']."_".$field['name']."_tab a:first').tab('show');";
+		}
 	}
 	?>
 });
@@ -566,7 +570,12 @@ function <?php echo $name;?>_resetForm(form)
 
 	//$(form).find('input:text, input[type="hidden"], input:password, input:file').val('');
 	$(form).find('select').prop('selectedIndex',0);
-	$(form).find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+	$(form+' input:checkbox').each(function(i,item)
+	{ 
+		this.checked = item.defaultChecked; 
+	});
+	
+	$(form).find('input:radio').removeAttr('checked').removeAttr('selected');
 	<?php echo $name;?>_file_num = 0;
 	<?php echo $name;?>_files = [];
 	$('#<?php echo $name;?>-crud_form #uploader_materials_div').html('');
@@ -1077,8 +1086,14 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 							echo '</select>';
 						break;
 						case 'checkbox':
+							$field_input_part2 = explode(',',$field_input_part2);
+							$checked = '';
+							$value = $field_input_part2[0];
+							if (isset($field_input_part2[1]) && $field_input_part2[1] === 'checked')
+								$checked = 'checked';
+							
 							echo '<input type="hidden" name="'.$field['table'].'^'.$field['name'].'" value="0">';
-							echo '<input type="checkbox" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" '.$readonly.' style="'.$style.'" value="'.$field_input_part2.'" '.$js_handler.'>';
+							echo '<input type="checkbox" id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'" '.$readonly.' style="'.$style.'" value="'.$value.'" '.$js_handler.' '.$checked.'>';
 						break;
 					}
 				}
@@ -1086,10 +1101,10 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 				{
 	
 					$langs = explode(',', Backstage::gi()->portal_langs);
-					echo '<ul class="nav nav-tabs" id="'.$field['table'].'_'.$field['name'].'_tab">';
+					echo '<ul class="nav nav-tabs" id="'.$form_type.'_'.$field['table'].'_'.$field['name'].'_tab">';
 					foreach ($langs as $key => $lang)
 					{
-						echo "<li><a href='#".$field['table'].'_'.$field['name']."_".$lang."' data-toggle='tab'>".$lang."</a></li>";
+						echo "<li><a href='#".$form_type.'_'.$field['table'].'_'.$field['name']."_".$lang."' data-toggle='tab'>".$lang."</a></li>";
 					}
 					echo '</ul>';
 					echo '<div class="tab-content">';
@@ -1104,7 +1119,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 						}
 	
 	
-						echo "<div class='tab-pane' id='".$field['table'].'_'.$field['name']."_". $lang."'>";
+						echo "<div class='tab-pane' id='".$form_type.'_'.$field['table'].'_'.$field['name']."_". $lang."'>";
 						if (in_array(strtoupper($field['type']), $textarea_types))
 							echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
 						elseif (in_array(strtoupper($field['type']), $text_types))
