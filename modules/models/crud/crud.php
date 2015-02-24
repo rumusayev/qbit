@@ -33,17 +33,16 @@ class mCrud extends model
 				$parent_field_name = reset($this->data['mapped_parents']);
 				$child_field_name = key($this->data['mapped_parents']);
 				
-                if (stristr($this->data['query'], 'where'))
-                    $this->data['query'] = $this->str_lreplace('where', 'where ('.$parent_field_name.' = "'.$this->data['crud_parent_id'].'") and ', $this->data['query']);
-                else
-                    $this->data['query'] .= ' where ('.$parent_field_name.' = "'.$this->data['crud_parent_id'].'")';
-
 				$this->data['parent_parent_id'] = $this->dbmanager->getScalarByQuery("select $parent_field_name from ({$this->data['query']}) a where $child_field_name = {$this->data['crud_parent_id']}");
 				if ($this->data['parent_parent_id'])
 					$this->data['parent_parent_id'] = $this->data['parent_parent_id']->{$parent_field_name};
 				else
 					$this->data['parent_parent_id'] = -1;
-					
+				
+                if (stristr($this->data['query'], 'where'))
+                    $this->data['query'] = $this->str_lreplace('where', 'where ('.$parent_field_name.' = "'.$this->data['crud_parent_id'].'") and ', $this->data['query']);
+                else
+                    $this->data['query'] .= ' where ('.$parent_field_name.' = "'.$this->data['crud_parent_id'].'")';
 			}
             if ($this->data['order'] !== '')
                 $this->data['query'] .= ' order by ' . $this->data['order'];

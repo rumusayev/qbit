@@ -18,7 +18,6 @@ class cCrud extends controller
 		$this->data = array_merge($this->data, $crud_data);
 		$this->data = array_merge($this->data, $crud_params_form);
 		$this->data['crud_data'] = $this->data['request']->parameters['crud_data'];
-		
 		$after_load_method_path = $crud_data['after_load_method_path'];
 							
 			// Get search fields
@@ -65,7 +64,7 @@ class cCrud extends controller
 		$this->data = Loader::gi()->getModel($this->data);
 	
 		$this->data['crud_pages_count'] = $this->data['crud_count_per_page']==0?1:ceil($this->data['crud_total_count']/$this->data['crud_count_per_page']);
-		
+
 		$this->data['view_name']  = 'crudTable';
 		$this->data['body'] = Loader::gi()->getView($this->data);
 		
@@ -134,13 +133,10 @@ class cCrud extends controller
 		$mapped_passwords = $crud_data['mapped_passwords'];
 
 			// Additional access right checks
-		$method = 'PUT';
+		$method = $this->data['request']->method;
 		foreach ($this->data['crud_resource_types'] as $crud_resource_types)
 		{
 					// In future we should change this behavior in case of multi-ids
-			$method = 'PUT';
-			if ($form_values[$crud_resource_types.'^'.$ids[0]] == 0)
-				$method = 'POST';
 			if (!Pretorian::gi()->check($crud_resource_types, $method, $form_values[$crud_resource_types.'^'.$ids[0]]))
 			{	
 				switch($method)  

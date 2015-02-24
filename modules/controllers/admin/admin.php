@@ -52,7 +52,7 @@ class cAdmin extends controller
                 'is_main', 'Main',
                 'ordering', 'Order number')
             ->disabledTableFields('child_count', 'layout_id')
-			->removeFields('layout_name, design_id')
+			->removeFields('layout_name, design_id', 'add')
             ->disableSavingToTables('layouts')
             ->mapParents('id', 'parent_id')
             ->setParentTable('pages')

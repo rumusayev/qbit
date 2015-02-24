@@ -156,7 +156,7 @@ $(function()
 					$("#<?php echo $name;?>-crud_edit_form input:checkbox[name$=\\^"+el+"]").prop('checked', true);
 				else if (value == 0)
 					$("#<?php echo $name;?>-crud_edit_form input:checkbox[name$=\\^"+el+"]").prop('checked', false);
-				
+					
 				$("#<?php echo $name;?>-crud_edit_form select[name$=\\^"+el+"]").val(value);
 				$("#<?php echo $name;?>-crud_edit_form select[name$=\\^"+el+"]").change(); // Trigger change event to activate form (if there is any)
 				$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").val(value);
@@ -365,7 +365,7 @@ $(function()
 					success:function(data)
 					{
 						if (data == 0)
-							<?php echo $name;?>_submit_crud_form(form);
+							<?php echo $name;?>_submit_crud_form(form, "POST");
 						else
 							alert('The resource name is already busy.');
 					},
@@ -375,7 +375,7 @@ $(function()
 					}
 				});
 			<?php } else
-				echo $name.'_submit_crud_form(form);'
+				echo $name.'_submit_crud_form(form, "POST");'
 			?>
         }
     });
@@ -409,7 +409,7 @@ $(function()
 					success:function(data)
 					{
 						if (data == 0)
-							<?php echo $name;?>_submit_crud_form(form);
+							<?php echo $name;?>_submit_crud_form(form, "PUT");
 						else
 							alert('The resource name is already busy.');
 					},
@@ -419,12 +419,12 @@ $(function()
 					}
 				});
 			<?php } else
-				echo $name.'_submit_crud_form(form);'
+				echo $name.'_submit_crud_form(form, "PUT");'
 			?>
         }
     });
 
-    function <?php echo $name;?>_submit_crud_form(form)
+    function <?php echo $name;?>_submit_crud_form(form, method)
     {
 
         for(var instanceName in CKEDITOR.instances)
@@ -436,7 +436,7 @@ $(function()
 		$.ajax(
 		{
 			url: form.action,
-			type: "POST",
+			type: method,
 			data: {
 				form_values: JSON.stringify($(form).serializeJSON()),
 				crud_data: '<?php echo $crud_data;?>',
