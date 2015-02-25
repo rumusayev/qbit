@@ -11,17 +11,17 @@ foreach ($items as $key=>$item)
 
 	if (is_array($item->value))	// Translations for the field are set
 	{
-		echo '<ul class="nav nav-tabs" id="'.$item->field_name.'_tab">';
+		echo '<ul class="nav nav-tabs" id="'.$form_type.$item->field_name.'_tab">';
 		foreach ($item->value as $translation) 
 		{
-			echo "<li><a href='#".$item->field_name."_".$translation->short."' data-toggle='tab'>".$translation->short."</a></li>";
+			echo "<li><a href='#".$form_type.$item->field_name."_".$translation->short."' data-toggle='tab'>".$translation->short."</a></li>";
 		}
 		echo '</ul>';
 		echo '<div class="tab-content">';
 
 		foreach ($item->value as $translation) 
 		{
-			echo "<div class='tab-pane' id='".$item->field_name."_".$translation->short."'>";
+			echo "<div class='tab-pane' id='".$form_type.$item->field_name."_".$translation->short."'>";
 			// Field type handling
 			switch ($item->type_name)
 			{

@@ -370,7 +370,7 @@ class cForms extends controller
 	{
 		// Model loading
 		$this->data = Loader::gi()->getModel($this->data);
-
+		$this->data['form_type'] = isset($this->data['request']->parameters['form_type'])?$this->data['request']->parameters['form_type']:'';
 		// View loading
         $this->data['view_name'] = 'formValues';
         if ($this->data['request']->data_type == 'json'){

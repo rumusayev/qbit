@@ -165,7 +165,7 @@ $(function()
         });
 
 			// Here we will select the form of the parent element
-		if ($("#<?php echo $name;?>-crud_params_form #crud_parent_id").val() > 0 && $("#<?php echo $name;?>-crud_params_form #additional_form_field").val() != '' && $("#<?php echo $name;?>-crud_form select[id$=-<?php echo $additional_form_field; ?>]").val() == 0)
+		if ($("#<?php echo $name;?>-crud_params_form #crud_parent_id").val() > 0 && $("#<?php echo $name;?>-crud_params_form #additional_form_field").val() != '' && $("#<?php echo $name;?>-crud_edit_form select[id$=-<?php echo $additional_form_field; ?>]").val() == 0)
 			$.ajax(
 			{
 				url:"<?php echo Backstage::gi()->portal_url;?>forms/getObjectFormID",
@@ -365,7 +365,7 @@ $(function()
 					success:function(data)
 					{
 						if (data == 0)
-							<?php echo $name;?>_submit_crud_form(form, "POST");
+							<?php echo $name;?>_submit_crud_form(form, "edit", "POST");
 						else
 							alert('The resource name is already busy.');
 					},
@@ -375,7 +375,7 @@ $(function()
 					}
 				});
 			<?php } else
-				echo $name.'_submit_crud_form(form, "POST");'
+				echo $name.'_submit_crud_form(form, "edit", "POST");'
 			?>
         }
     });
@@ -409,7 +409,7 @@ $(function()
 					success:function(data)
 					{
 						if (data == 0)
-							<?php echo $name;?>_submit_crud_form(form, "PUT");
+							<?php echo $name;?>_submit_crud_form(form, "edit", "PUT");
 						else
 							alert('The resource name is already busy.');
 					},
@@ -419,12 +419,12 @@ $(function()
 					}
 				});
 			<?php } else
-				echo $name.'_submit_crud_form(form, "PUT");'
+				echo $name.'_submit_crud_form(form, "edit", "PUT");'
 			?>
         }
     });
 
-    function <?php echo $name;?>_submit_crud_form(form, method)
+    function <?php echo $name;?>_submit_crud_form(form, form_type, method)
     {
 
         for(var instanceName in CKEDITOR.instances)
@@ -442,7 +442,7 @@ $(function()
 				crud_data: '<?php echo $crud_data;?>',
 				crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON()),
 				files: JSON.stringify(<?php echo $name;?>_files),
-				additional_form: JSON.stringify($('#<?php echo $name;?>-crud_additional_form').serializeJSON())
+				additional_form: JSON.stringify($('#<?php echo $name;?>-crud_'+form_type+'_modal #<?php echo $name;?>-crud_additional_form').serializeJSON())
 			},
 
 			success:function(data)
@@ -483,8 +483,10 @@ $(function()
     });
 
 		// Uploader form
-	<?php if (!!array_diff(array('add','edit'), $restrictions)) { ?>
-	$('#<?php echo $name;?>-crud_form #uploader_materials').uploadify({
+	<?php 
+	if (!!array_diff(array('add','edit'), $restrictions)) { ?>
+	// Add form uploadify
+	$('#<?php echo $name;?>-crud_add_form #uploader_materials_add').uploadify({
 		'swf'      : '<?php echo Backstage::gi()->MATERIALS_URL; ?>temp/uploadify.swf',
 		'uploader' : '<?php echo Backstage::gi()->MATERIALS_URL; ?>temp/uploadify.php?session_id=<?php echo session_id(); ?>',
 		'multi'    : true,
@@ -494,7 +496,23 @@ $(function()
 		'fileTypeDesc' : 'JPG Image Files (*.jpg); JPEG Image Files (*.jpeg); PNG Image Files (*.png), GIF (*.gif)',
 		'onUploadSuccess': function(file, data, response)
 		{
-			$('#<?php echo $name;?>-crud_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?>/temp/files/<?php echo session_id(); ?>/'+file.name+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile(0, this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
+			$('#<?php echo $name;?>-crud_add_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?>/temp/files/<?php echo session_id(); ?>/'+file.name+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile(0, this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
+			<?php echo $name;?>_files[<?php echo $name;?>_file_num] = {id:0, name: file.name};
+			<?php echo $name;?>_file_num++;
+		}
+	});
+	// Edit form uploadify
+	$('#<?php echo $name;?>-crud_edit_form #uploader_materials_edit').uploadify({
+		'swf'      : '<?php echo Backstage::gi()->MATERIALS_URL; ?>temp/uploadify.swf',
+		'uploader' : '<?php echo Backstage::gi()->MATERIALS_URL; ?>temp/uploadify.php?session_id=<?php echo session_id(); ?>',
+		'multi'    : true,
+		'wmode'      : 'transparent',
+		'buttonImg': " ",
+		'fileTypeExts' : '*.jpg; *.jpeg; *.png; *.gif',
+		'fileTypeDesc' : 'JPG Image Files (*.jpg); JPEG Image Files (*.jpeg); PNG Image Files (*.png), GIF (*.gif)',
+		'onUploadSuccess': function(file, data, response)
+		{
+			$('#<?php echo $name;?>-crud_edit_form #uploader_materials_div').append('<span style="padding-right: 7px;"><img id="file_'+<?php echo $name;?>_file_num+'" height="100" src="<?php echo Backstage::gi()->MATERIALS_URL;?>/temp/files/<?php echo session_id(); ?>/'+file.name+'" /><a href="#dummy" file_num="'+<?php echo $name;?>_file_num+'" onclick="<?php echo $name;?>_deleteFile(0, this);"><span style="vertical-align: top;" class="glyphicon glyphicon-remove"></span></a></span>');
 			<?php echo $name;?>_files[<?php echo $name;?>_file_num] = {id:0, name: file.name};
 			<?php echo $name;?>_file_num++;
 		}
@@ -566,9 +584,9 @@ function <?php echo $name;?>_resetForm(form)
 	$.each(field_types, function(el, value)
 	{
 		if ($.inArray(value, types) !== -1)
-			$("#<?php echo $name;?>-crud_form input:text[name$=\\^"+el+"]").val('0');
+			$(form+" input:text[name$=\\^"+el+"]").val('0');
 		else
-			$("#<?php echo $name;?>-crud_form input:text[name$=\\^"+el+"]").val('');
+			$(form+" input:text[name$=\\^"+el+"]").val('');
 	});
 
 	//$(form).find('input:text, input[type="hidden"], input:password, input:file').val('');
@@ -581,7 +599,7 @@ function <?php echo $name;?>_resetForm(form)
 	$(form).find('input:radio').removeAttr('checked').removeAttr('selected');
 	<?php echo $name;?>_file_num = 0;
 	<?php echo $name;?>_files = [];
-	$('#<?php echo $name;?>-crud_form #uploader_materials_div').html('');
+	$(form+' #uploader_materials_div').html('');
 }
 
 // Export button
@@ -609,7 +627,7 @@ $(".<?php echo $name;?>-crud_print_btn").click(function(e) {
     e.preventDefault();
 });
 
-function <?php echo $name;?>_additionalFormOpen(obj, table)
+function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
 {
 	form_id = $(obj).val();
 	row_id = <?php echo $name;?>_current_id;
@@ -617,11 +635,11 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 	{
 		url:"<?php echo Backstage::gi()->portal_url;?>forms/getFormValues/",
 		type: "GET",
-		data: "form_id="+form_id+"&row_id="+row_id+"&table_name="+table,
+		data: "form_id="+form_id+"&row_id="+row_id+"&table_name="+table+"&form_type="+form_type,
 		success:function(data)
 		{
-			$('#<?php echo $name;?>-crud_additional_form_div').html(data);
-			$('#<?php echo $name;?>-crud_additional_form_div .nav-tabs a:first').tab('show');
+			$('#<?php echo $name;?>-crud_'+form_type+'_modal #<?php echo $name;?>-crud_additional_form_div').html(data);
+			$('#<?php echo $name;?>-crud_'+form_type+'_modal #<?php echo $name;?>-crud_additional_form_div .nav-tabs a:first').tab('show');
             $('input.datetime').datetimepicker({language:'en-gb'});
 		},
 		error: function (request, status, error) {
@@ -991,7 +1009,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 					$js_handler = $js_handlers[$field['name']]['event'].'="'.$js_handlers[$field['name']]['handler'].'(this)"';
 	
 				if (strtoupper($field['name']) === strtoupper($additional_form_field))
-					$js_handler = 'onchange="'.$name.'_additionalFormOpen(this, \''.$additional_form_table.'\');"';
+					$js_handler = 'onchange="'.$name.'_additionalFormOpen(\''.$form_type.'\', this, \''.$additional_form_table.'\');"';
 	
 				if (array_key_exists($field['name'], $form_fields_dimensions))
 				{
@@ -1169,7 +1187,7 @@ function <?php echo $name;?>_additionalFormOpen(obj, table)
 					<div class="col-xs-9">
 						<div id="uploader_materials_div"></div>
 						<br/>
-						<input type="file" id="uploader_materials" name="uploader_materials" multiple="multiple" style="visibility:hidden;"/>
+						<input type="file" id="uploader_materials_<?php echo $form_type;?>" name="uploader_materials" multiple="multiple" style="visibility:hidden;"/>
 					</div>
 				</div>
 				<?php
