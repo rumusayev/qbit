@@ -63,14 +63,16 @@ class Queries
 	
 	public function getQuery($key, $message_parts)
 	{
-	    
-	    preg_match_all("/\[(\w+)\]/", $this->xml->$key, $matches, PREG_SET_ORDER);
-	    
+		$return_val = $this->xml->$key;
+	    preg_match_all("/\[(\w+)\]/", $return_val, $matches, PREG_SET_ORDER);
+  
  		foreach ($matches as $match)
  		{
- 			$this->xml->$key = str_replace($match[0],$message_parts[$match[1]],$this->xml->$key);
+ 			$return_val = str_replace($match[0],$message_parts[$match[1]],$return_val);
  		}
 
-		return (string)$this->xml->$key;
+		return (string)$return_val;
 	}
+        
+
 }

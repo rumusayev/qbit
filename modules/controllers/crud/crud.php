@@ -166,7 +166,10 @@ class cCrud extends controller
 		{
 			$data = Loader::gi()->callModule($method, $before_save_method_path, $this->data['request']->parameters);
 			if ($override_orig_save)
+			{
+				$this->data['body'] = @$data['body'];
 				return $this->data;
+			}
 		}
 		
 		$where = array();
@@ -253,7 +256,20 @@ class cCrud extends controller
 		$this->data['mapped_parents'] = $crud_data['mapped_parents'];
 		$this->data['additional_form_table'] = $crud_data['additional_form_table'];
 		$this->data['crud_resource_types'] = $crud_data['crud_resource_types'];
+		$before_delete_method_path = $crud_data['before_delete_method_path'];
+		$override_orig_delete = (boolean)$crud_data['override_orig_delete'];
 		$after_delete_method_path = $crud_data['after_delete_method_path'];
+		
+		if (isset($before_delete_method_path) && $before_delete_method_path !== '')
+		{
+			$data = Loader::gi()->callModule('DELETE', $before_delete_method_path, $this->data['request']->parameters);
+			if ($override_orig_delete)
+			{
+				$this->data['body'] = @$data['body'];
+				return $this->data;
+			}	
+		}
+		
 		
 		$this->data = Loader::gi()->getModel($this->data);
 		

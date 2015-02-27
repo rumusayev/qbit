@@ -42,8 +42,10 @@ class Crud
     private $before_save_method_path = '';
     private $after_save_method_path = '';
     private $after_load_method_path = '';
+    private $before_delete_method_path = '';
     private $after_delete_method_path = '';
     private $override_orig_save = 0;
+    private $override_orig_delete = 0;
     private $translations = array();
     private $uploader_object_type = '';
     private $add_lq_button = array();
@@ -562,7 +564,8 @@ class Crud
         $this->override_orig_save = (int)$override_orig_save;
         return $this;
     }
-    // Event before save
+    
+    // Event after save
     public function afterSave($method_path)
     {
         $this->after_save_method_path = $method_path;
@@ -574,6 +577,14 @@ class Crud
         $this->after_load_method_path = $method_path;
         return $this;
     }	
+    
+    // Event before delete
+    public function beforeDelete($method_path, $override_orig_delete = false)
+    {
+        $this->before_delete_method_path = $method_path;
+        $this->override_orig_delete = (int)$override_orig_delete;
+        return $this;
+    }
 	
 	public function afterDelete($method_path)
     {
@@ -647,8 +658,10 @@ class Crud
         $crud_data['before_save_method_path'] = $this->before_save_method_path;
         $crud_data['after_save_method_path'] = $this->after_save_method_path;
         $crud_data['after_load_method_path'] = $this->after_load_method_path;
+        $crud_data['before_delete_method_path'] = $this->before_delete_method_path;
         $crud_data['after_delete_method_path'] = $this->after_delete_method_path;
         $crud_data['override_orig_save'] = $this->override_orig_save;
+        $crud_data['override_orig_delete'] = $this->override_orig_delete;
         $crud_data['where'] = $this->where;
         $crud_data['restrictions'] = $this->restrictions;
         $crud_data['hidden_edit_fields'] = $this->hidden_edit_fields;
