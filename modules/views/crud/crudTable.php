@@ -162,6 +162,10 @@ $(function()
 				$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").val(value);
 				$("#<?php echo $name;?>-crud_edit_form textarea[name$=\\^"+el+"]").val(value);
 			}
+				// Typeahead value activation
+			if(typeof($("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead()) != "undefined" && $("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead() !== null)
+				$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead('val', value);
+
         });
 
 			// Here we will select the form of the parent element
@@ -1042,13 +1046,13 @@ function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
 					switch ($field_input_part1)
 					{
 						case 'autocomplete':
-							$changed_field_id = $field['table'].'-'.$field['name'];
-							$typehead_name = str_replace('-','',$changed_field_id);
+							$field_name = $field['table'].'-'.$field['name'];
+							$typehead_name = str_replace('-', '', $field_name);
 							$params_array = json_decode($field_input_part2, true);
 						//	$js_handler2  =  $js_handlers[substr($field['name'], 0,-5)]['handler'].'(this)"';
 							?>
 							<script>
-							 $(document).ready(function(){	// UNIVERSAL TYPEAHEAD
+							 $(function(){	// UNIVERSAL TYPEAHEAD
 									
 									var <?php echo $typehead_name?> = new Bloodhound({
 									  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -1063,10 +1067,8 @@ function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
 									});
 									 
 									<?php echo $typehead_name?>.initialize();
-									
-								
 						
-									$('#modal_<?php echo $changed_field_id?>').typeahead(null, 
+									$('#<?php echo $name;?>-crud_<?php echo $form_type;?>_form #<?php echo $field_name; ?>').typeahead(null, 
 									{
 									  name: '<?php echo $typehead_name?>',
 									  displayKey: '<?php echo $params_array['full_field']?>',
@@ -1082,14 +1084,13 @@ function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
 									}).on('typeahead:selected', function (obj, datum) 
 									{    
 										
-										$('#<?php echo $params_array['hidden_field_id']?>').val(datum.<?php echo $params_array['id_field']?>);
+										$('#<?php echo $name;?>-crud_<?php echo $form_type;?>_form #<?php echo $params_array['hidden_field_id']?>').val(datum.<?php echo $params_array['id_field']?>);
 									   
 									});
 									//END UNIVERSAL TYPEAHEAD  
-									});
-									</script>
-							   <input type="text" id="modal_<?php echo $changed_field_id?>" name="modal_<?php echo $changed_field_id?>"  class="form-control" data-container="body" data-placement="right" value="bambino"/>
-						
+								});
+								</script>
+								<input type="text" id="<?php echo $field['table'].'-'.$field['name']; ?>" name="<?php echo $field['table'].'^'.$field['name']; ?>" class="form-control input-sm" <?php echo $readonly; ?> style="<?php echo $style; ?>" value="" <?php echo $js_handler; ?> />
 						<?php
 						break;					
 						case 'select':
