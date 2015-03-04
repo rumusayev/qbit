@@ -163,8 +163,7 @@ $(function()
 				$("#<?php echo $name;?>-crud_edit_form textarea[name$=\\^"+el+"]").val(value);
 			}
 				// Typeahead value activation
-			if(typeof($("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead()) != "undefined" && $("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead() !== null)
-				$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead('val', value);
+			$("#<?php echo $name;?>-crud_edit_form input:text[name$=\\^"+el+"]").typeahead('val', value);
 
         });
 

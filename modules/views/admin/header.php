@@ -23,6 +23,8 @@
 	<script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->EXTERNAL_URL; ?>datetimepicker/locales/bootstrap-datetimepicker.en-gb.js"></script>
 	<script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->EXTERNAL_URL; ?>datetimepicker/locales/bootstrap-datetimepicker.ru.js"></script>
 	<script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->EXTERNAL_URL; ?>selectize/js/standalone/selectize.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->EXTERNAL_URL; ?>typeahead/typeahead.bundle.min.js"></script>    
+    <script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->EXTERNAL_URL; ?>typeahead/bloodhound.min.js"></script>
 
     <script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->TEMPLATE_URL; ?>../admin/default/js/easyLQ.js"></script>
     <script type="text/javascript" charset="utf-8" src="<?php echo Backstage::gi()->TEMPLATE_URL; ?>../admin/default/js/admin.js"></script>
