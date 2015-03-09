@@ -72,5 +72,32 @@ class Arhlog
 		$data['condition_part'] = $condition_part;
         $data = Loader::gi()->getModel($data);
 		return $data['status'];
+	}              
+	
+	/**
+	 * Rolling back saved data to its old state
+	 *
+	 * @resource_name string Resource name
+	 * @condition_part string Is needed when there is an additional version checking condition (e.g. account_number by which records should be rollbacked then)
+	 * @return string Status
+	 */	 
+	public static function log($table_name, $resource_name, $type = 'u', $log_data)
+	{
+		$disabled_tables = explode(',', Backstage::gi()->arhlog_disabled_tables);
+		
+		if (strpos(Backstage::gi()->arhlog, 'select') !== false && array_diff($table_name, $disabled_tables))
+		{		
+			$data['module_name'] = 'common';
+			$data['model_name'] = 'arhlog';
+			$data['action_name'] = 'log';
+			$data['table_name'] = join(',', $table_name);
+			$data['resource_name'] = $resource_name;
+			$data['type'] = $type;
+			$data['log_data'] = $log_data;
+			$data = Loader::gi()->getModel($data);
+		}
+		else
+			$data['status'] = 'Ignored';
+		return $data['status'];
 	}        
 }

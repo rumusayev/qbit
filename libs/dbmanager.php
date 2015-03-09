@@ -118,6 +118,13 @@ class DBManager
 		$conditions['order'] = $this->order;
 		$conditions['group'] = $this->group;
 		$conditions['limit'] = $this->limit;
+		foreach ($this->tables as $table)
+		{			
+			if ($first_space = strpos($table, ' '))
+				$table = substr($table, 0, $first_space);
+			 $arhlog_tables[] = $table;
+		}
+		Arhlog::log($arhlog_tables, 'select', 's', $conditions);				// Arhlog data
 		$out = $this->db->select($this->tables, $conditions, $debug);
 		$this->flush();
 		return $out;

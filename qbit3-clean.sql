@@ -664,3 +664,27 @@ CREATE TABLE `update_licenses` (
 -- ----------------------------
 -- Records of update_licenses
 -- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for arhlog
+-- ----------------------------
+DROP TABLE IF EXISTS `arhlog`;
+CREATE TABLE `arhlog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `version` int(11) NOT NULL,
+  `hash_group` varchar(255) NOT NULL,
+  `reg_date` datetime NOT NULL,
+  `session_id` varchar(255) NOT NULL,
+  `resource_name` varchar(255) NOT NULL,
+  `priority` smallint(6) NOT NULL,
+  `type` varchar(1) NOT NULL,
+  `table_name` varchar(255) NOT NULL,
+  `conditions` text,
+  `data` mediumtext,
+  `actuality` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `idx_hash_group` (`hash_group`),
+  KEY `idx_resource_name` (`resource_name`),
+  KEY `idx_session_id` (`session_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

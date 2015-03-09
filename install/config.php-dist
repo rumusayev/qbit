@@ -46,6 +46,10 @@ class Config
 			"portal_installed" => 1,
 			"development_mode" => 0,
 			
+                        // Arhlog parameters
+			"arhlog" => "select,insert,update,delete",
+			"arhlog_disabled_tables" => "translations,translation_modules",
+			
                         // Image parameters
 			"image_max_width" => 800,
 			"image_max_height" => 400,

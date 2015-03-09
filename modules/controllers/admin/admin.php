@@ -17,14 +17,6 @@ class cAdmin extends controller
 
     public function pages()
     {
-		// Arhlog data
-        $this->data['resource_name'] = 'pages';
-        $this->data['hash_group'] = base64_encode(date("Y-m-d H:i:s").$this->data['resource_name'].Backstage::gi()->user->login);
-
-		Arhlog::commit(Backstage::gi()->db_table_prefix."pages", $this->data['resource_name'], $this->data['hash_group'], "contition", "u", "", array("page_name"=>"blabla"));
-
-
-		
         $pages = Loader::gi()->callModule('GET', 'pages', array('order' => 'page_name'));
         $pages_arr = array();
         foreach ($pages['items'] as $key => $page)

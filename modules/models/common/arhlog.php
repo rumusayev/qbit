@@ -58,7 +58,7 @@ class mArhlog extends model
 			$this->data['status'] = 'OK';
 		}
 		else
-			$this->data['status'] = 'Data was empty';   
+			$this->data['status'] = 'Data was empty';
 		return $this->data;
 	}
 
@@ -126,4 +126,17 @@ class mArhlog extends model
 			
 		return $this->data;
     }   
+	
+	function log()
+	{
+		$this->data['data'] = json_encode($this->data['log_data']);
+		$this->data['version'] = 1;
+		$this->data['reg_date'] = date("Y-m-d H:i:s");		
+		$this->data['session_id'] = @Backstage::gi()->user->login;  // User based arhlog
+		$this->data['priority'] = '1';
+				
+		$this->dbmanager->tables(Backstage::gi()->db_table_prefix.'arhlog')->values($this->data)->insert();
+		$this->data['status'] = 'OK';		
+		return $this->data;
+	}	
 }
