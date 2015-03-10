@@ -673,7 +673,7 @@ DROP TABLE IF EXISTS `arhlog`;
 CREATE TABLE `arhlog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `version` int(11) NOT NULL,
-  `hash_group` varchar(255) NOT NULL,
+  `hash_group` varchar(255) NOT NULL DEFAULT '',
   `reg_date` datetime NOT NULL,
   `session_id` varchar(255) NOT NULL,
   `resource_name` varchar(255) NOT NULL,

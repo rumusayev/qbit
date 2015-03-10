@@ -47,7 +47,7 @@ class Config
 			"development_mode" => 0,
 			
                         // Arhlog parameters
-			"arhlog" => "select,insert,update,delete",
+			"arhlog" => "",
 			"arhlog_disabled_tables" => "translations,translation_modules",
 			
                         // Image parameters

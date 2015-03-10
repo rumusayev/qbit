@@ -368,7 +368,7 @@ $(function()
 					success:function(data)
 					{
 						if (data == 0)
-							<?php echo $name;?>_submit_crud_form(form, "edit", "POST");
+							<?php echo $name;?>_submit_crud_form(form, "add", "POST");
 						else
 							alert('The resource name is already busy.');
 					},
@@ -378,7 +378,7 @@ $(function()
 					}
 				});
 			<?php } else
-				echo $name.'_submit_crud_form(form, "edit", "POST");'
+				echo $name.'_submit_crud_form(form, "add", "POST");'
 			?>
         }
     });
@@ -447,10 +447,9 @@ $(function()
 				files: JSON.stringify(<?php echo $name;?>_files),
 				additional_form: JSON.stringify($('#<?php echo $name;?>-crud_'+form_type+'_modal #<?php echo $name;?>-crud_additional_form').serializeJSON())
 			},
-
 			success:function(data)
 			{
-
+				console.log(data);
 		        $('#<?php echo $name;?>-crud_edit_modal').modal('hide');
 				$('.modal-backdrop').remove();
 		        <?php echo $name;?>_load();
@@ -1142,13 +1141,13 @@ function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
 	
 						echo "<div class='tab-pane' id='".$form_type.'_'.$field['table'].'_'.$field['name']."_". $lang."'>";
 						if (in_array(strtoupper($field['type']), $textarea_types))
-							echo '<textarea id="'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
+							echo '<textarea id="'.$form_type.'-'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm '.$ckeditor.'" '.$readonly.' style="'.$style.'" '.$js_handler.'></textarea>' . $buttonLQ;
 						elseif (in_array(strtoupper($field['type']), $text_types))
-							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
+							echo '<input id="'.$form_type.'-'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm ui-autocomplete-input" '.$readonly.' style="'.$style.'" '.$js_handler.'/>' . $buttonLQ;
 						elseif (in_array(strtoupper($field['type']), $date_types))
-							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
+							echo '<input id="'.$form_type.'-'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="datetime form-control input-sm" value="'.date('yyyy-mm-dd hh24:mi:ss').'" '.$readonly.' style="'.$style.'"/ '.$js_handler.'>';
 						else
-							echo '<input id="'.$field['table'].'-'.$field['name'].'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
+							echo '<input id="'.$form_type.'-'.$field['table'].'-'.$field['name'].'_'.$lang.'" name="'.$field['table'].'^'.$field['name'].'['.($lang).']" class="form-control input-sm" '.$readonly.' style="'.$style.'" '.$js_handler.'/>';
 	
 						echo '</div>';
 					}
