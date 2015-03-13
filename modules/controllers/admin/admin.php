@@ -262,7 +262,7 @@ class cAdmin extends controller
     {
         $crud_pages = new Crud("users");
         $this->data['crud_users'] = $crud_pages->setTables(Backstage::gi()->db_table_prefix . 'users')
-            ->setFields('id', 'login', 'password', 'name', 'surname', 'patronymic', 'email', 'about', 'is_visible')
+            ->setFields('id', 'login', 'password', 'name', 'surname', 'patronymic', 'email', 'about')
             ->setSearch('*')
             ->setIDs('id')
             //->restrict('add','edit','delete')
@@ -275,8 +275,7 @@ class cAdmin extends controller
                 'surname', 'Last name',
                 'patronymic', 'Middle name',
                 'email', 'E-mail',
-                'about', 'About',
-                'is_visible', 'Visibility')
+                'about', 'About')
             //->setTranslations('catalog_title', 'catalog_content')
             ->mapFieldInputs('is_visible', 'checkbox:1')
             ->execute();

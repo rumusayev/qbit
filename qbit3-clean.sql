@@ -536,7 +536,6 @@ CREATE TABLE `users` (
   `patronymic` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `about` text NOT NULL,
-  `is_visible` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;

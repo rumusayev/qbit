@@ -134,7 +134,7 @@ if (!empty($_POST['portal_url']) && !empty($_POST['db_host']) && !empty($_POST['
         $qr = $db->exec($sql);
     }
 
-    $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "users` VALUES ('3', '" . $_POST['admin_login'] . "', '" . md5($_POST['admin_password']) . "', '', '', '', '" . $_POST['admin_email'] . "', '', '1');";
+    $sql = "INSERT INTO `" . @$_POST['db_table_prefix'] . "users` VALUES ('3', '" . $_POST['admin_login'] . "', '" . md5($_POST['admin_password']) . "', '', '', '', '" . $_POST['admin_email'] . "', '');";
     $qr = $db->exec($sql);
 
     // Add DEMO DATA

@@ -45,6 +45,7 @@
     <td id="selects">
     <?php
 			echo '<select name="field_select_id['.$field->num.']" class="form-control">';
+            echo '<option value="0">-</option>';
 			foreach ($form_field_selects as $field_select)
 			{
 				$selected = '';
