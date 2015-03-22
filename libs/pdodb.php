@@ -102,17 +102,21 @@ class PDODB
 
 		return $rows;
 	}
-	
-		
-	function create($query)
+			
+	function query($query, $debug = -1)
 	{
-		if(!($result = $this->link->query($query))) 
-		{ 
-			echo "SQL connection error: ";
-			echo $query;
-			exit();
+		try
+		{
+			$result = $this->link->query($query);
+        }
+		catch(Exception $e)
+		{
+			throw new QException(array('ER-00020', $query, $e->getMessage()));		
 		}
-		return $this->link->insert_id;
+		if(!$result)
+			throw new QException(array('ER-00020', $query, ''));
+
+		return $result;
 	}
 	
 	function count($tables, $where)
