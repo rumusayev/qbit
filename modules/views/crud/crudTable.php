@@ -681,7 +681,7 @@ function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
         <?php
 		$text_types = array("VAR_STRING", "FLOAT", "DOUBLE", "LONG", "TINYINT");
 		$textarea_types = array("TEXT", "BLOB");
-		$date_types = array("DATETIME", "DATE");
+		$date_types = array("DATETIME", "DATE", "TIMESTAMP");
 
 		// Header part of the table
 		if (!empty($mapped_parents) && $parent_parent_id >= 0)
@@ -1047,18 +1047,19 @@ function <?php echo $name;?>_additionalFormOpen(form_type, obj, table)
 							$field_name = $field['table'].'-'.$field['name'];
 							$typehead_name = str_replace('-', '', $field_name);
 							$params_array = json_decode($field_input_part2, true);
+							$additional_search_params = isset($params_array['additional_search_params'])?"&".$params_array['additional_search_params']:"";
 						//	$js_handler2  =  $js_handlers[substr($field['name'], 0,-5)]['handler'].'(this)"';
 							?>
 							<script>
 							 $(function(){	// UNIVERSAL TYPEAHEAD
-									
+									var additional_search_params = "<?php echo $additional_search_params;?>";
 									var <?php echo $typehead_name?> = new Bloodhound({
 									  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 									  queryTokenizer: Bloodhound.tokenizers.whitespace,
 									  remote: {
 										url: '<?php echo Backstage::gi()->portal_url ?><?php echo $params_array['json_method']?>',
 										   replace: function(url, query) {
-												return url + "?q=" + encodeURIComponent(query);
+												return url + "?q=" + encodeURIComponent(query) + additional_search_params;
 											}
 									  },
 									  limit:100

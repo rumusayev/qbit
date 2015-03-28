@@ -696,9 +696,11 @@ class Crud
         $crud_data['manual_search_format'] = $this->manual_search_format;
 		
 		$crud_params['name'] = $this->name;
+		$crud_params['order'] = $this->order;
 		$crud_params['crud_parent_id'] = $this->crud_parent_id;
 		$crud_params['crud_current_page'] = 1;
 		$crud_params['crud_count_per_page'] = 10;
+        $crud_params['additional_form_table'] = $this->additional_form_table;
 		
         switch ($data_type)
         {

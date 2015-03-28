@@ -37,8 +37,10 @@ function <?php echo $name;?>_load()
 </script>
 <form name="<?php echo $name;?>-crud_params_form" id="<?php echo $name;?>-crud_params_form" method="post">
     <input type="hidden" name="name" id="name" value="<?php echo $name;?>"/>
+    <input type="hidden" name="order" id="order" value="<?php echo $crud_params['order'];?>"/>
     <input type="hidden" name="crud_parent_id" id="crud_parent_id" value="<?php echo $crud_params['crud_parent_id'];?>"/>
     <input type="hidden" name="crud_current_page" id="crud_current_page" value="<?php echo $crud_params['crud_current_page'];?>"/>
     <input type="hidden" name="crud_count_per_page" id="crud_count_per_page" value="<?php echo $crud_params['crud_count_per_page'];?>"/>
+    <input type="hidden" name="additional_form_table" id="additional_form_table" value="<?php echo $crud_params['additional_form_table'];?>"/>
 </form>
 <div id="<?php echo $name;?>-crud_table"></div>
