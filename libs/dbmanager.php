@@ -175,6 +175,15 @@ class DBManager
 		return $out;
 	}
 
+
+	// Bulk inserting to a table
+	public function bulkInsert($debug = -1) 
+	{
+		$out = $this->db->bulkInsert(implode(',', $this->tables), $this->values);
+		$this->flush();
+		return $out;
+	}
+	
 	// Updating a table
 	public function update($debug = -1) 
 	{

@@ -61,7 +61,7 @@ class PDODB
 			$params_arr[] = $where_value;
 		}
 */		
-		$query = "SELECT ".implode(",",$conditions['fields'])." FROM ".implode(",",(array)$tables)." $where $order_by $group_by $limit";
+		$query = "SELECT ".implode(",",$conditions['fields'])." FROM ".implode(",",(array)$tables)." $where $group_by $order_by $limit";
 		$this->parsed = $this->link->prepare($query);
 		try
 		{
@@ -185,6 +185,58 @@ class PDODB
 		return $result;
 	}
 
+	private function placeholders($text, $count=0, $separator=",")
+	{
+		$result = array();
+		if($count > 0){
+			for($x=0; $x<$count; $x++){
+				$result[] = $text;
+			}
+		}
+
+		return implode($separator, $result);
+	}	
+	
+	public function bulkInsert($table_name, $bulk_data)
+	{
+		$sql = "SHOW COLUMNS FROM ".$table_name;
+		try
+		{
+			$result = $this->link->query($sql);
+        }
+		catch(Exception $e)
+		{
+			throw new QException(array('ER-00020', $sql, $e->getMessage()));		
+		}		
+		
+		while ($row = $result->fetchObject()) 
+		{
+			$column_arr[(String)$row->Field] = $row->Field;
+			$type_arr[(String)$row->Field] = $row->Type;
+		}
+		$question_marks = array();
+		$insert_values = array();
+		foreach($bulk_data as $data) 
+		{
+			$question_marks[] = '('.$this->placeholders('?', sizeof($data)).')';
+			$insert_values = array_merge($insert_values, array_values($data));
+		}
+		$query = "INSERT INTO ".$table_name." (" . implode(",", array_keys($column_arr) ) . ") VALUES " . implode(',', $question_marks);
+
+		$this->parsed = $this->link->prepare($query);
+		try
+		{
+			$result = $this->parsed->execute($insert_values);
+		}
+		catch(Exception $e)
+		{
+			throw new QException(array('ER-00020', $this->interpolateQuery($query, $params_arr), $e->getMessage()));		
+		}
+		if(!$result)
+			throw new QException(array('ER-00020', $this->interpolateQuery($query, $params_arr), ''));
+			
+		return $result;
+	}
 	public function update($table_name, $data, $where) 
 	{
 		if (isset($data['id'])) 
