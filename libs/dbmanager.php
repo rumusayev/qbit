@@ -164,12 +164,27 @@ class DBManager
 	// Select and return object
 	public function selectByQuery($query, $debug = -1)
 	{
+		$conditions['query'] = $query;
+		Arhlog::log('select_by_query', 'select', 's', $conditions);				// Arhlog data	
 		return $this->db->selectByQuery($query, $debug);
+	}
+	
+	// Process a simple query
+	public function query($query, $debug = -1)
+	{
+		return $this->db->query($query, $debug);
 	}
 	
 	// Inserting to a table
 	public function insert($debug = -1) 
 	{
+		foreach ($this->tables as $table)
+		{			
+			if ($first_space = strpos($table, ' '))
+				$table = substr($table, 0, $first_space);
+			 $arhlog_tables[] = $table;
+		}
+		Arhlog::log($arhlog_tables, 'insert', 'i', array('values'=>$this->values));				// Arhlog data	
 		$out = $this->db->insert(implode(',', $this->tables), $this->values);
 		$this->flush();
 		return $out;
@@ -187,6 +202,13 @@ class DBManager
 	// Updating a table
 	public function update($debug = -1) 
 	{
+		foreach ($this->tables as $table)
+		{			
+			if ($first_space = strpos($table, ' '))
+				$table = substr($table, 0, $first_space);
+			 $arhlog_tables[] = $table;
+		}
+		Arhlog::log($arhlog_tables, 'update', 'u', array('values'=>$this->values, 'where'=>$this->where));				// Arhlog data		
 		$out = $this->db->update(implode(',', $this->tables), $this->values, $this->where);
 		$this->flush();		
 		return $out;
@@ -195,6 +217,13 @@ class DBManager
 	// Deleting form a table	
 	public function delete($debug = -1) 
 	{
+		foreach ($this->tables as $table)
+		{			
+			if ($first_space = strpos($table, ' '))
+				$table = substr($table, 0, $first_space);
+			 $arhlog_tables[] = $table;
+		}
+		Arhlog::log($arhlog_tables, 'delete', 'd', array('where'=>$this->where));				// Arhlog data		
 		$out = $this->db->delete(implode(',', $this->tables), $this->where, $debug);	
 		$this->flush();	
 		return $out;		

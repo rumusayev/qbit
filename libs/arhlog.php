@@ -85,7 +85,7 @@ class Arhlog
 	{
 		$disabled_tables = explode(',', Backstage::gi()->arhlog_disabled_tables);
 		
-		if (strpos(Backstage::gi()->arhlog, 'select') !== false && array_diff($table_name, $disabled_tables))
+		if (strpos(Backstage::gi()->arhlog, $resource_name) !== false && array_diff($table_name, $disabled_tables))
 		{		
 			$data['module_name'] = 'common';
 			$data['model_name'] = 'arhlog';

@@ -104,15 +104,20 @@ class PDODB
 	}
 	
 		
-	function create($query)
+	function query($query, $debug = -1)
 	{
-		if(!($result = $this->link->query($query))) 
-		{ 
-			echo "SQL connection error: ";
-			echo $query;
-			exit();
+		try
+		{
+			$result = $this->link->query($query);
+        }
+		catch(Exception $e)
+		{
+			throw new QException(array('ER-00020', $query, $e->getMessage()));		
 		}
-		return $this->link->insert_id;
+		if(!$result)
+			throw new QException(array('ER-00020', $query, ''));
+
+		return $result;
 	}
 	
 	function count($tables, $where)
@@ -261,14 +266,19 @@ class PDODB
 		{
 			if(in_array($curr_field, $column_arr) && $curr_field!='id') 
 			{
-                                $brace_pos = strpos($type_arr[(String)$curr_field], '(');
-                                if (in_array($brace_pos?substr($type_arr[(String)$curr_field],0, $brace_pos):$type_arr[(String)$curr_field], $types_arr) && strstr($curr_value,'++'))
-                                {
-                                    $curr_value = str_replace('++','',$curr_value);
-                                    $fields_arr[] = $curr_field."=$curr_field + ?";
-                                }
-                                else
-                                    $fields_arr[] = $curr_field."=?";
+                $brace_pos = strpos($type_arr[(String)$curr_field], '(');
+                if (in_array($brace_pos?substr($type_arr[(String)$curr_field],0, $brace_pos):$type_arr[(String)$curr_field], $types_arr) && (strstr($curr_value,'++') || strstr($curr_value,'--')))
+                {
+                	if (strstr($curr_value,'++'))
+	                    $fields_arr[] = $curr_field."=$curr_field + ?";
+                	if (strstr($curr_value,'--'))
+	                    $fields_arr[] = $curr_field."=$curr_field - ?";
+				
+                    $curr_value = str_replace('++','',$curr_value);
+                    $curr_value = str_replace('--','',$curr_value);
+                }
+                else
+                    $fields_arr[] = $curr_field."=?";
 				
 				if (($type_arr[(String)$curr_field] === 'date' || $type_arr[(String)$curr_field] === 'datetime') && $curr_value == '')
 					$curr_value = "NULL";
@@ -279,6 +289,7 @@ class PDODB
 			}
 		}
 		$query = "UPDATE ".$table_name." SET ".join(",",$fields_arr)." WHERE ".$where;
+		
 		$this->parsed = $this->link->prepare($query);
 		
 		try
