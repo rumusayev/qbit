@@ -37,4 +37,24 @@ class Pretorian
 		if ($data['check_count'] == 0) return false;
 		return true;
     }
+	
+	// filter($items, 'h_storages', 'storage_id')
+	/**
+	 * Filters resources that a user doesn't have access to
+	 *
+	 * @param Array Resources
+	 * @param string Table name
+	 * @param string Resource field name
+	 * @param string Grant type (GET, PUT, POST, DELETE)
+	 * @return Array Filtered resources
+	 */	
+	public function filter($resource_arr, $table, $resource_field_name, $grant_type = 'GET')
+	{
+        foreach ($resource_arr as $key=>$resource_item)
+        {
+            if (!self::check($table, $grant_type, $resource_item->{$resource_field_name}))
+                unset($resource_arr[$key]);
+        }  		
+		return $resource_arr;
+	}
 }
