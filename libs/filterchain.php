@@ -35,7 +35,12 @@ class FilterChain
 		if(!file_exists($controller_file) && !file_exists($model_file)) 
 			throw new QException(array('ER-00014', $controller_file));
 		
-		if (!Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method))
+		if (Backstage::gi()->pretorian_check_level === 'a')
+			$permitted = Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method)&&Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->action_name);
+		else
+			$permitted = Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method);
+		
+		if (!$permitted)
 		{
 			if ($this->data['request']->routing === 'static')
 			{

@@ -50,6 +50,9 @@ class Config
 			"arhlog" => "",
 			"arhlog_disabled_tables" => "translations,translation_modules",
 			
+						// Pretorian parameters 
+			"pretorian_check_level" => "m",	// (m - modules check level, a - actions check level)
+			
                         // Image parameters
 			"image_max_width" => 800,
 			"image_max_height" => 400,
