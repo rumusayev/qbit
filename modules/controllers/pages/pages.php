@@ -80,7 +80,9 @@ class cPages extends controller
         $structure_rules_cnt = preg_match_all("/(\[\[([A-z0-9\-\_]+)\]\])/", $design->structure, $structure_rules, PREG_SET_ORDER);
         $fields = array('id', 'is_active', 'page_name', 'page_title', 'is_external_link','page_content','external_url_target');
         $this->data['sequence'] = '';
-
+		
+		$this->data['items'] = Pretorian::filter($this->data['items'], 'pages', 'id');
+		
         foreach ($this->data['items'] as $key => $menu_item)
         {
             $item = $design->structure;
