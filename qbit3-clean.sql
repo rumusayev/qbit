@@ -687,3 +687,19 @@ CREATE TABLE `arhlog` (
   KEY `idx_resource_name` (`resource_name`),
   KEY `idx_session_id` (`session_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for `grant_resource_types`
+-- ----------------------------
+CREATE TABLE `grant_resource_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `resource_type` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of grant_resource_types
+-- ----------------------------
+INSERT INTO `grant_resource_types` VALUES ('1', 'pages');
+INSERT INTO `grant_resource_types` VALUES ('2', 'catalogs');
+INSERT INTO `grant_resource_types` VALUES ('3', 'contents');

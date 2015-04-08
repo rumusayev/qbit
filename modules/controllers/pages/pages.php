@@ -81,7 +81,7 @@ class cPages extends controller
         $fields = array('id', 'is_active', 'page_name', 'page_title', 'is_external_link','page_content','external_url_target');
         $this->data['sequence'] = '';
 		
-		$this->data['items'] = Pretorian::filter($this->data['items'], 'pages', 'id');
+		$this->data['items'] = Pretorian::gi()->filter($this->data['items'], 'pages', 'id');
 		
         foreach ($this->data['items'] as $key => $menu_item)
         {

@@ -52,7 +52,7 @@ class Pretorian
 	{
         foreach ($resource_arr as $key=>$resource_item)
         {
-            if (!self::check($table, $grant_type, $resource_item->{$resource_field_name}))
+            if (!Pretorian::gi()->check($table, $grant_type, $resource_item->{$resource_field_name}))
                 unset($resource_arr[$key]);
         }  		
 		return $resource_arr;
