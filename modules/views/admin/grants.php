@@ -29,11 +29,47 @@ function getUserGrants(id, obj)
 	}); 	
 }
 
+function getUserResourceGrants(id, obj)
+{
+	$.ajax(
+	{
+		url:"<?php echo Backstage::gi()->portal_url;?>grants/getUserResourceGrants/",
+		type: "GET",
+		data: "user_id="+id,
+		success:function(data)
+		{
+			$('#grants_edit_modal').modal();
+			$('#grants_edit_modal_body').html(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+		}                        
+	}); 	
+}
+
 function getRoleGrants(id, obj)
 {
 	$.ajax(
 	{
 		url:"<?php echo Backstage::gi()->portal_url;?>grants/getRoleGrants/",
+		type: "GET",
+		data: "role_id="+id,
+		success:function(data)
+		{
+			$('#grants_edit_modal').modal();
+			$('#grants_edit_modal_body').html(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+		}                        
+	}); 	
+}
+
+function getRoleResourceGrants(id, obj)
+{
+	$.ajax(
+	{
+		url:"<?php echo Backstage::gi()->portal_url;?>grants/getRoleResourceGrants/",
 		type: "GET",
 		data: "role_id="+id,
 		success:function(data)

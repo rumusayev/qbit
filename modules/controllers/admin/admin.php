@@ -300,7 +300,7 @@ class cAdmin extends controller
                 'patronymic', 'Middle name',
                 'email', 'E-mail',
                 'about', 'About')
-            ->setButtons('getUserGrants', 'glyphicon glyphicon-ok')
+            ->setButtons('getUserGrants', 'glyphicon glyphicon-ok', 'getUserResourceGrants', 'glyphicon glyphicon-check')
             ->mapFieldInputs('is_visible', 'checkbox:1')
             ->execute();
 
@@ -311,7 +311,7 @@ class cAdmin extends controller
             ->setIDs('id')
             //->restrict('add','edit','delete')
             ->mapTitles('role_name', 'Role name')
-            ->setButtons('getRoleGrants', 'glyphicon glyphicon-ok')
+            ->setButtons('getRoleGrants', 'glyphicon glyphicon-ok', 'getRoleResourceGrants', 'glyphicon glyphicon-check')
             ->mapFieldInputs('is_visible', 'checkbox:1')
             ->execute();
 

@@ -21,6 +21,20 @@ class mGrants extends model
             ->select();
 								
         return $this->data;
+    }        
+	
+	public function getUserResourceGrants()
+    {
+		$this->data['reqource_types'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grant_resource_types`')
+            ->fields('*')
+            ->select();
+
+			$this->data['grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.grant_id and user_id = '.$this->data['request']->parameters['user_id'])
+            ->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.user_id when '.$this->data['request']->parameters['user_id'].' then 1 else 0 end is_checked')
+            ->where('resource_type = "modules"')
+            ->select();
+								
+        return $this->data;
     }    
 	
 	public function getRoleGrants()
@@ -28,8 +42,8 @@ class mGrants extends model
         $this->data['grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'role_grants b on a.id = b.grant_id and role_id = '.$this->data['request']->parameters['role_id'])
             ->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.role_id when '.$this->data['request']->parameters['role_id'].' then 1 else 0 end is_checked')
             ->where('resource_type = "modules"')
-            ->select();
-								
+            ->select();		
+		
         return $this->data;
     }
 	

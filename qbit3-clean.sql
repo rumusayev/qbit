@@ -694,12 +694,19 @@ CREATE TABLE `arhlog` (
 CREATE TABLE `grant_resource_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `resource_type` varchar(100) NOT NULL,
+  `has_children` smallint(1) NOT NULL DEFAULT '0',
+  `field_name` varchar(100) DEFAULT NULL,
+  `description` varchar(255) NOT NULL,
+  `get` smallint(1) NOT NULL DEFAULT '0' COMMENT 'Default access values',
+  `post` smallint(1) NOT NULL DEFAULT '0',
+  `put` smallint(1) NOT NULL DEFAULT '0',
+  `delete` smallint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of grant_resource_types
 -- ----------------------------
-INSERT INTO `grant_resource_types` VALUES ('1', 'pages');
-INSERT INTO `grant_resource_types` VALUES ('2', 'catalogs');
-INSERT INTO `grant_resource_types` VALUES ('3', 'contents');
+INSERT INTO `grant_resource_types` VALUES ('1', 'pages', '1', null, 'Pages', '0', '0', '0', '0');
+INSERT INTO `grant_resource_types` VALUES ('2', 'catalogs', '1', null, 'Catalogs', '0', '0', '0', '0');
+INSERT INTO `grant_resource_types` VALUES ('3', 'contents', '0', null, 'Contents', '0', '0', '0', '0');

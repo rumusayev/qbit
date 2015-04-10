@@ -35,6 +35,30 @@ class cGrants extends controller
         $this->data['view_name'] = 'userGrants';
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;
+	}   	
+	
+	/**
+	 * Used to load grants and roles of resources to the viewport (client)
+	 * Please use $this->data['request']->parameters['parameter_name'] to get parameters
+	 *
+	 * @return array global $this->data
+	 */	
+    public function getUserResourceGrants()
+    {
+		$this->data = Loader::gi()->getModel($this->data);
+		$this->data['grants'] = '';
+			// Resource grants
+		foreach ($this->data['reqource_types'] as $resource_type)
+		{
+			$parent_id = 0;
+			$resource_field_name = '';
+			if ($resource_type->has_children == 0)
+				$parent_id = null;
+			$this->data['grants'] .= $this->getResourceGrantsList($resource_type->resource_type, 'user', $this->data['request']->parameters['user_id'], $parent_id, $resource_type->resource_field_name);
+		}
+        $this->data['view_name'] = 'userResourceGrants';
+        $this->data['body'] = Loader::gi()->getView($this->data);
+        return $this->data;
 	}    
 	
 	public function getRoleGrants()

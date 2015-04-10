@@ -245,6 +245,8 @@ class mCrud extends model
 								->insert();
 							$last_grant_ids['DELETE'] = $this->dbmanager->getLastID();
 							
+								// Commented as is not actual anymore
+							/*	 
 							if (!empty($this->data['mapped_parents']))
 							{	
 								// id => parent_id
@@ -274,7 +276,8 @@ class mCrud extends model
 										->values(array('id'=>'0', 'role_id'=>$role_grant->role_id, 'grant_id'=>$last_grant_ids[$role_grant->grant_type]))
 										->insert();									
 								}
-							}									
+							}
+							*/
 						}
             }
 
