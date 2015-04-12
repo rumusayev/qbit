@@ -24,13 +24,23 @@ class Pretorian
         return self::$instance;
     }
 
-    public function check($resource_name, $grant_types, $resource_id = 0)
+	/**
+	 * Checks permissions
+	 *
+	 * @param string Resource name
+	 * @param string Grant types, separated by comma or given as array (GET, POST, PUT, DELETE)
+	 * @param string Resource ID
+	 * @param string Check type (p - for permission checks, f - to filter resources)
+	 * @return boolean
+	 */	
+    public function check($resource_name, $grant_types, $resource_id = 0, $check_type = 'p')
     {
 		$data['module_name'] = 'common';
 		$data['model_name'] = 'pretorian';
 		$data['action_name'] = 'check';
 		$data['resource_name'] = $resource_name;
 		$data['resource_id'] = $resource_id;
+		$data['check_type'] = $check_type;
 		$data['grant_types'] = $grant_types;
 		$data = Loader::gi()->getModel($data);
 		
@@ -38,9 +48,8 @@ class Pretorian
 		return true;
     }
 	
-	// filter($items, 'h_storages', 'storage_id')
 	/**
-	 * Filters resources that a user doesn't have access to
+	 * Filters resources that a user doesn't has access to
 	 *
 	 * @param Array Resources
 	 * @param string Table name
@@ -52,7 +61,7 @@ class Pretorian
 	{
         foreach ($resource_arr as $key=>$resource_item)
         {
-            if (!Pretorian::gi()->check($table, $grant_type, $resource_item->{$resource_field_name}))
+            if (!Pretorian::gi()->check($table, $grant_type, $resource_item->{$resource_field_name}, 'f'))
                 unset($resource_arr[$key]);
         }  		
 		return $resource_arr;

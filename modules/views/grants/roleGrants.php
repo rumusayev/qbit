@@ -1,6 +1,7 @@
 <?php
 echo '<form name="params_form" id="params_form" method="post">';
 echo '<input type="hidden" name="type" id="type" value="role"/>';
+echo '<input type="hidden" name="resource_type" id="resource_type" value="modules"/>';
 echo '<input type="hidden" name="object_id" id="object_id" value="'.$request->parameters['role_id'].'"/>';
 echo '</form>';
 
@@ -39,16 +40,6 @@ foreach ($grants as $grant_key=>$grant)
 	echo '</tr>';
 }
 echo '</table>';
-echo '<hr/>';
-
-echo '<h2>Catalogs:</h2>';
-echo '<div class="row"><div class="col-md-4"><b>Catalog name</b></div><div class="col-md-2"><b>Create</b></div><div class="col-md-2"><b>Read</b></div><div class="col-md-2"><b>Update</b></div><div class="col-md-2"><b>Delete</b></div></div>';
-echo $catalogs_grants;
-echo '<hr/>';
-echo '<h2>Contents:</h2>';
-echo '<div class="row"><div class="col-md-4"><b>Content name</b></div><div class="col-md-2"><b>Create</b></div><div class="col-md-2"><b>Read</b></div><div class="col-md-2"><b>Update</b></div><div class="col-md-2"><b>Delete</b></div></div>';
-echo $contents_grants;
-echo '<hr/>';
 echo '</form>';
 
 ?>

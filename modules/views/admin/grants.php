@@ -35,7 +35,7 @@ function getUserResourceGrants(id, obj)
 	{
 		url:"<?php echo Backstage::gi()->portal_url;?>grants/getUserResourceGrants/",
 		type: "GET",
-		data: "user_id="+id,
+		data: "object_id="+id,
 		success:function(data)
 		{
 			$('#grants_edit_modal').modal();
@@ -71,7 +71,7 @@ function getRoleResourceGrants(id, obj)
 	{
 		url:"<?php echo Backstage::gi()->portal_url;?>grants/getRoleResourceGrants/",
 		type: "GET",
-		data: "role_id="+id,
+		data: "object_id="+id,
 		success:function(data)
 		{
 			$('#grants_edit_modal').modal();

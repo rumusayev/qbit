@@ -704,6 +704,12 @@ class Crud
 		
         switch ($data_type)
         {
+            case 'html':
+                $data = Loader::gi()->callModule('POST', 'crud/load', array('crud_params_form'=>json_encode($crud_params), 'crud_data'=>base64_encode(json_encode($crud_data)), 'crud_search_form'=>'[]'));
+                $this->data['module_name'] = 'crud';//shlaax
+                $this->data['view_name'] = 'crudHtml';
+                $this->data['body'] = Loader::gi()->getView($this->data);
+            break;		
             case 'json':
                 $data = Loader::gi()->callModule('POST', 'crud/load', array('crud_params_form'=>json_encode($crud_params), 'crud_data'=>base64_encode(json_encode($crud_data)), 'crud_search_form'=>'[]'));
                 $data['body'] = $data['rows'];

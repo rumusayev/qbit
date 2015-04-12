@@ -165,7 +165,7 @@ class DBManager
 	public function selectByQuery($query, $debug = -1)
 	{
 		$conditions['query'] = $query;
-		Arhlog::log('select_by_query', 'select', 's', $conditions);				// Arhlog data	
+		Arhlog::log(array('select_by_query'), 'select', 's', $conditions);				// Arhlog data	
 		return $this->db->selectByQuery($query, $debug);
 	}
 	

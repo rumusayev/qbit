@@ -28,10 +28,6 @@ class cGrants extends controller
 		}
 		$this->data['grants'] = $grants;
 		
-		// Resource grants
-		$this->data['catalogs_grants'] = $this->getResourceGrantsList('catalogs', 'user', $this->data['request']->parameters['user_id']);
-		$this->data['contents_grants'] = $this->getResourceGrantsList('contents', 'user', $this->data['request']->parameters['user_id'], null);
-		
         $this->data['view_name'] = 'userGrants';
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;
@@ -47,6 +43,7 @@ class cGrants extends controller
     {
 		$this->data = Loader::gi()->getModel($this->data);
 		$this->data['grants'] = '';
+		$this->data['object_type'] = 'user';
 			// Resource grants
 		foreach ($this->data['reqource_types'] as $resource_type)
 		{
@@ -54,9 +51,9 @@ class cGrants extends controller
 			$resource_field_name = '';
 			if ($resource_type->has_children == 0)
 				$parent_id = null;
-			$this->data['grants'] .= $this->getResourceGrantsList($resource_type->resource_type, 'user', $this->data['request']->parameters['user_id'], $parent_id, $resource_type->resource_field_name);
+			$this->data['grants'] .= $this->getResourceGrantsList($resource_type->resource_type, $this->data['object_type'], $this->data['request']->parameters['object_id'], $parent_id, $resource_type->field_name);
 		}
-        $this->data['view_name'] = 'userResourceGrants';
+        $this->data['view_name'] = 'resourceGrants';
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;
 	}    
@@ -73,12 +70,27 @@ class cGrants extends controller
 			$grants[$grant->resource_name][$grant->grant_type]->is_checked = $grant->is_checked;
 		}
 		$this->data['grants'] = $grants;
-		
-		// Resource grants
-		$this->data['catalogs_grants'] = $this->getResourceGrantsList('catalogs', 'role', $this->data['request']->parameters['role_id']);
-		$this->data['contents_grants'] = $this->getResourceGrantsList('contents', 'role', $this->data['request']->parameters['role_id'], null);
-		
+				
         $this->data['view_name'] = 'roleGrants';
+        $this->data['body'] = Loader::gi()->getView($this->data);
+        return $this->data;
+	}	
+	
+	public function getRoleResourceGrants()
+    {
+		$this->data = Loader::gi()->getModel($this->data);
+		$this->data['grants'] = '';
+		$this->data['object_type'] = 'role';
+			// Resource grants
+		foreach ($this->data['reqource_types'] as $resource_type)
+		{
+			$parent_id = 0;
+			$resource_field_name = '';
+			if ($resource_type->has_children == 0)
+				$parent_id = null;
+			$this->data['grants'] .= $this->getResourceGrantsList($resource_type->resource_type, $this->data['object_type'], $this->data['request']->parameters['object_id'], $parent_id, $resource_type->field_name);
+		}
+        $this->data['view_name'] = 'resourceGrants';
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;
 	}
@@ -86,6 +98,9 @@ class cGrants extends controller
 	private function getResourceGrantsList($resource_name, $object_type, $object_id, $parent_id = 0, $resource_field_name = '')
 	{
 		$out = '';
+		if ($parent_id === null || $parent_id === 0)
+			$out .= '<h2>'.$resource_name.'</h2>';
+
 		$res_data['request'] = new stdClass();
 		$res_data['request']->module_name = 'grants';
 		$res_data['request']->controller_name = 'grants';
@@ -117,11 +132,14 @@ class cGrants extends controller
 			$this->data['view_name'] = 'resourceItemGrants';
 			$out .= Loader::gi()->getView($this->data);
 			if ($parent_id !== null)
-				$out .= $this->getResourceGrantsList($resource_name, $object_type, $object_id, $key, $resource_field_name);
+			{
+				$parent_resources = $this->getResourceGrantsList($resource_name, $object_type, $object_id, $key, $resource_field_name);
+				if ($parent_resources != '')
+					$out .= "<div style='padding-left:10px'>$parent_resources</div>";
+			}
 		}
 		$this->data['body'] = $out;
-		$this->data['view_name'] = 'resourceGrants';
-		return Loader::gi()->getView($this->data);
+		return $out;
 	}
 	
 	public function saveGrants()

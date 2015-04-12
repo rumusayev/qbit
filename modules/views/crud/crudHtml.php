@@ -1,0 +1,2 @@
+uraaa
+<?php  echo $rows; ?>

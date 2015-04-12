@@ -34,6 +34,32 @@ function <?php echo $name;?>_load()
         }
     });
 }
+function <?php echo $name;?>_load_search_override(search_params)
+{
+    if (search_params==null)
+    {
+        search_params = JSON.stringify($('#<?php echo $name;?>-crud_search_form').serializeJSON())
+    }
+    $('#<?php echo $name;?>-crud_table').addClass('loading');
+    $.ajax(
+    {
+        url:"<?php echo Backstage::gi()->portal_url;?>crud/load/",
+        type: "POST",
+        data: {
+				crud_data: '<?php echo base64_encode(json_encode($crud_data));?>',
+                crud_params_form: JSON.stringify($('#<?php echo $name;?>-crud_params_form').serializeJSON()), 
+                crud_search_form: JSON.stringify(search_params)
+        },
+        success:function(data)
+        {
+            $('#<?php echo $name;?>-crud_table').html(data);
+            $('#<?php echo $name;?>-crud_table').removeClass('loading');
+        },
+        error: function (request, status, error) {
+            console.log(request.responseText);
+        }
+    });
+}
 </script>
 <form name="<?php echo $name;?>-crud_params_form" id="<?php echo $name;?>-crud_params_form" method="post">
     <input type="hidden" name="name" id="name" value="<?php echo $name;?>"/>
