@@ -83,6 +83,42 @@ function getRoleResourceGrants(id, obj)
 	}); 	
 }
 
+function getUserActionsGrants(id, obj)
+{
+	$.ajax(
+	{
+		url:"<?php echo Backstage::gi()->portal_url;?>grants/getActionsGrants/",
+		type: "GET",
+		data: "object_id="+id+"&object_type=user",
+		success:function(data)
+		{
+			$('#grants_edit_modal').modal();
+			$('#grants_edit_modal_body').html(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+		}                        
+	}); 	
+}
+
+function getRoleActionsGrants(id, obj)
+{
+	$.ajax(
+	{
+		url:"<?php echo Backstage::gi()->portal_url;?>grants/getActionsGrants/",
+		type: "GET",
+		data: "object_id="+id+"&object_type=user",
+		success:function(data)
+		{
+			$('#grants_edit_modal').modal();
+			$('#grants_edit_modal_body').html(data);
+		},
+		error: function (request, status, error) {
+			console.log(request.responseText);
+		}                        
+	}); 	
+}
+
 $(function()
 {
     $('#grants_save_btn').click(function(e) 

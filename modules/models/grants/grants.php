@@ -61,6 +61,11 @@ class mGrants extends model
         return $this->data;
     }    	
 	
+	public function getActionsGrants()
+    {
+		
+	}
+	
 	public function getResourceGrantsList()
 	{
 		$where = '';

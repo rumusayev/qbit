@@ -95,6 +95,17 @@ class cGrants extends controller
         return $this->data;
 	}
 	
+	public function getActionsGrants()
+    {
+		
+        $this->data['structure'] = Backstage::gi()->MODULES_DIR;
+		$dirs = glob('*', GLOB_ONLYDIR);
+		print_r( $dirs);
+        $this->data['view_name'] = 'actionsGrants';
+        $this->data['body'] = Loader::gi()->getView($this->data);
+        return $this->data;
+	}
+	
 	private function getResourceGrantsList($resource_name, $object_type, $object_id, $parent_id = 0, $resource_field_name = '')
 	{
 		$out = '';
