@@ -97,10 +97,38 @@ class cGrants extends controller
 	
 	public function getActionsGrants()
     {
-		
-        $this->data['structure'] = Backstage::gi()->MODULES_DIR;
-		$dirs = glob('*', GLOB_ONLYDIR);
-		print_r( $dirs);
+		$controllers = array();
+		$models = array();
+		$iterator = new RecursiveIteratorIterator(
+						new RecursiveDirectoryIterator(Backstage::gi()->MODULES_DIR, FilesystemIterator::UNIX_PATHS), 
+					RecursiveIteratorIterator::SELF_FIRST);
+
+		foreach($iterator as $file) 
+		{
+			if(!$file->isDir()) 
+			{
+				$fp = fopen($file, 'r');
+				$method = $buffer = '';
+				//echo '<br/>'.str_ireplace('.php', '', $file->getFilename()).'->>><br/>';
+				while (!feof($fp)) 
+				{
+					$buffer .= fread($fp, 2048);
+				}			
+				if (preg_match_all('/public\s+function\s+(\w+)/i', $buffer, $matches)) 
+				{
+					if (stristr($file, Backstage::gi()->CONTROLLERS_DIR))
+						$controllers[str_ireplace('.php', '', $file->getFilename())] = $matches[1];
+					elseif (stristr($file, Backstage::gi()->MODELS_DIR))
+						$models[str_ireplace('.php', '', $file->getFilename())] = $matches[1];					
+				}
+			}
+		}
+		$combined = array_merge_recursive($controllers, $models);
+		array_walk($combined, function(&$data, $key)
+		{
+			$data = array_unique($data);
+		});
+        $this->data['structure'] = $combined;		
         $this->data['view_name'] = 'actionsGrants';
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;
