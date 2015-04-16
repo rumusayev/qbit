@@ -128,7 +128,9 @@ class cGrants extends controller
 		{
 			$data = array_unique($data);
 		});
+		
         $this->data['structure'] = $combined;		
+		$this->data = Loader::gi()->getModel($this->data);
         $this->data['view_name'] = 'actionsGrants';
         $this->data['body'] = Loader::gi()->getView($this->data);
         return $this->data;

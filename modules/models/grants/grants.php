@@ -63,7 +63,40 @@ class mGrants extends model
 	
 	public function getActionsGrants()
     {
-		
+		// First insert grants that are still not in the grants table 
+		switch ($this->data['request']->parameters['object_type'])
+		{
+			case 'user':
+				$grants = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.grant_id and user_id = '.$this->data['request']->parameters['object_id'])
+					->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.user_id when '.$this->data['request']->parameters['object_id'].' then 1 else 0 end is_checked')
+					->where('resource_type = "actions"')
+					->order('resource_name')
+					->select();
+				$actions = array('admin'=>array('get'));
+				$diff_grant_types = array();
+				foreach ($grants as $grant)
+					$actions[$grant->resource_name][] = $grant->grant_type;
+				foreach ($this->data['structure'] as $resource_name=>$grant_types)
+				{
+					if (isset($actions[$resource_name]))
+						$diff_grant_types = array_diff($grant_types, $actions[$resource_name]);
+					else
+						$diff_grant_types = $grant_types;
+					foreach ($diff_grant_types as $grant_type)
+						$this->dbmanager->tables(Backstage::gi()->db_table_prefix.'grants')
+						->values(array('resource_name'=>$resource_name,'grant_type'=>$grant_type,'resource_type'=>'actions'))
+						->insert();
+				}
+				$this->data['grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.grant_id and user_id = '.$this->data['request']->parameters['object_id'])
+					->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.user_id when '.$this->data['request']->parameters['object_id'].' then 1 else 0 end is_checked')
+					->where('resource_type = "actions"')
+					->order('resource_name')
+					->select();
+			break;
+			case 'role':
+			break;
+		}
+        return $this->data;
 	}
 	
 	public function getResourceGrantsList()
