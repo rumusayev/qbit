@@ -124,6 +124,7 @@ class PDODB
 	{
 		if ($where && $where != '')
 			 $where = "WHERE $where";
+			 
 		$query = "SELECT COUNT(*) FROM ".implode(',', $tables)." $where";
 		try
 		{

@@ -36,7 +36,7 @@ class FilterChain
 			throw new QException(array('ER-00014', $controller_file));
 		
 		if (Backstage::gi()->pretorian_check_level === 'a')
-			$permitted = Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method)&&Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->action_name);
+			$permitted = Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method)||Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->action_name);
 		else
 			$permitted = Pretorian::gi()->check($this->data['request']->controller_name, $this->data['request']->method);
 		

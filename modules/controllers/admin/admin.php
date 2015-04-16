@@ -287,6 +287,19 @@ class cAdmin extends controller
 
     public function grants()
     {
+        $crud_grant_resource_types = new Crud("grant_resource_types");
+        $this->data['crud_grant_resource_types'] = $crud_grant_resource_types->setTables(Backstage::gi()->db_table_prefix.'grant_resource_types')
+            ->setFields('id', 'resource_type', 'has_children', 'field_name', 'description')
+            ->setSearch('*')
+            ->setIDs('id')
+            ->mapTitles(
+                'resource_type', 'Resource type',
+                'has_children', 'Has children',
+                'field_name', 'Matching field name',
+                'description', 'Description')
+            ->mapFieldInputs('has_children', 'checkbox:1')
+            ->execute();
+			
         $crud_grants = new Crud("grants");
         $this->data['crud_grants'] = $crud_grants->setTables(Backstage::gi()->db_table_prefix . 'users')
             ->setFields('id', 'login', 'name', 'surname', 'patronymic', 'email', 'about')

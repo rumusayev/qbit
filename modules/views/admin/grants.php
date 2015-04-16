@@ -2,6 +2,9 @@
 require_once('header.php');
 echo '<h1>Grants</h1>';
 echo '<hr/>';
+echo '<h3>Grant resource types</h3>';
+echo $crud_grant_resource_types;
+echo '<br/><br/><hr/>';
 echo '<h3>For users</h3>';
 echo $crud_grants;
 echo '<br/><br/><hr/>';
@@ -107,7 +110,7 @@ function getRoleActionsGrants(id, obj)
 	{
 		url:"<?php echo Backstage::gi()->portal_url;?>grants/getActionsGrants/",
 		type: "GET",
-		data: "object_id="+id+"&object_type=user",
+		data: "object_id="+id+"&object_type=role",
 		success:function(data)
 		{
 			$('#grants_edit_modal').modal();

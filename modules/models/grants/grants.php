@@ -70,9 +70,9 @@ class mGrants extends model
 				$grants = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.grant_id and user_id = '.$this->data['request']->parameters['object_id'])
 					->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.user_id when '.$this->data['request']->parameters['object_id'].' then 1 else 0 end is_checked')
 					->where('resource_type = "actions"')
-					->order('resource_name')
+					->order('resource_name, grant_type')
 					->select();
-				$actions = array('admin'=>array('get'));
+				$actions = array();
 				$diff_grant_types = array();
 				foreach ($grants as $grant)
 					$actions[$grant->resource_name][] = $grant->grant_type;
@@ -90,10 +90,36 @@ class mGrants extends model
 				$this->data['grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.grant_id and user_id = '.$this->data['request']->parameters['object_id'])
 					->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.user_id when '.$this->data['request']->parameters['object_id'].' then 1 else 0 end is_checked')
 					->where('resource_type = "actions"')
-					->order('resource_name')
+					->order('resource_name, grant_type')
 					->select();
 			break;
 			case 'role':
+				$grants = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'role_grants b on a.id = b.grant_id and role_id = '.$this->data['request']->parameters['object_id'])
+					->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.role_id when '.$this->data['request']->parameters['object_id'].' then 1 else 0 end is_checked')
+					->where('resource_type = "actions"')
+					->order('resource_name, grant_type')
+					->select();		
+			
+				$actions = array();
+				$diff_grant_types = array();
+				foreach ($grants as $grant)
+					$actions[$grant->resource_name][] = $grant->grant_type;
+				foreach ($this->data['structure'] as $resource_name=>$grant_types)
+				{
+					if (isset($actions[$resource_name]))
+						$diff_grant_types = array_diff($grant_types, $actions[$resource_name]);
+					else
+						$diff_grant_types = $grant_types;
+					foreach ($diff_grant_types as $grant_type)
+						$this->dbmanager->tables(Backstage::gi()->db_table_prefix.'grants')
+						->values(array('resource_name'=>$resource_name,'grant_type'=>$grant_type,'resource_type'=>'actions'))
+						->insert();
+				}
+				$this->data['grants'] = $this->dbmanager->tables('`'.Backstage::gi()->db_table_prefix.'grants` a left join '.Backstage::gi()->db_table_prefix.'role_grants b on a.id = b.grant_id and role_id = '.$this->data['request']->parameters['object_id'])
+					->fields('a.id, a.resource_name, a.resource_id, a.grant_type, a.resource_type, case b.role_id when '.$this->data['request']->parameters['object_id'].' then 1 else 0 end is_checked')
+					->where('resource_type = "actions"')
+					->order('resource_name, grant_type')
+					->select();							
 			break;
 		}
         return $this->data;
@@ -130,30 +156,35 @@ class mGrants extends model
 	public function saveGrants()
 	{
 		if ($this->data['params_form']['resource_type'] === 'resources')
-			$where = 'resource_type != "modules"';
+			$where = 'resource_type != "modules" and resource_type != "actions"';
 		elseif($this->data['params_form']['resource_type'] === 'modules')
 			$where = 'resource_type = "modules"';
+		elseif($this->data['params_form']['resource_type'] === 'actions')
+			$where = 'resource_type = "actions"';
 		switch ($this->data['params_form']['type'])
 		{
 			case 'user':
-				$roles = $this->dbmanager->tables(Backstage::gi()->db_table_prefix.'roles a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.role_id and user_id = '.$this->data['params_form']['object_id'])
-					->fields('a.id, a.role_name, b.user_id, case b.user_id when '.$this->data['params_form']['object_id'].' then 1 else 0 end is_checked')
-					->where('lower(a.role_name)!= "public"')
-					->select();
-				foreach ($roles as $role)
+				if ($this->data['params_form']['resource_type'] === 'modules')
 				{
-					if (isset($this->data['roles_form']['role'][$role->id]))
+					$roles = $this->dbmanager->tables(Backstage::gi()->db_table_prefix.'roles a left join '.Backstage::gi()->db_table_prefix.'user_grants b on a.id = b.role_id and user_id = '.$this->data['params_form']['object_id'])
+						->fields('a.id, a.role_name, b.user_id, case b.user_id when '.$this->data['params_form']['object_id'].' then 1 else 0 end is_checked')
+						->where('lower(a.role_name)!= "public"')
+						->select();
+					foreach ($roles as $role)
 					{
-						if ($role->is_checked == 0)
+						if (isset($this->data['roles_form']['role'][$role->id]))
+						{
+							if ($role->is_checked == 0)
+								$this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix.'user_grants')
+								->values(array('user_id'=>$this->data['params_form']['object_id'],'role_id'=>$role->id))
+								->insert();
+						}
+						else
+						{
 							$this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix.'user_grants')
-							->values(array('user_id'=>$this->data['params_form']['object_id'],'role_id'=>$role->id))
-							->insert();
-					}
-					else
-					{
-						$this->data['status'] = $this->dbmanager->tables(Backstage::gi()->db_table_prefix.'user_grants')
-						->where('role_id = '.$role->id.' and user_id = '.$this->data['params_form']['object_id'])
-						->delete();
+							->where('role_id = '.$role->id.' and user_id = '.$this->data['params_form']['object_id'])
+							->delete();
+						}
 					}
 				}	
 				
